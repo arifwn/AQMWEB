@@ -1,0 +1,13 @@
+{% extends "aqm_web/base-with-menu.html" %}
+{% load url from future %}
+
+{% block metadata %}
+<title>Status | Air Quality Models Web Interface</title>
+	<script src="{{ STATIC_URL }}aqm_web/js/simplebar.js"></script> 
+{% endblock %}
+
+{% block all-elements %}
+
+	{% include "aqm_web/partial/status.html" %}
+
+{% endblock %}

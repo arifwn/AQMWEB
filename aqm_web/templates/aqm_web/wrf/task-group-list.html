@@ -1,0 +1,13 @@
+{% extends "aqm_web/base-with-menu.html" %}
+{% load url from future %}
+
+{% block metadata %}
+<title>WRF Task Groups List | Air Quality Models Web Interface</title>
+<script src="{{ STATIC_URL }}aqm_web/js/spinner.js"></script>
+{% endblock %}
+
+{% block all-elements %}
+
+	{% include "aqm_web/wrf/partial/task-group-list.html" %}
+
+{% endblock %}

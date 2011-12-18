@@ -1,0 +1,79 @@
+{% load url from future %}
+{% load webdesign %}
+<div class="row">
+<div class="span16">
+	<div class="page-header">
+		<h1>WRF/Chem Emission Data</h1>
+	</div>
+	<div class="row">
+		<div class="span16">
+			<ul class="chem-data-list">
+				<li>
+					<div class="header">
+						<h2><a href="#">{% lorem 7 w random %}</a></h2>
+						<div><span class="label">xlsx</span></div>
+					</div>
+					<div class="content">
+						{% lorem 1 p random %}
+						<table>
+							<thead>
+								<tr>
+									<th>User</th>
+									<th>Task</th>
+									<th>Uploaded</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td><a href="#">Test User</a></td>
+									<td>15</td>
+									<td>{% now "jS F Y H:i" %}</td>
+								</tr>
+							</tbody>
+						</table>
+						<ul class="controls">
+							<li><a class="btn success" href="#">Details</a></li>
+							<li><a class="btn" href="#">Edit</a></li>
+							<li><a class="btn danger" href="#">Remove</a></li>
+						</ul>
+					</div>
+				</li>
+				
+				
+				<li>
+					<div class="header">
+						<h2><a href="#">{% lorem 7 w random %}</a></h2>
+						<div><span class="label">csv</span></div>
+					</div>
+					<div class="content">
+						{% lorem 1 p random %}
+						<table>
+							<thead>
+								<tr>
+									<th>User</th>
+									<th>Task</th>
+									<th>Uploaded</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td><a href="#">Test User</a></td>
+									<td>15</td>
+									<td>{% now "jS F Y H:i" %}</td>
+								</tr>
+							</tbody>
+						</table>
+						<ul class="controls">
+							<li><a class="btn success" href="#">Details</a></li>
+							<li><a class="btn" href="#">Edit</a></li>
+							<li><a class="btn danger" href="#">Remove</a></li>
+						</ul>
+					</div>
+				</li>
+				
+			</ul>
+		</div>
+	</div>
+	
+</div>
+</div>

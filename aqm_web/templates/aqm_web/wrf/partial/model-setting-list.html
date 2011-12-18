@@ -1,0 +1,141 @@
+{% load url from future %}
+{% load webdesign %}
+<script>
+$(document).ready(function(){
+	var toolbox_pos = {};
+	toolbox_pos.top = $('#toolbox').offset().top - 40;
+	toolbox_pos.left = $('#toolbox').offset().left;
+	
+	$(window).scroll(function(){
+		var scroll_pos = $(window).scrollTop();
+		if (scroll_pos > toolbox_pos.top) {
+			$('#toolbox').addClass('fixed');
+		}
+		else if (scroll_pos < toolbox_pos.top) {
+			$('#toolbox').removeClass('fixed');
+		}
+	});
+	
+});
+</script>
+
+<div class="row">
+<div class="span16">
+	<div class="page-header">
+		<h1>WRF/Chem Core Setting</h1>
+	</div>
+	
+	<div id="toolbox" class="toolbox">
+		<div class="row">
+			<div class="span2" style="position: relative;">
+					<a class="btn primary" href="#">New Setting</a>
+			</div>
+			<div class="span13 offset1">
+				<p style="line-height: 25px;">Default Setting: <a href="">{% lorem 7 w random %}</a>
+			</div>
+		</div>
+	</div>
+	
+	<div class="row">
+		<div class="span16">
+			<ul class="chem-data-list">
+				<li>
+					<div class="header">
+						<h2><a href="#">{% lorem 7 w random %}</a></h2>
+						<div><span class="label success">Default</span></div>
+					</div>
+					<div class="content">
+						{% lorem 1 p random %}
+						<table>
+							<thead>
+								<tr>
+									<th>User</th>
+									<th>Task</th>
+									<th>Created</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td><a href="#">Test User</a></td>
+									<td>15</td>
+									<td>{% now "jS F Y H:i" %}</td>
+								</tr>
+							</tbody>
+						</table>
+						<ul class="controls">
+							<li><a class="btn success" href="#">Details</a></li>
+							<li><a class="btn" href="#">Edit</a></li>
+							<li><a class="btn danger" href="#">Remove</a></li>
+						</ul>
+					</div>
+				</li>
+				
+				
+				<li>
+					<div class="header">
+						<h2><a href="#">{% lorem 7 w random %}</a></h2>
+					</div>
+					<div class="content">
+						{% lorem 1 p random %}
+						<table>
+							<thead>
+								<tr>
+									<th>User</th>
+									<th>Task</th>
+									<th>Created</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td><a href="#">Test User</a></td>
+									<td>15</td>
+									<td>{% now "jS F Y H:i" %}</td>
+								</tr>
+							</tbody>
+						</table>
+						<ul class="controls">
+							<li><a class="btn info" href="#">Set as Default</a></li>
+							<li><a class="btn success" href="#">Details</a></li>
+							<li><a class="btn" href="#">Edit</a></li>
+							<li><a class="btn danger" href="#">Remove</a></li>
+						</ul>
+					</div>
+				</li>
+				
+				<li>
+					<div class="header">
+						<h2><a href="#">{% lorem 7 w random %}</a></h2>
+					</div>
+					<div class="content">
+						{% lorem 1 p random %}
+						<table>
+							<thead>
+								<tr>
+									<th>User</th>
+									<th>Task</th>
+									<th>Created</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td><a href="#">Test User</a></td>
+									<td>15</td>
+									<td>{% now "jS F Y H:i" %}</td>
+								</tr>
+							</tbody>
+						</table>
+						<ul class="controls">
+							<li><a class="btn info" href="#">Set as Default</a></li>
+							<li><a class="btn success" href="#">Details</a></li>
+							<li><a class="btn" href="#">Edit</a></li>
+							<li><a class="btn danger" href="#">Remove</a></li>
+						</ul>
+					</div>
+				</li>
+				
+			</ul>
+		</div>
+	</div>
+	
+</div>
+</div>

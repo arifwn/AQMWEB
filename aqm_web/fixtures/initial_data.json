@@ -1,0 +1,28 @@
+[
+    {
+        "pk": 1,
+        "model": "auth.user",
+        "fields": {
+            "username": "arif",
+            "first_name": "Arif",
+            "last_name": "Nugroho",
+            "is_active": true,
+            "is_superuser": true,
+            "is_staff": true,
+            "last_login": "2011-12-14 22:02:34",
+            "groups": [],
+            "user_permissions": [],
+            "password": "sha1$9fb3a$42a5f5588bd1003383af8d516b588eca4ffd24b2",
+            "email": "arif@sainsmograf.com",
+            "date_joined": "2011-12-14 22:01:12"
+        }
+    },
+    {
+        "pk": 1,
+        "model": "sites.site",
+        "fields": {
+            "domain": "localhost:8000",
+            "name": "localhost"
+        }
+    }
+]

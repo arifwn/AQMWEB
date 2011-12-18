@@ -1,0 +1,30 @@
+<!DOCTYPE html> 
+<html> 
+<head> 
+	<link href="{{ STATIC_URL }}aqm_web/css/bootstrap-1.3.0.css" rel="stylesheet"> 
+	<script src="{{ STATIC_URL }}aqm_web/js/jquery-1.6.4.js"></script> 
+	<script src="{{ STATIC_URL }}aqm_web/js/main.js"></script> 
+	
+    <meta charset="utf-8"> 
+    
+    <link rel="shortcut icon" href="images/favicon.ico"> 
+<script type="text/javascript">
+
+$(document).ready(function () {
+	console.log('start');
+	
+	$('#return_btn').click(function(e) {
+		e.preventDefault();
+		console.log($(this).attr('href'));
+		
+		window.opener.$('#target_field').val('ok!');
+		window.close();
+	});
+});    
+</script>
+</head>
+
+<body>
+<a href="#" id="return_btn" class="btn primary">Return</a>
+</body>
+</html>

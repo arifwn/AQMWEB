@@ -1,0 +1,44 @@
+{% extends "aqm_web/base.html" %}
+{% load url from future %}
+{% load request_tags %}
+
+{% block metadata %}
+<title>Login | Air Quality Models Web Interface</title>
+{% endblock %}
+
+{% block all-elements %}
+<div class="container">
+	<div class="row">
+		<div class="span8 offset4 columns">
+		
+		{% if form.errors %}
+		<div class="alert-message block-message error" data-alert="alert">
+			<a class="close" href="#">x</a>
+			<p>Your username and password didn't match. Please try again.</p>
+		</div>
+		{% endif %}
+		
+		<form class="well" method="post" action="{% url 'django.contrib.auth.views.login' %}">
+			{% csrf_token %}
+			<fieldset>
+				<legend>Login</legend>
+				<div class="clearfix">
+					{{ form.username.label_tag }}
+					<div class="input">{{ form.username }}</div>
+				</div>
+				<div class="clearfix">
+					{{ form.password.label_tag }}
+					<div class="input">{{ form.password }}</div>
+				</div>
+				<div class="actions">
+					{% query_string request "next" "html_form" %}
+					<input type="submit" class="btn primary" value="login">
+				</div>
+			</fieldset>
+			
+		</form>
+		
+		</div>
+	</div>
+	</div>
+{% endblock %}

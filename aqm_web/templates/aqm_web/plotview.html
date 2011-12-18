@@ -1,0 +1,141 @@
+{% extends "aqm_web/base-with-menu.html" %}
+{% load url from future %}
+
+{% block metadata %}
+<script src="{{ STATIC_URL }}aqm_web/js/stream-gallery.js"></script> 
+
+<title>Plot Browser | Air Quality Models Web Interface</title>
+
+<script>
+$(document).ready(function () {
+	$("a[rel=gallery-simple-tips]").twipsy({live: true, placement: "left", offset: 5});
+});
+
+</script>
+{% endblock %}
+
+{% block all-elements %}
+<!-- Main hero unit for a primary marketing message or call to action --> 
+<section id="sport-section" class="frontpage-section">
+	<div class="stream-gallery" data-stream-gallery="data-stream-gallery" data-stream-galery-enable-hotkey="enabled">
+		<div class="statusbar">
+			<div class="back"><a href="#" rel="gallery-simple-tips" data-original-title="Return">&laquo;</a></div>
+			<h2>Sample Plot <small class="description"></small></h2>
+		</div>
+		<div class="viewport">
+			<ul class="viewlist">
+				<li data-item-description="01-01-2009 01:00" data-stream-gallery-num="1">
+					<img class="view-item" src="/media/dummy/render/jan09d1_t_1.png" />
+				</li>
+				<li data-item-description="01-01-2009 02:00" data-stream-gallery-num="2">
+					<img class="view-item" src="/media/dummy/render/jan09d1_t_2.png" />
+				</li>
+				<li data-item-description="01-01-2009 03:00" data-stream-gallery-num="3">
+					<img class="view-item" src="/media/dummy/render/jan09d1_t_3.png" />
+				</li>
+				<li data-item-description="01-01-2009 04:00" data-stream-gallery-num="4">
+					<img class="view-item" src="/media/dummy/render/jan09d1_t_4.png" />
+				</li>
+				<li data-item-description="01-01-2009 05:00" data-stream-gallery-num="5">
+					<img class="view-item" src="/media/dummy/render/jan09d1_t_5.png" />
+				</li>
+				<li data-item-description="01-01-2009 06:00" data-stream-gallery-num="6">
+					<img class="view-item" src="/media/dummy/render/jan09d1_t_6.png" />
+				</li>
+				<li data-item-description="01-01-2009 07:00" data-stream-gallery-num="7">
+					<img class="view-item" src="/media/dummy/render/jan09d1_t_7.png" />
+				</li>
+				<li data-item-description="01-01-2009 08:00" data-stream-gallery-num="8">
+					<img class="view-item" src="/media/dummy/render/jan09d1_t_8.png" />
+				</li>
+				<li data-item-description="01-01-2009 09:00" data-stream-gallery-num="9">
+					<img class="view-item" src="/media/dummy/render/jan09d1_t_9.png" />
+				</li>
+				<li data-item-description="01-01-2009 10:00" data-stream-gallery-num="10">
+					<img class="view-item" src="/media/dummy/render/jan09d1_t_10.png" />
+				</li>
+				<li data-item-description="01-01-2009 11:00" data-stream-gallery-num="11">
+					<img class="view-item" src="/media/dummy/render/jan09d1_t_11.png" />
+				</li>
+				<li data-item-description="01-01-2009 12:00" data-stream-gallery-num="12">
+					<img class="view-item" src="/media/dummy/render/jan09d1_t_12.png" />
+				</li>
+				<li data-item-description="01-01-2009 13:00" data-stream-gallery-num="13">
+					<img class="view-item" src="/media/dummy/render/jan09d1_t_13.png" />
+				</li>
+				<li data-item-description="01-01-2009 14:00" data-stream-gallery-num="14">
+					<img class="view-item" src="/media/dummy/render/jan09d1_t_14.png" />
+				</li>
+				<li data-item-description="01-01-2009 15:00" data-stream-gallery-num="15">
+					<img class="view-item" src="/media/dummy/render/jan09d1_t_15.png" />
+				</li>
+				<li data-item-description="01-01-2009 16:00" data-stream-gallery-num="16">
+					<img class="view-item" src="/media/dummy/render/jan09d1_t_16.png" />
+				</li>
+				<li data-item-description="01-01-2009 17:00" data-stream-gallery-num="17">
+					<img class="view-item" src="/media/dummy/render/jan09d1_t_17.png" />
+				</li>
+				<li data-item-description="01-01-2009 18:00" data-stream-gallery-num="18">
+					<img class="view-item" src="/media/dummy/render/jan09d1_t_18.png" />
+				</li>
+				<li data-item-description="01-01-2009 19:00" data-stream-gallery-num="19">
+					<img class="view-item" src="/media/dummy/render/jan09d1_t_19.png" />
+				</li>
+				<li data-item-description="01-01-2009 20:00" data-stream-gallery-num="20">
+					<img class="view-item" src="/media/dummy/render/jan09d1_t_20.png" />
+				</li>
+				<li data-item-description="01-01-2009 21:00" data-stream-gallery-num="21">
+					<img class="view-item" src="/media/dummy/render/jan09d1_t_21.png" />
+				</li>
+				<li data-item-description="01-01-2009 22:00" data-stream-gallery-num="22">
+					<img class="view-item" src="/media/dummy/render/jan09d1_t_22.png" />
+				</li>
+				<li data-item-description="01-01-2009 23:00" data-stream-gallery-num="23">
+					<img class="view-item" src="/media/dummy/render/jan09d1_t_23.png" />
+				</li>
+				<li data-item-description="01-01-2009 24:00" data-stream-gallery-num="24">
+					<img class="view-item" src="/media/dummy/render/jan09d1_t_24.png" />
+				</li>
+			</ul>
+			<div class="playcontrol">
+				<ul class="controllist">
+					<li><a href="#" class="prev">&laquo;</a></li>
+					<li><a href="#" class="play">Play</a></li>
+					<li><a href="#" class="pause" style="display: none;">Pause</a></li>
+					<li><a href="#" class="next">&raquo;</a></li>
+				</ul>
+			</div>
+		</div>
+		<div class="navigation">
+			<ul class="navlist custom-scroll-bar">
+				<li><a href="#1" class="active" data-stream-gallery-num="1">01-01-2009 01:00</a></li>
+				<li><a href="#2" data-stream-gallery-num="2">01-01-2009 02:00</a></li>
+				<li><a href="#2" data-stream-gallery-num="3">01-01-2009 03:00</a></li>
+				<li><a href="#2" data-stream-gallery-num="4">01-01-2009 04:00</a></li>
+				<li><a href="#2" data-stream-gallery-num="5">01-01-2009 05:00</a></li>
+				<li><a href="#2" data-stream-gallery-num="6">01-01-2009 06:00</a></li>
+				<li><a href="#2" data-stream-gallery-num="7">01-01-2009 07:00</a></li>
+				<li><a href="#2" data-stream-gallery-num="8">01-01-2009 08:00</a></li>
+				<li><a href="#2" data-stream-gallery-num="9">01-01-2009 09:00</a></li>
+				<li><a href="#2" data-stream-gallery-num="10">01-01-2009 10:00</a></li>
+				<li><a href="#2" data-stream-gallery-num="11">01-01-2009 11:00</a></li>
+				<li><a href="#2" data-stream-gallery-num="12">01-01-2009 12:00</a></li>
+				<li><a href="#2" data-stream-gallery-num="13">01-01-2009 13:00</a></li>
+				<li><a href="#2" data-stream-gallery-num="14">01-01-2009 14:00</a></li>
+				<li><a href="#2" data-stream-gallery-num="15">01-01-2009 15:00</a></li>
+				<li><a href="#2" data-stream-gallery-num="16">01-01-2009 16:00</a></li>
+				<li><a href="#2" data-stream-gallery-num="17">01-01-2009 17:00</a></li>
+				<li><a href="#2" data-stream-gallery-num="18">01-01-2009 18:00</a></li>
+				<li><a href="#2" data-stream-gallery-num="19">01-01-2009 19:00</a></li>
+				<li><a href="#2" data-stream-gallery-num="20">01-01-2009 20:00</a></li>
+				<li><a href="#2" data-stream-gallery-num="21">01-01-2009 21:00</a></li>
+				<li><a href="#2" data-stream-gallery-num="22">01-01-2009 22:00</a></li>
+				<li><a href="#2" data-stream-gallery-num="23">01-01-2009 23:00</a></li>
+				<li><a href="#2" data-stream-gallery-num="24">01-01-2009 24:00</a></li>
+			</ul>
+		</div>
+	</div>
+</section>
+
+
+{% endblock %}

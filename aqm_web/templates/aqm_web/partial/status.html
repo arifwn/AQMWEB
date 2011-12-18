@@ -1,0 +1,173 @@
+<script>
+$(document).ready(function () {
+	var cpus = ['#cpu-usage-server-1', '#cpu-usage-server-2'];
+	var mems = ['#memory-usage-server-1', '#memory-usage-server-2'];
+	
+	var timer = setInterval(function(){
+		for(var i=0; i<cpus.length; i++){
+			var percentage = parseInt(Math.random()*100);
+			var label = percentage+'%';
+			simplebar.set(cpus[i], percentage, label);
+		}
+		for(var i=0; i<mems.length; i++){
+			var mem = parseInt(Math.random()*2000 + 5000);
+			var percentage = (mem/8000)*100;
+			var label = mem+'MB';
+			simplebar.set(mems[i], percentage, label);
+		}
+	}, 2000);
+});
+</script>
+
+<div class="row"> 
+	<div class="span16">
+		<div class="well">
+			<div>
+				<h1>Server Status</h1>
+			</div>
+
+			<div class="row">
+				<div class="span10">
+					<div class="server-status">
+						<div class="header">
+							<h2>Server 1</h2>
+							<span class="label success">healty</span>
+						</div>
+						<div class="content">
+							<table>
+								<tbody>
+									<tr>
+										<th>Current CPU Usage</th>
+										<td>
+											<div id="cpu-usage-server-1" class="color-green medium" data-simplebar="simplebar" data-simplebar-percentage="33" 
+											data-simplebar-text="33%"></div>
+										</td>
+									</tr>
+									<tr>
+										<th>Current Memory Usage</th>
+										<td>
+											<div id="memory-usage-server-1" class="color-blue medium" data-simplebar="simplebar" data-simplebar-percentage="50" 
+											data-simplebar-text="4000MB"></div>
+										</td>
+									</tr>
+									<tr>
+										<th>Current Disk Usage</th>
+										<td>
+											<div class="bar-chart color-red medium">
+												<div class="inner-bar">
+													<div class="bar" style="width: 83%"></div>
+												</div>
+												<div class="inner-text">1323 GB / 2000 GB</div>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th>Slot Utilization</th>
+										<td>
+											<div class="bar-chart medium">
+												<div class="inner-bar">
+													<div class="bar" style="width: 100%"></div>
+												</div>
+												<div class="inner-text">4 of 4</div>
+											</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					
+					<div class="server-status">
+						<div class="header">
+							<h2>Server 2</h2>
+							<span class="label success">healty</span>
+						</div>
+						<div class="content">
+							<table>
+								<tbody>
+									<tr>
+										<th>Current CPU Usage</th>
+										<td>
+											<div id="cpu-usage-server-2" class="color-green medium" data-simplebar="simplebar" data-simplebar-percentage="54" 
+											data-simplebar-text="54%"></div>
+										</td>
+									</tr>
+									<tr>
+										<th>Current Memory Usage</th>
+										<td>
+											<div id="memory-usage-server-2" class="color-blue medium" data-simplebar="simplebar" data-simplebar-percentage="75" 
+											data-simplebar-text="6000MB"></div>
+										</td>
+									</tr>
+									<tr>
+										<th>Current Disk Usage</th>
+										<td>
+											<div class="bar-chart color-red medium">
+												<div class="inner-bar">
+													<div class="bar" style="width: 83%"></div>
+												</div>
+												<div class="inner-text">1323 GB / 2000 GB</div>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th>Slot Utilization</th>
+										<td>
+											<div class="bar-chart medium">
+												<div class="inner-bar">
+													<div class="bar" style="width: 100%"></div>
+												</div>
+												<div class="inner-text">4 of 4</div>
+											</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					
+					
+				</div>
+				<div class="span5">
+					<table class="bordered-table zebra-striped" style="background: white;">
+						<tbody>
+							<tr>
+								<th>Currently Running Task</th>
+								<td>8</td>
+							</tr>
+							<tr>
+								<th>Pending Tasks</th>
+								<td>13</td>
+							</tr>
+							<tr>
+								<th>Current Longest Task</th>
+								<td>24 hour 55 minutes</td>
+							</tr>
+							<tr>
+								<th>Biggest Task</th>
+								<td>4.2 Gb</td>
+							</tr>
+							<tr>
+								<th>Task Slot Capacity</th>
+								<td>8</td>
+							</tr>
+							<tr>
+								<th>Modelling Server Available</th>
+								<td>2</td>
+							</tr>
+							<tr>
+								<th>Current Longest Uptime</th>
+								<td>57 days 23 hours 14 minutes</td>
+							</tr>
+							<tr>
+								<th>Current Shortest Uptime</th>
+								<td>2 days 14 hours 43 minutes</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div> 
+</div>
+

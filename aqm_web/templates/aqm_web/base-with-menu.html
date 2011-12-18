@@ -1,0 +1,107 @@
+<!DOCTYPE html> 
+{% load url from future %}
+<html> 
+<head> 
+	<link href="{{ STATIC_URL }}aqm_web/css/bootstrap.css" rel="stylesheet"> 
+	<link href="{{ STATIC_URL }}aqm_web/css/main.css" rel="stylesheet"> 
+	<link href="{{ STATIC_URL }}aqm_web/css/ui-darkness/jquery-ui-1.8.16.custom.css" rel="Stylesheet" /> 
+	<link href="{{ STATIC_URL }}aqm_web/css/jquery.ui.timepicker.css" rel="Stylesheet" /> 
+	
+	<script src="{{ STATIC_URL }}aqm_web/js/jquery-1.6.4.js"></script> 
+	<script src="{{ STATIC_URL }}aqm_web/js/jquery-ui-1.8.16.custom.min.js"></script> 
+	<script src="{{ STATIC_URL }}aqm_web/js/jquery.ui.timepicker.js"></script> 
+	
+	<script src="{{ STATIC_URL }}aqm_web/js/bootstrap-dropdown.js"></script> 
+	<script src="{{ STATIC_URL }}aqm_web/js/bootstrap-alerts.js"></script> 
+	<script src="{{ STATIC_URL }}aqm_web/js/bootstrap-twipsy.js"></script> 
+	<script src="{{ STATIC_URL }}aqm_web/js/bootstrap-modal.js"></script> 
+	
+	<script src="{{ STATIC_URL }}aqm_web/js/main.js"></script> 
+	
+    <meta charset="utf-8"> 
+    
+    <link rel="shortcut icon" href="images/favicon.ico"> 
+    {% block metadata %}
+	{% endblock %}
+</head> 
+
+<body> 
+	{% url 'index' as url_index %}
+	{% url 'wrf_new_task' as url_wrf_new_task %}
+	{% url 'wrf_task_list' as url_wrf_task_list %}
+	{% url 'wrf_task_group_list' as url_wrf_task_group_list %}
+	{% url 'wrf_chem_data_list' as url_wrf_chem_data_list %}
+	{% url 'wrf_meteo_data_list' as url_wrf_meteo_data_list %}
+	{% url 'wrf_model_setting_list' as url_wrf_model_setting_list %}
+	{% url 'django.contrib.auth.views.logout_then_login' as url_logout %}
+	{% url 'django.contrib.auth.views.password_change' as url_change_password %}
+	
+	<div class="topbar"> 
+      <div class="topbar-inner"> 
+	      <div class="container">
+	        <div class="container-fluid">  
+	          <a class="brand" href="{{ url_index }}">AQM Web Interface</a>  
+	          <ul class="nav"> 
+	            <li {% if url_index == request.path %}class="active"{% endif %}><a href="{{ url_index }}">Status</a></li> 
+	            <li class="dropdown {% if section == "wrf" %}active{% endif %}" data-dropdown="dropdown" > 
+	              <a href="#" class="dropdown-toggle">WRF/Chem</a> 
+	              <ul class="dropdown-menu"> 
+	                <li {% if url_wrf_new_task in request.path %}class="active"{% endif %}><a href="{{ url_wrf_new_task }}">New Task</a></li>
+	                <li {% if url_wrf_task_list in request.path %}class="active"{% endif %}><a href="{{ url_wrf_task_list }}">Task List</a></li>
+	                <li {% if url_wrf_task_group_list in request.path %}class="active"{% endif %}><a href="{{ url_wrf_task_group_list }}">Task Groups</a></li>
+	                <li class="divider"></li> 
+	                <li {% if url_wrf_chem_data_list in request.path %}class="active"{% endif %}><a href="{{ url_wrf_chem_data_list }}">Emission Data</a></li> 
+	                <li {% if url_wrf_meteo_data_list in request.path %}class="active"{% endif %}><a href="{{ url_wrf_meteo_data_list }}">Meteorological Data</a></li>
+	                <li class="divider"></li>
+	                <li {% if url_wrf_model_setting_list in request.path %}class="active"{% endif %}><a href="{{ url_wrf_model_setting_list }}">Model Settings</a></li>
+	              </ul> 
+	            </li> 
+	            <li class="dropdown" data-dropdown="dropdown" > 
+	              <a href="#"  class="dropdown-toggle">Aermod</a> 
+	              <ul class="dropdown-menu"> 
+	                <li><a href="#">New Task</a></li> 
+	                <li><a href="#">Task List</a></li> 
+	                <li class="divider"></li> 
+	                <li><a href="#">Model Settings</a></li> 
+	              </ul> 
+	            </li> 
+	            <li class="dropdown" data-dropdown="dropdown" > 
+	              <a href="#"  class="dropdown-toggle">Tasks</a> 
+	              <ul class="dropdown-menu"> 
+	                <li><a href="#">Running</a></li> 
+	                <li><a href="#">Finished</a></li> 
+	                <li><a href="#">Pending</a></li> 
+	                <li><a href="#">Error</a></li> 
+	              </ul> 
+	            </li> 
+	            <li><a href="#">Results</a></li>  
+	            <li><a href="/admin" target="_new">Administration</a></li>  
+	          </ul> 
+	          <ul class="nav secondary-nav"> 
+	            <li class="dropdown" data-dropdown="dropdown" > 
+	              <a href="#"  class="dropdown-toggle">{{ user }}</a> 
+	              <ul class="dropdown-menu"> 
+	                <li><a href="{{ url_change_password }}">Change Password</a></li> 
+	                <li class="divider"></li> 
+	                <li><a href="{{ url_logout }}">Log Out</a></li> 
+	              </ul> 
+	            </li> 
+	          </ul> 
+	          
+	        </div> 
+	  	</div>
+      </div> 
+    </div> 
+
+	<div class="container">
+		<div class="main-area">  
+			{% block all-elements %}
+			{% endblock %}
+		</div>
+		<footer> 
+		 	<p>Air Quality Models Web Interface</p>  
+		</footer> 
+	</div>
+
+</body> 
+</html> 

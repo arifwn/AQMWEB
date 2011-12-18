@@ -1,0 +1,43 @@
+{% extends "aqm_web/base.html" %}
+{% load url from future %}
+
+
+{% block metadata %}
+<title>Test</title>
+<script>
+$(document).ready(function () {
+	console.log('start');
+	
+	$('#do_btn').click(function(e) {
+		e.preventDefault();
+		console.log($(this).attr('href'));
+		
+		var name = 'popup';
+	    href = $(this).attr('href');
+	    if (href.indexOf('?') == -1) {
+	        href += '?_popup=1';
+	    } else {
+	        href  += '&_popup=1';
+	    }
+	    var win = window.open(href, name, 'height=500,width=800,resizable=yes,scrollbars=yes');
+	    win.focus();
+	});
+});
+</script>
+
+{% endblock %}
+
+{% block all-elements %}
+
+<div class="container">
+	<div class="row"><div class="span4 columns">&nbsp;</div>
+	<div class="span8 columns">
+		<div class="well">
+			<input id="target_field" type="text">
+			<a href="/testview_popup/" id="do_btn" class="btn primary">Do It!</a>
+		</div>
+	</div>
+	<div class="row"><div class="span4 columns">&nbsp;</div>
+</div>
+
+{% endblock %}
