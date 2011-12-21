@@ -79,7 +79,7 @@
 	          </ul> 
 	          <ul class="nav secondary-nav"> 
 	            <li class="dropdown" data-dropdown="dropdown" > 
-	              <a href="#"  class="dropdown-toggle">{{ user }}</a> 
+	              <a href="#"  class="dropdown-toggle">{% firstof user.get_full_name user %}</a> 
 	              <ul class="dropdown-menu"> 
 	                <li><a href="{{ url_change_password }}">Change Password</a></li> 
 	                <li class="divider"></li> 
