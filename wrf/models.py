@@ -38,7 +38,8 @@ class Setting(models.Model):
     setting_json = models.TextField(blank=True, null=True)
     setting_version = models.TextField(blank=True, null=True)
     generated_namelist = models.TextField(blank=True, null=True)
-    user_namelist = models.TextField(blank=True, null=True)
+    user_namelist_wrf = models.TextField(blank=True, null=True)
+    user_namelist_wps = models.TextField(blank=True, null=True)
     
     removed = models.BooleanField(default=False, db_index=True)
     
