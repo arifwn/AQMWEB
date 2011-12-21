@@ -74,9 +74,15 @@ def decode_namelist(input_file):
     parser.decode()
     return parser.parsed_data
 
+def decode_namelist_string(input_string):
+    parser = NamelistParser(string_data=input_string)
+    parser.decode()
+    return parser.parsed_data
+
 def test():
     path = '../media/test_data/namelist.input'
-    parsed_data = decode_namelist(path)
+    s = open(path).read()
+    parsed_data = decode_namelist_string(s)
     for key in parsed_data:
         print '-------- %s -------' % key
         for key2 in parsed_data[key]:

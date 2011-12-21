@@ -20,6 +20,9 @@ DATABASES = {
     }
 }
 
+SOUTH_TESTS_MIGRATE = False
+SKIP_SOUTH_TESTS = True
+
 LOGIN_REDIRECT_URL = '/'
 
 # Local time zone for this installation. Choices can be found here:

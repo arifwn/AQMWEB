@@ -1,14 +1,44 @@
+
 from django.db import models
 from django.contrib.auth.models import User
 from django.test import TestCase
+import json
+from wrf import __version__ as wrf_version
+from namelist import encode as n_enc
+from namelist import decode as n_dec
+
+
+class Domain(models.Model):
+    name = models.CharField(max_length=200, db_index=True)
+    user = models.ForeignKey(User, db_index=True)
+    
+    width = models.IntegerField()
+    height = models.IntegerField()
+    dx = models.FloatField(blank=True, null=True)
+    dy = models.FloatField(blank=True, null=True)
+    
+    parent = models.ForeignKey('self', related_name='childs', blank=True, 
+                               null=True)
+    ratio = models.IntegerField(blank=True, null=True)
+    i_parent_start = models.IntegerField(blank=True, null=True)
+    j_parent_start = models.IntegerField(blank=True, null=True)
+    
+    def __unicode__(self):
+        return self.name
+
+    class Meta:
+        verbose_name  = 'Domain'
+        verbose_name_plural  = 'Domain'
 
 
 class Setting(models.Model):
     name = models.CharField(max_length=200, db_index=True)
     user = models.ForeignKey(User, db_index=True)
     description = models.TextField()
-    setting_json = models.TextField()
-    setting_version = models.IntegerField()
+    setting_json = models.TextField(blank=True, null=True)
+    setting_version = models.TextField(blank=True, null=True)
+    generated_namelist = models.TextField(blank=True, null=True)
+    user_namelist = models.TextField(blank=True, null=True)
     
     removed = models.BooleanField(default=False, db_index=True)
     
@@ -18,6 +48,21 @@ class Setting(models.Model):
     class Meta:
         verbose_name  = 'Setting'
         verbose_name_plural  = 'Setting'
+    
+    def clean(self):
+        if self.setting_version is None:
+            self.setting_version = wrf_version
+        if self.setting_json is not None:
+            parsed_data = json.loads(self.setting_json)
+            self.generated_namelist = n_enc.encode_namelist(parsed_data)
+    
+    def load_namelist(self, namelist_data):
+        data = n_dec.decode_namelist_string(namelist_data)
+        json_data = json.dumps(data)
+        self.setting_json = json_data
+    
+    def get_setting(self):
+        data = json.loads(self.setting_json)
         
 
 class ChemData(models.Model):
@@ -29,7 +74,8 @@ class ChemData(models.Model):
         ('xlsx', 'Excel 2007 (*.xlsx)'),
         ('csv', 'Comma-Separated Value (*.csv)'),
     )
-    data_type = models.CharField(max_length=10, choices=DATA_TYPE_CHOICE, db_index=True)
+    data_type = models.CharField(max_length=10, choices=DATA_TYPE_CHOICE, 
+                                 db_index=True)
     removed = models.BooleanField(default=False, db_index=True)
     
     class Meta:
@@ -50,7 +96,8 @@ class AltMeteoData(models.Model):
         ('grib2', 'GRIB2'),
         ('grib1', 'GRIB1'),
     )
-    data_type = models.CharField(max_length=10, choices=DATA_TYPE_CHOICE, db_index=True)
+    data_type = models.CharField(max_length=10, choices=DATA_TYPE_CHOICE, 
+                                 db_index=True)
     removed = models.BooleanField(default=False, db_index=True)
     
     class Meta:
@@ -60,27 +107,6 @@ class AltMeteoData(models.Model):
     def __unicode__(self):
         return self.name
         
-
-class Domain(models.Model):
-    name = models.CharField(max_length=200, db_index=True)
-    user = models.ForeignKey(User, db_index=True)
-    
-    width = models.IntegerField()
-    height = models.IntegerField()
-    dx = models.FloatField(blank=True, null=True)
-    dy = models.FloatField(blank=True, null=True)
-    
-    parent = models.ForeignKey('self', related_name='childs', blank=True, null=True)
-    ratio = models.IntegerField(blank=True, null=True)
-    i_parent_start = models.IntegerField(blank=True, null=True)
-    j_parent_start = models.IntegerField(blank=True, null=True)
-    
-    def __unicode__(self):
-        return self.name
-
-    class Meta:
-        verbose_name  = 'Domain'
-        verbose_name_plural  = 'Domain'
 
 class Task(models.Model):
     name = models.CharField(max_length=200, db_index=True)
@@ -113,6 +139,7 @@ class Task(models.Model):
         verbose_name  = 'Task'
         verbose_name_plural  = 'Task'
 
+
 class TaskGroup(models.Model):
     name = models.CharField(max_length=200, db_index=True)
     description = models.TextField()
@@ -127,6 +154,7 @@ class TaskGroup(models.Model):
     class Meta:
         verbose_name  = 'TaskGroup'
         verbose_name_plural  = 'TaskGroup'
+
 
 class TaskQueue(models.Model):
     submitted_date = models.DateTimeField(auto_now_add=True, db_index=True)

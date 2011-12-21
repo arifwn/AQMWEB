@@ -43,12 +43,4 @@ def get_string(value):
         s_out = '%s' % value
     return s_out
 
-if __name__ == '__main__':
-    print '=== get_string ==='
-    print 1.0, get_string(1.0), get_value('1.')
-    print 1.234, get_string(1.234), get_value('1.234')
-    print 10000000.0, get_string(10000000.0), get_value('1e7')
-    print 1, get_string(1), get_value('1')
-    print True, get_string(True), get_value('.true.')
-    print False, get_string(False), get_value('.false.')
     
