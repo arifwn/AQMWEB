@@ -32,6 +32,7 @@ class Domain(models.Model):
 
 
 class Setting(models.Model):
+    '''setting model'''
     name = models.CharField(max_length=200, db_index=True)
     user = models.ForeignKey(User, db_index=True)
     description = models.TextField()
