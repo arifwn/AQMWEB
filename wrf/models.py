@@ -65,7 +65,13 @@ class Setting(models.Model):
     
     def get_setting(self):
         data = json.loads(self.setting_json)
-        
+    
+class BaseSetting(models.Model):
+    name = models.CharField(max_length=200, db_index=True)
+    user = models.ForeignKey(User, db_index=True)
+    description = models.TextField()
+    namelist_wrf = models.TextField()
+    namelist_wps = models.TextField()
 
 class ChemData(models.Model):
     name = models.CharField(max_length=200, db_index=True)
