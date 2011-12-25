@@ -72,6 +72,7 @@ class BaseSetting(models.Model):
     description = models.TextField()
     namelist_wrf = models.TextField()
     namelist_wps = models.TextField()
+    removed = models.BooleanField(default=False, db_index=True)
 
 class ChemData(models.Model):
     name = models.CharField(max_length=200, db_index=True)

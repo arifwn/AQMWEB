@@ -3,7 +3,7 @@ Created on Dec 14, 2011
 
 @author: arif
 '''
-from wrf.models import ChemData, AltMeteoData, Domain, Task, Setting, TaskGroup
+from wrf.models import ChemData, AltMeteoData, Domain, Task, Setting, BaseSetting, TaskGroup
 from django.contrib import admin
 from django.contrib.auth.models import User
 from django.db import models
@@ -18,6 +18,16 @@ class SettingAdmin(admin.ModelAdmin):
         return form
         
 admin.site.register(Setting, SettingAdmin)
+
+class BaseSettingAdmin(admin.ModelAdmin):
+    list_display = ['name', 'user', 'removed']
+    
+    def get_form(self, request, obj=None, **kwargs):
+        form = super(BaseSettingAdmin, self).get_form(request, obj, **kwargs)
+        form.base_fields['user'].initial = request.user
+        return form
+        
+admin.site.register(BaseSetting, BaseSettingAdmin)
 
 class ChemDataAdmin(admin.ModelAdmin):
     list_display = ['name', 'user', 'data_type', 'removed']
