@@ -140,7 +140,7 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
     'aqm_web',
     'wrf',
-    'south',
+#    'south',
     'debug_toolbar',
     'concurrent_server',
 )
