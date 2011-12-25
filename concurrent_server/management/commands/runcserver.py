@@ -8,7 +8,7 @@ class Command(BaseCommand):
     option_list = BaseCommand.option_list + (
         make_option('--noreload', action='store_false', dest='use_reloader', default=True,
             help='Tells Django to NOT use the auto-reloader.'),
-        make_option('--adminmedia', dest='admin_media_path', default='',
+        make_option('--adminmedia', dest='admin_media_path', default='./grappelli/static/grappelli/',
             help='Specifies the directory from which to serve admin media.'),
     )
     help = "Starts a lightweight concurrent development web server."

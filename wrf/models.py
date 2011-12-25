@@ -42,6 +42,7 @@ class Setting(models.Model):
     user_namelist_wrf = models.TextField(blank=True, null=True)
     user_namelist_wps = models.TextField(blank=True, null=True)
     
+    base_setting = models.ForeignKey('BaseSetting');
     removed = models.BooleanField(default=False, db_index=True)
     
     def __unicode__(self):

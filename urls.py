@@ -12,15 +12,17 @@ urlpatterns = patterns('',
     # url(r'^$', 'AQMWebInterface.views.home', name='home'),
     # url(r'^AQMWebInterface/', include('AQMWebInterface.foo.urls')),
     
-    # the main web interface
-    url(r'^', include('aqm_web.urls')),
+    url(r'^grappelli/', include('grappelli.urls')),
     
     # Uncomment the admin/doc line below to enable admin documentation:
-    # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
-
+#     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
+    
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
+    # the main web interface
+    url(r'^', include('aqm_web.urls')),
 )
 
 urlpatterns += staticfiles_urlpatterns()
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    
