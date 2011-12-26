@@ -142,6 +142,8 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
     'aqm_web',
     'wrf',
+    'tinymce',
+    'filebrowser',
 #    'south',
     'debug_toolbar',
     'concurrent_server',
@@ -151,6 +153,11 @@ INTERNAL_IPS = ('127.0.0.1',)
 DEBUG_TOOLBAR_CONFIG = {
                         'INTERCEPT_REDIRECTS': False,
                         }
+
+TINYMCE_JS_URL = (STATIC_URL + 'tiny_mce/tiny_mce.js')
+TINYMCE_JS_ROOT =  (STATIC_ROOT + 'tiny_mce')
+
+FILEBROWSER_DIRECTORY = ''
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to

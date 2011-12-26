@@ -28,7 +28,7 @@ class Domain(models.Model):
 
     class Meta:
         verbose_name  = 'Domain'
-        verbose_name_plural  = 'Domain'
+        verbose_name_plural  = 'Domains'
 
 
 class Setting(models.Model):
@@ -50,7 +50,7 @@ class Setting(models.Model):
     
     class Meta:
         verbose_name  = 'Setting'
-        verbose_name_plural  = 'Setting'
+        verbose_name_plural  = 'Settings'
     
     def clean(self):
         if self.setting_version is None:
@@ -74,6 +74,14 @@ class BaseSetting(models.Model):
     namelist_wrf = models.TextField()
     namelist_wps = models.TextField()
     removed = models.BooleanField(default=False, db_index=True)
+    default = models.BooleanField(default=False, db_index=True)
+    
+    class Meta:
+        verbose_name  = 'BaseSetting'
+        verbose_name_plural  = 'BaseSettings'
+        
+    def __unicode__(self):
+        return self.name
 
 class ChemData(models.Model):
     name = models.CharField(max_length=200, db_index=True)
@@ -147,7 +155,7 @@ class Task(models.Model):
     
     class Meta:
         verbose_name  = 'Task'
-        verbose_name_plural  = 'Task'
+        verbose_name_plural  = 'Tasks'
 
 
 class TaskGroup(models.Model):
@@ -163,7 +171,7 @@ class TaskGroup(models.Model):
     
     class Meta:
         verbose_name  = 'TaskGroup'
-        verbose_name_plural  = 'TaskGroup'
+        verbose_name_plural  = 'TaskGroups'
 
 
 class TaskQueue(models.Model):
@@ -176,7 +184,7 @@ class TaskQueue(models.Model):
     
     class Meta:
         verbose_name  = 'TaskQueue'
-        verbose_name_plural  = 'TaskQueue'
+        verbose_name_plural  = 'TaskQueues'
         
     # if the task is not finished and not running, task consumer can process 
     # this task and set is_running to True. When finished, set is_running to
