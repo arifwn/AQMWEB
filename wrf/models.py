@@ -36,11 +36,11 @@ class Setting(models.Model):
     name = models.CharField(max_length=200, db_index=True)
     user = models.ForeignKey(User, db_index=True)
     description = models.TextField()
-    setting_json = models.TextField(blank=True, null=True)
-    setting_version = models.TextField(blank=True, null=True)
-    generated_namelist = models.TextField(blank=True, null=True)
-    user_namelist_wrf = models.TextField(blank=True, null=True)
-    user_namelist_wps = models.TextField(blank=True, null=True)
+    setting_json = models.TextField(blank=True)
+    setting_version = models.TextField(blank=True)
+    generated_namelist = models.TextField(blank=True)
+    user_namelist_wrf = models.TextField(blank=True)
+    user_namelist_wps = models.TextField(blank=True)
     
     base_setting = models.ForeignKey('BaseSetting');
     removed = models.BooleanField(default=False, db_index=True)
@@ -83,17 +83,47 @@ class BaseSetting(models.Model):
     def __unicode__(self):
         return self.name
 
+class PollutantParam(models.Model):
+    PLT_TYPE = [('E_ALD', 'ALT'), ('E_CO', 'CO'), 
+                ('E_CSL', 'CSL'), ('E_ECI', 'ECI'), 
+                ('E_ECJ', 'ECJ)'), ('E_ETH', 'ETH'), 
+                ('E_HC3', 'HC3'), ('E_HC5', 'HC5'), 
+                ('E_HC8', 'HC8'), ('E_HCHO', 'HCO'), 
+                ('E_ISO', 'ISO'), ('E_KET', 'KET'), 
+                ('E_NH3', 'NH3'), ('E_NO', 'NO'), 
+                ('E_NO3I', 'NO3I'), ('E_NO3J', 'NO3J'), 
+                ('E_OL2', 'OL2'), ('E_OLI', 'OLI'), 
+                ('E_OLT', 'OLT'), ('E_ORA2', 'ORA2'), 
+                ('E_ORGI', 'ORGI'), ('E_ORGJ', 'ORGJ'), 
+                ('E_PM25I', 'PM25I'), ('E_PM25J', 'PM25J'), 
+                ('E_PM_10', 'PM_10'), ('E_SO2', 'SO2'), 
+                ('E_SO4I', 'SO4I'), ('E_SO4J', 'SO4J'), 
+                ('E_TOL', 'TOL'), ('E_XYL', 'XYL')]
+    
+    pollutant = models.CharField(max_length=20, choices=PLT_TYPE)
+    x = models.CharField(max_length=50)
+    y = models.CharField(max_length=50)
+    lat = models.CharField(max_length=50)
+    lon = models.CharField(max_length=50)
+    value = models.CharField(max_length=50)
+    conversion_factor = models.FloatField(default=1.0)
+    worksheet = models.IntegerField(default=0)
+    
+    class Meta:
+        verbose_name  = 'PollutantParam'
+        verbose_name_plural  = 'PollutantParams'
+    
+    def __unicode__(self):
+        return self.pollutant
+       
+    
 class ChemData(models.Model):
     name = models.CharField(max_length=200, db_index=True)
     description = models.TextField()
     user = models.ForeignKey(User, db_index=True)
     data = models.FileField(upload_to='wrf/chem_data/%Y/%m/', max_length=200)
-    DATA_TYPE_CHOICE = (
-        ('xlsx', 'Excel 2007 (*.xlsx)'),
-        ('csv', 'Comma-Separated Value (*.csv)'),
-    )
-    data_type = models.CharField(max_length=10, choices=DATA_TYPE_CHOICE, 
-                                 db_index=True)
+    worksheets = models.TextField(blank=True)
+    parameters = models.ManyToManyField(PollutantParam)
     removed = models.BooleanField(default=False, db_index=True)
     
     class Meta:
@@ -102,7 +132,7 @@ class ChemData(models.Model):
     
     def __unicode__(self):
         return self.name
-        
+       
 
 class AltMeteoData(models.Model):
     name = models.CharField(max_length=200, db_index=True)
