@@ -1,12 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
-from filebrowser.fields import FileBrowseField
 
 
 class Profile(models.Model):
     user = models.OneToOneField(User)
-    picture = FileBrowseField(max_length=300, blank=True)
     
     # -- OAuth 1.0 services --
     # Twitter: https://dev.twitter.com/docs/auth/implementing-sign-twitter
