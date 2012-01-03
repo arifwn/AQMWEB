@@ -8,7 +8,7 @@ class Profile(models.Model):
     user = models.OneToOneField(User)
     picture = FileBrowseField(max_length=300, blank=True)
     
-    # -- OAUTH 1.0 services --
+    # -- OAuth 1.0 services --
     # Twitter: https://dev.twitter.com/docs/auth/implementing-sign-twitter
     twitter_oauth_token = models.TextField(blank=True)
     twitter_oauth_secret = models.TextField(blank=True)
@@ -21,7 +21,7 @@ class Profile(models.Model):
     yahoo_oauth_token = models.TextField(blank=True)
     yahoo_oauth_secret = models.TextField(blank=True)
     
-    # -- OAUTH 2.0 services --
+    # -- OAuth 2.0 services --
     # Facebook: https://developers.facebook.com/docs/authentication/
     facebook_access_token = models.TextField(blank=True)
     
