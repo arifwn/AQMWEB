@@ -1,10 +1,11 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models.signals import post_save
 from filebrowser.fields import FileBrowseField
 
 
-class UserProfile(models.Model):
-    user = models.ForeignKey(User)
+class Profile(models.Model):
+    user = models.OneToOneField(User)
     picture = FileBrowseField(max_length=300, blank=True)
     
     # -- OAUTH 1.0 services --
@@ -26,4 +27,10 @@ class UserProfile(models.Model):
     
     # Google: http://code.google.com/apis/accounts/docs/OAuth2WebServer.html
     google_access_token = models.TextField(blank=True)
-    
+
+
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
+
+post_save.connect(create_user_profile, sender=User)
