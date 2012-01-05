@@ -135,14 +135,14 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.flatpages',
     'django.contrib.webdesign',
+    'aqm_web',
+    'user_profile',
+    'wrf',
     'grappelli',
     # Uncomment the next line to enable the admin:
      'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
-    'aqm_web',
-    'user_profile',
-    'wrf',
     'tinymce',
     'filebrowser',
 #    'south',

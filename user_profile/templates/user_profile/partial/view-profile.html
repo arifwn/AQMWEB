@@ -7,10 +7,10 @@
       <div class="profile-area">
         <ul>
           <li>
-            <span class="field-label">Name</span> {{ target_user.get_full_name }}
+            <span class="field-label">Name</span> {% firstof target_user.get_full_name target_user.username %}
           </li>
           <li>
-            <span class="field-label">Email</span> {{ target_user.email }}
+            <span class="field-label">Email</span> {% firstof target_user.email '-' %}
           </li>
         </ul>
         {% if target_user == user %}
