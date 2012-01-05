@@ -1,2 +1,38 @@
-<h1>Cool Story Bro!</h1>
-<h2>{{ target_profile.username }}</h2>
+{% load url from future %}
+{% load fb_versions %}
+<div class="row">
+  <div class="span16">
+    <h1>User Profile</h1>
+    <div class="user-profile">
+      <div class="profile-area">
+        <ul>
+          <li>
+            <span class="field-label">Name</span> {{ target_user.get_full_name }}
+          </li>
+          <li>
+            <span class="field-label">Email</span> {{ target_user.email }}
+          </li>
+        </ul>
+        {% if target_user == user %}
+        <div>
+          <a href="{% url 'edit-profile' %}">Change...</a>
+        </div>
+        {% endif %}
+      </div>
+      <div class="meta">
+        <div class="avatar">
+          {% if target_profile.avatar %}
+          {% version_object target_profile.avatar 't128x128' as im %}
+          {% else %}
+          {% version_object 'image/profile/anon.png' 't128x128' as im %}
+          {% endif %} <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" />
+          {% if target_user == user %}
+          <div>
+            <a href="{% url 'edit-avatar' %}">Change...</a>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

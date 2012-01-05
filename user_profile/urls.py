@@ -8,6 +8,8 @@ from django.conf.urls.defaults import *
 
 urlpatterns = patterns('',
     url(r'^profile/([-\w]+)$', 'user_profile.views.view_profile', name='view-profile'),
+    url(r'^edit/avatar$', 'user_profile.views.edit_avatar', name='edit-avatar'),
+    url(r'^edit/profile$', 'user_profile.views.edit_profile', name='edit-profile'),
     
     # handle user login
     url(r'^login/$', 'django.contrib.auth.views.login'),

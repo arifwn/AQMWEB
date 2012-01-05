@@ -9,10 +9,30 @@ from django.http import HttpResponse
 def view_profile(request, username):
     try:
         user = User.objects.get(username=username)
+        profile = user.get_profile()
     except:
         raise Http404
     
     t = get_template('user_profile/view-profile.html')
-    html = t.render(RequestContext(request, {'section': 'profile'}))
+    html = t.render(RequestContext(request, {'section': 'profile',
+                                             'target_user': user,
+                                             'target_profile': profile}))
     return HttpResponse(html)
+
+@login_required
+def edit_avatar(request):
+    profile = request.user.get_profile()
     
+    t = get_template('user_profile/edit-avatar.html')
+    html = t.render(RequestContext(request, {'section': 'profile',
+                                             'profile': profile}))
+    return HttpResponse(html)
+
+@login_required
+def edit_profile(request):
+    profile = request.user.get_profile()
+    
+    t = get_template('user_profile/edit-profile.html')
+    html = t.render(RequestContext(request, {'section': 'profile',
+                                             'profile': profile}))
+    return HttpResponse(html)

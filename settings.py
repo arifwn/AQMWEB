@@ -141,6 +141,7 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     'aqm_web',
+    'user_profile',
     'wrf',
     'tinymce',
     'filebrowser',
@@ -154,6 +155,8 @@ DEBUG_TOOLBAR_CONFIG = {
                         'INTERCEPT_REDIRECTS': False,
                         }
 
+AUTH_PROFILE_MODULE = 'user_profile.Profile'
+
 TINYMCE_JS_URL = (STATIC_URL + 'tiny_mce/tiny_mce.js')
 TINYMCE_JS_ROOT =  (STATIC_ROOT + 'tiny_mce')
 
@@ -165,18 +168,11 @@ FILEBROWSER_VERSIONS = {
     'medium': {'verbose_name': 'Medium (4col )', 'width': 300, 'height': '', 'opts': ''},
     'big': {'verbose_name': 'Big (6 col)', 'width': 460, 'height': '', 'opts': ''},
     'large': {'verbose_name': 'Large (8 col)', 'width': 680, 'height': '', 'opts': ''},
-    't160x100': {'verbose_name': 'Frontpage Thumbnail (160x100)', 'width': 160, 'height': 100, 'opts': 'crop'},
-    't280x175': {'verbose_name': 'Frontpage Big Thumbnail (280x175)', 'width': 280, 'height': 175, 'opts': 'crop'},
-    't252x158': {'verbose_name': 'Frontpage Half Panel Thumbnail (252x158)', 'width': 252, 'height': 158, 'opts': 'crop'},
-    't300x300': {'verbose_name': 'Sidebar Carousel (300x300)', 'width': 300, 'height': 300, 'opts': 'crop'},
-    't300x250': {'verbose_name': 'Medium Rectangle (300x250)', 'width': 300, 'height': 250, 'opts': 'crop'},
-    't310x194': {'verbose_name': 'Half Panel (310x194)', 'width': 310, 'height': 194, 'opts': 'crop'},
-    't432x270': {'verbose_name': 'Main Carousel (432x270)', 'width': 432, 'height': 270, 'opts': 'crop'},
-    't640x400': {'verbose_name': 'Article Image (640x400)', 'width': 640, 'height': 400, 'opts': 'crop'},
-    'p640': {'verbose_name': 'Article Image Proportional (w:640)', 'width': 640, 'height': '', 'opts': ''},
+    't128x128': {'verbose_name': '(128x128)', 'width': 128, 'height': 128, 'opts': 'crop'},
+    't32x32': {'verbose_name': '(t32x32)', 'width': 32, 'height': 32, 'opts': 'crop'},
 }
 
-FILEBROWSER_ADMIN_VERSIONS = ['thumbnail', 't160x100', 't280x175', 't252x158', 't300x300', 't310x194', 't432x270', 't640x400', 'p640']
+FILEBROWSER_ADMIN_VERSIONS = ['thumbnail', 't128x128', 't32x32']
 
 
 # A sample logging configuration. The only tangible logging

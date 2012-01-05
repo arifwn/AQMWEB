@@ -19,6 +19,31 @@ body {
 	border-radius: 4px;
 }
 
+.topbar div > ul a.profile, .nav a.profile {
+	position: relative;
+	padding-left: 40px;
+}
+
+.topbar div > ul img.avatar, .nav img.avatar {
+	position: absolute;
+	top: 4px;
+	left: 4px;
+	width: 32px;
+	height: 32px;
+	margin: 0;
+	padding: 0;
+	background-color: white;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	-o-border-radius: 3px;
+	border-radius: 3px;
+	-moz-box-shadow: 0 0 2px RGBA(0, 0, 0, 0.6);
+	-webkit-box-shadow: 0 0 2px RGBA(0, 0, 0, 0.6);
+	-o-box-shadow: 0 0 2px RGBA(0, 0, 0, 0.6);
+	box-shadow: 0 0 2px RGBA(0, 0, 0, 0.6);
+}
+
+
 /* --- Extend Bootstrap CSS --- */
 
 .inline .input-prepend {
@@ -488,3 +513,50 @@ body {
 .bar-chart.color-red .bar {
 	background-color: #C43C35;
 }
+
+/* ----------- Status ----------- */
+
+.user-profile {
+	position: relative;
+	min-height: 150px;
+}
+
+.user-profile .profile-area {
+	padding-left: 150px;
+}
+
+.user-profile .profile-area ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.user-profile .profile-area ul > li {
+	margin: 0;
+	padding: 0;
+	
+}
+
+.user-profile .field-label {
+	font-weight: bold;
+}
+
+.user-profile .meta {
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+.user-profile .meta .avatar img {
+	margin: 0;
+	padding: 0;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	-o-border-radius: 3px;
+	border-radius: 3px;
+	-moz-box-shadow: 0 0 2px RGBA(0, 0, 0, 0.6);
+	-webkit-box-shadow: 0 0 2px RGBA(0, 0, 0, 0.6);
+	-o-box-shadow: 0 0 2px RGBA(0, 0, 0, 0.6);
+	box-shadow: 0 0 2px RGBA(0, 0, 0, 0.6);
+}
+
