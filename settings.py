@@ -148,6 +148,7 @@ INSTALLED_APPS = (
 #    'south',
     'debug_toolbar',
     'concurrent_server',
+    'django_extensions'
 )
 
 INTERNAL_IPS = ('127.0.0.1',)
