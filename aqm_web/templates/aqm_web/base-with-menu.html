@@ -77,8 +77,10 @@
 	                <li><a href="#">Error</a></li> 
 	              </ul> 
 	            </li> 
-	            <li><a href="#">Results</a></li>  
-	            <li><a href="/admin" target="_new">Administration</a></li>  
+	            <li><a href="#">Results</a></li> 
+	            {% if user.is_staff %} 
+	            <li><a href="/admin" target="_new">Administration</a></li> 
+	            {% endif %}
 	          </ul> 
 	          <ul class="nav secondary-nav"> 
 	            <li class="dropdown" data-dropdown="dropdown" > 

@@ -5,7 +5,9 @@ from django.db.models.signals import post_save
 class Profile(models.Model):
     user = models.OneToOneField(User)
     avatar = models.ImageField(upload_to='image/profile/', blank=True)
-
+    
+    def __unicode__(self):
+        return self.user.username
 
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
