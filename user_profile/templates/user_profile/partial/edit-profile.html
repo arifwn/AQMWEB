@@ -3,6 +3,31 @@
 <div class="row">
   <div class="span16">
     <h1>Edit Profile</h1>
-      
+    <form action="" method="post">
+      {% csrf_token %}
+      <fieldset>
+        <div class="clearfix {% if form.first_name.errors %} error {% endif %}">
+          <label for="id_first_name">First Name:</label>
+          <div class="input">
+            {{ form.first_name }} <span class="help-block">{{ form.first_name.errors }}</span>
+          </div>
+        </div>
+        <div class="clearfix {% if form.last_name.errors %} error {% endif %}">
+          <label for="id_last_name">Last Name:</label>
+          <div class="input">
+            {{ form.last_name }} <span class="help-block">{{ form.last_name.errors }}</span>
+          </div>
+        </div>
+        <div class="clearfix {% if form.email.errors %} error {% endif %}">
+          <label for="id_email">Email:</label>
+          <div class="input">
+            {{ form.email }} <span class="help-block">{{ form.email.errors }}</span>
+          </div>
+        </div>
+      </fieldset>
+      <div class="actions">
+        <input type="submit" value="Update Profile" class="btn primary" />
+      </div>
+    </form>
   </div>
 </div>

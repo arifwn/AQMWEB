@@ -174,6 +174,11 @@ FILEBROWSER_VERSIONS = {
 
 FILEBROWSER_ADMIN_VERSIONS = ['thumbnail', 't128x128', 't32x32']
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache'
+    }
+}
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
