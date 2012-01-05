@@ -31,12 +31,6 @@ urlpatterns = patterns('',
     
     url(r'^web_api/get_namelist.([-\w]+)$', 'aqm_web.views.web_api.get_namelist', name='api_get_namelist'),
     
-    # handle user login
-    url(r'^accounts/login/$', 'django.contrib.auth.views.login'),
-    url(r'^accounts/logout/$', 'django.contrib.auth.views.logout_then_login'),
-    url(r'^accounts/change_password/$', 'django.contrib.auth.views.password_change'),
-    url(r'^accounts/change_password_done/$', 'django.contrib.auth.views.password_change_done'),
-    
     #for testing purpose
     (r'^plotview/$', 'aqm_web.views.generic.plotview'),
 )

@@ -2,6 +2,7 @@
 {% load url from future %}
 <html> 
 <head> 
+	<meta charset="utf-8"> 
 	<link href="{{ STATIC_URL }}aqm_web/css/bootstrap.css" rel="stylesheet"> 
 	<link href="{{ STATIC_URL }}aqm_web/css/main.css" rel="stylesheet"> 
 	<link href="{{ STATIC_URL }}aqm_web/css/ui-darkness/jquery-ui-1.8.16.custom.css" rel="Stylesheet" /> 
@@ -17,9 +18,9 @@
 	<script src="{{ STATIC_URL }}aqm_web/js/bootstrap-modal.js"></script> 
 	
 	<script src="{{ STATIC_URL }}aqm_web/js/main.js"></script> 
-	
-    <meta charset="utf-8"> 
-    
+	<script src="{{ STATIC_URL }}aqm_web/js/simplebar.js"></script> 
+	<script src="{{ STATIC_URL }}aqm_web/js/spinner.js"></script>
+		
     <link rel="shortcut icon" href="images/favicon.ico"> 
     {% block metadata %}
 	{% endblock %}
@@ -35,6 +36,7 @@
 	{% url 'wrf_model_setting_list' as url_wrf_model_setting_list %}
 	{% url 'django.contrib.auth.views.logout_then_login' as url_logout %}
 	{% url 'django.contrib.auth.views.password_change' as url_change_password %}
+	{% url 'view-profile' user.username as url_view_profile %}
 	
 	<div class="topbar"> 
       <div class="topbar-inner"> 
@@ -81,6 +83,7 @@
 	            <li class="dropdown" data-dropdown="dropdown" > 
 	              <a href="#"  class="dropdown-toggle">{% firstof user.get_full_name user %}</a> 
 	              <ul class="dropdown-menu"> 
+	                <li><a href="{{ url_view_profile }}">Profile</a></li>
 	                <li><a href="{{ url_change_password }}">Change Password</a></li> 
 	                <li class="divider"></li> 
 	                <li><a href="{{ url_logout }}">Log Out</a></li> 

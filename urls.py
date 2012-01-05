@@ -24,6 +24,7 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     # the main web interface
     url(r'^', include('aqm_web.urls')),
+    url(r'^accounts/', include('view_profile.urls')),
 )
 
 urlpatterns += staticfiles_urlpatterns()
