@@ -89,7 +89,7 @@
                 {% else %}
                   {% version_object 'image/profile/anon.png' 't32x32' as im %}
                 {% endif %}
-	              <a href="#" class="dropdown-toggle profile"><img class="avatar" src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" /> {% firstof user.get_full_name user.username %}</a> 
+	              <a href="#" class="dropdown-toggle profile"><img class="avatar" src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" /></a> 
 	              <ul class="dropdown-menu"> 
 	                <li><a href="{{ url_view_profile }}">Profile</a></li>
 	                <li><a href="{{ url_change_password }}">Change Password</a></li> 

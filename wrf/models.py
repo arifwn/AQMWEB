@@ -2,6 +2,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.test import TestCase
+from django.db.models.signals import pre_save
 import json
 from wrf import __version__ as wrf_version
 from namelist import encode as n_enc
@@ -220,3 +221,11 @@ class TaskQueue(models.Model):
     # this task and set is_running to True. When finished, set is_running to
     # false and is_finished to True
 
+# Prepopulate ChemData's worksheet textfield with dict of worksheets
+# contained within the selected file
+
+
+def preprocess_excel_chemdata(sender, instance, using, **kwargs):
+    pass
+
+pre_save.connect(preprocess_excel_chemdata, sender=ChemData)
