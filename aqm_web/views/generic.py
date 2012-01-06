@@ -6,6 +6,10 @@ from django.http import HttpResponse
 import os
 import django.views.static
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 def debug_static(request, path):
     parent = os.path.abspath(os.path.dirname(__file__))
     root = os.path.join(parent, 'static', 'aqm_web')

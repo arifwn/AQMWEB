@@ -6,14 +6,16 @@ Created on Jan 6, 2012
 from openpyxl.reader.excel import load_workbook
 import logging
 
+logger = logging.getLogger(__name__)
+
 def get_excel_worksheets(path):
     '''return a dict containing excel sheet name as list'''
-    logging.debug('Opening %s' % path)
+    logger.debug('Opening %s' % path)
     try:
         workbook = load_workbook(path)
         workbook_ok = True
     except Exception as ex:
-        logging.exception(ex)
+        logger.exception(ex)
         workbook_ok = False
     
     if workbook_ok:
