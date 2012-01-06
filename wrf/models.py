@@ -2,11 +2,12 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.test import TestCase
-from django.db.models.signals import pre_save
+from django.db.models.signals import pre_save, post_save
 import json
 from wrf import __version__ as wrf_version
 from namelist import encode as n_enc
 from namelist import decode as n_dec
+from aqm_utils.datafile import get_excel_worksheets
 
 
 class Domain(models.Model):
@@ -221,11 +222,19 @@ class TaskQueue(models.Model):
     # this task and set is_running to True. When finished, set is_running to
     # false and is_finished to True
 
+
 # Prepopulate ChemData's worksheet textfield with dict of worksheets
 # contained within the selected file
 
-
-def preprocess_excel_chemdata(sender, instance, using, **kwargs):
-    pass
-
-pre_save.connect(preprocess_excel_chemdata, sender=ChemData)
+def postsave_process_excel_chemdata(sender, instance, created, **kwargs):
+    '''HACK: currently newly uploaded excel file is processed twice,
+    perhaps we can use cache to prevent double processing?'''
+    path = instance.data.path
+    worksheets = get_excel_worksheets(path)
+    if worksheets is not None:
+        json_dmp = json.dumps(worksheets)
+        if json_dmp != instance.worksheets:
+            instance.worksheets = json_dmp
+            instance.save()
+            
+post_save.connect(postsave_process_excel_chemdata, sender=ChemData)
