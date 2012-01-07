@@ -125,7 +125,7 @@ class ChemData(models.Model):
     user = models.ForeignKey(User, db_index=True)
     data = models.FileField(upload_to='wrf/chem_data/%Y/%m/', max_length=200)
     worksheets = models.TextField(blank=True)
-    parameters = models.ManyToManyField(PollutantParam)
+    parameters = models.ManyToManyField(PollutantParam, blank=True, null=True)
     removed = models.BooleanField(default=False, db_index=True)
     
     class Meta:

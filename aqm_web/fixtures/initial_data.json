@@ -4,15 +4,15 @@
         "model": "auth.user",
         "fields": {
             "username": "arif",
-            "first_name": "Arif",
+            "first_name": "Arif Widi",
             "last_name": "Nugroho",
             "is_active": true,
             "is_superuser": true,
             "is_staff": true,
-            "last_login": "2011-12-14 22:02:34",
+            "last_login": "2012-01-06 01:58:01",
             "groups": [],
             "user_permissions": [],
-            "password": "sha1$9fb3a$42a5f5588bd1003383af8d516b588eca4ffd24b2",
+            "password": "sha1$b335d$27f2ed3f8f661a0deb68d8c476ab8c32cba5a3ad",
             "email": "arif@sainsmograf.com",
             "date_joined": "2011-12-14 22:01:12"
         }
@@ -23,6 +23,14 @@
         "fields": {
             "domain": "localhost:8000",
             "name": "localhost"
+        }
+    },
+    {
+        "pk": 1,
+        "model": "user_profile.profile",
+        "fields": {
+            "user": 1,
+            "avatar": "image/profile/arif_pic.jpg"
         }
     }
 ]
