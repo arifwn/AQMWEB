@@ -6,10 +6,8 @@
 	<meta charset="utf-8"> 
 	<link href="{{ STATIC_URL }}aqm_web/css/bootstrap.css" rel="stylesheet"> 
 	<link href="{{ STATIC_URL }}aqm_web/css/main.css" rel="stylesheet"> 
-	<link href="{{ STATIC_URL }}aqm_web/css/ui-darkness/jquery-ui-1.8.16.custom.css" rel="Stylesheet" /> 
-	<link href="{{ STATIC_URL }}aqm_web/css/jquery.ui.timepicker.css" rel="Stylesheet" /> 
 	
-	<script src="{{ STATIC_URL }}aqm_web/js/jquery-1.6.4.js"></script> 
+	<script src="{{ STATIC_URL }}aqm_web/js/jquery-1.7.1.min.js"></script> 
 	<script src="{{ STATIC_URL }}aqm_web/js/jquery-ui-1.8.16.custom.min.js"></script> 
 	<script src="{{ STATIC_URL }}aqm_web/js/jquery.ui.timepicker.js"></script> 
 	
@@ -30,11 +28,11 @@
 <body> 
 	{% url 'index' as url_index %}
 	{% url 'wrf_new_task' as url_wrf_new_task %}
-	{% url 'wrf_task_list' as url_wrf_task_list %}
-	{% url 'wrf_task_group_list' as url_wrf_task_group_list %}
-	{% url 'wrf_chem_data_list' as url_wrf_chem_data_list %}
-	{% url 'wrf_meteo_data_list' as url_wrf_meteo_data_list %}
-	{% url 'wrf_model_setting_list' as url_wrf_model_setting_list %}
+	{% url 'wrf_list_task' as url_wrf_list_task %}
+	{% url 'wrf_list_task_group' as url_wrf_list_task_group %}
+	{% url 'wrf_list_chem_data' as url_wrf_list_chem_data %}
+	{% url 'wrf_list_meteo_data' as url_wrf_list_meteo_data %}
+	{% url 'wrf_list_model_setting' as url_wrf_list_model_setting %}
 	{% url 'django.contrib.auth.views.logout_then_login' as url_logout %}
 	{% url 'django.contrib.auth.views.password_change' as url_change_password %}
 	{% url 'view-profile' user.username as url_view_profile %}
@@ -50,13 +48,13 @@
 	              <a href="#" class="dropdown-toggle">WRF/Chem</a> 
 	              <ul class="dropdown-menu"> 
 	                <li {% if url_wrf_new_task in request.path %}class="active"{% endif %}><a href="{{ url_wrf_new_task }}">New Task</a></li>
-	                <li {% if url_wrf_task_list in request.path %}class="active"{% endif %}><a href="{{ url_wrf_task_list }}">Task List</a></li>
-	                <li {% if url_wrf_task_group_list in request.path %}class="active"{% endif %}><a href="{{ url_wrf_task_group_list }}">Task Groups</a></li>
+	                <li {% if url_wrf_list_task in request.path %}class="active"{% endif %}><a href="{{ url_wrf_list_task }}">Task List</a></li>
+	                <li {% if url_wrf_list_task_group in request.path %}class="active"{% endif %}><a href="{{ url_wrf_list_task_group }}">Task Groups</a></li>
 	                <li class="divider"></li> 
-	                <li {% if url_wrf_chem_data_list in request.path %}class="active"{% endif %}><a href="{{ url_wrf_chem_data_list }}">Emission Data</a></li> 
-	                <li {% if url_wrf_meteo_data_list in request.path %}class="active"{% endif %}><a href="{{ url_wrf_meteo_data_list }}">Meteorological Data</a></li>
+	                <li {% if url_wrf_list_chem_data in request.path %}class="active"{% endif %}><a href="{{ url_wrf_list_chem_data }}">Emission Data</a></li> 
+	                <li {% if url_wrf_list_meteo_data in request.path %}class="active"{% endif %}><a href="{{ url_wrf_list_meteo_data }}">Meteorological Data</a></li>
 	                <li class="divider"></li>
-	                <li {% if url_wrf_model_setting_list in request.path %}class="active"{% endif %}><a href="{{ url_wrf_model_setting_list }}">Model Settings</a></li>
+	                <li {% if url_wrf_list_model_setting in request.path %}class="active"{% endif %}><a href="{{ url_wrf_list_model_setting }}">Model Settings</a></li>
 	              </ul> 
 	            </li> 
 	            <li class="dropdown" data-dropdown="dropdown" > 

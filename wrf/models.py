@@ -13,7 +13,8 @@ from aqm_utils.datafile import get_excel_worksheets
 class Domain(models.Model):
     name = models.CharField(max_length=200, db_index=True)
     user = models.ForeignKey(User, db_index=True)
-    
+    created = models.DateTimeField(auto_now_add=True, editable=False)
+    modified = models.DateTimeField(auto_now=True, editable=False)
     width = models.IntegerField()
     height = models.IntegerField()
     dx = models.FloatField(blank=True, null=True)
@@ -38,6 +39,8 @@ class Setting(models.Model):
     name = models.CharField(max_length=200, db_index=True)
     user = models.ForeignKey(User, db_index=True)
     description = models.TextField()
+    created = models.DateTimeField(auto_now_add=True, editable=False)
+    modified = models.DateTimeField(auto_now=True, editable=False)
     setting_json = models.TextField(blank=True)
     setting_version = models.TextField(blank=True)
     generated_namelist = models.TextField(blank=True)
@@ -73,6 +76,8 @@ class BaseSetting(models.Model):
     name = models.CharField(max_length=200, db_index=True)
     user = models.ForeignKey(User, db_index=True)
     description = models.TextField()
+    created = models.DateTimeField(auto_now_add=True, editable=False)
+    modified = models.DateTimeField(auto_now=True, editable=False)
     namelist_wrf = models.TextField()
     namelist_wps = models.TextField()
     removed = models.BooleanField(default=False, db_index=True)
@@ -102,6 +107,8 @@ class PollutantParam(models.Model):
                 ('E_SO4I', 'SO4I'), ('E_SO4J', 'SO4J'), 
                 ('E_TOL', 'TOL'), ('E_XYL', 'XYL')]
     
+    created = models.DateTimeField(auto_now_add=True, editable=False)
+    modified = models.DateTimeField(auto_now=True, editable=False)
     pollutant = models.CharField(max_length=20, choices=PLT_TYPE)
     x = models.CharField(max_length=50)
     y = models.CharField(max_length=50)
@@ -122,6 +129,8 @@ class PollutantParam(models.Model):
 class ChemData(models.Model):
     name = models.CharField(max_length=200, db_index=True)
     description = models.TextField()
+    created = models.DateTimeField(auto_now_add=True, editable=False)
+    modified = models.DateTimeField(auto_now=True, editable=False)
     user = models.ForeignKey(User, db_index=True)
     data = models.FileField(upload_to='wrf/chem_data/%Y/%m/', max_length=200)
     worksheets = models.TextField(blank=True)
@@ -139,6 +148,8 @@ class ChemData(models.Model):
 class AltMeteoData(models.Model):
     name = models.CharField(max_length=200, db_index=True)
     description = models.TextField()
+    created = models.DateTimeField(auto_now_add=True, editable=False)
+    modified = models.DateTimeField(auto_now=True, editable=False)
     user = models.ForeignKey(User, db_index=True)
     data = models.FileField(upload_to='wrf/alt_meteo_data/%Y/%m/', max_length=200)
     DATA_TYPE_CHOICE = (
@@ -161,6 +172,8 @@ class AltMeteoData(models.Model):
 class Task(models.Model):
     name = models.CharField(max_length=200, db_index=True)
     description = models.TextField()
+    created = models.DateTimeField(auto_now_add=True, editable=False)
+    modified = models.DateTimeField(auto_now=True, editable=False)
     user = models.ForeignKey(User, db_index=True)
     period_start = models.DateTimeField()
     period_end = models.DateTimeField()
@@ -193,6 +206,8 @@ class Task(models.Model):
 class TaskGroup(models.Model):
     name = models.CharField(max_length=200, db_index=True)
     description = models.TextField()
+    created = models.DateTimeField(auto_now_add=True, editable=False)
+    modified = models.DateTimeField(auto_now=True, editable=False)
     user = models.ForeignKey(User, db_index=True)
     tasks = models.ManyToManyField(Task, related_name="groups")
     
@@ -207,9 +222,10 @@ class TaskGroup(models.Model):
 
 
 class TaskQueue(models.Model):
-    submitted_date = models.DateTimeField(auto_now_add=True, db_index=True)
-    processed_date = models.DateTimeField(blank=True, null=True)
-    finished_date = models.DateTimeField(blank=True, null=True)
+    created = models.DateTimeField(auto_now_add=True, editable=False)
+    modified = models.DateTimeField(auto_now=True, editable=False)
+    processed = models.DateTimeField(blank=True, null=True)
+    finished = models.DateTimeField(blank=True, null=True)
     is_running = models.BooleanField(default=False, db_index=True)
     is_finished = models.BooleanField(default=False, db_index=True)
     task = models.ForeignKey(Task, related_name='queues')
