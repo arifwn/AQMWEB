@@ -340,7 +340,7 @@
 			var h = 250;
 			var left = (screen.width/2)-(w/2);
 			var top = (screen.height/2)-(h/2);
-			testwindow = window.open("{% url 'aqm_web.views.wrf.popup_new_task_chem_data' %}", "mywindow", "location=1,status=1,scrollbars=1,width="+w+",height="+h+",top="+top+",left="+left);
+			testwindow = window.open("{% url 'wrf_popup_new_task_chem_data' %}", "mywindow", "location=1,status=1,scrollbars=1,width="+w+",height="+h+",top="+top+",left="+left);
 		});
 
 		$('#ntf-start-date').datepicker({ dateFormat: 'dd-mm-yy' });

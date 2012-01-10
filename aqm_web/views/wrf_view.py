@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.template import RequestContext
 from django.template.loader import get_template
 from django.http import HttpResponse
+from django.http import Http404
 from django.shortcuts import redirect
 
 import logging
@@ -51,6 +52,8 @@ def task_group_details(request):
 def new_chem_data(request):
     '''view to create a new ChemData'''
     from aqm_web.forms import ChemDataForm
+    from aqm_web.misc import sanitize_html
+    from wrf.models import ChemData
     
     if request.method == 'POST':
         form = ChemDataForm(request.POST, request.FILES)
@@ -65,7 +68,11 @@ def new_chem_data(request):
             logger.debug('description: %s' % description)
             logger.debug('parameters_json: %s' % parameters_json)
             logger.debug('data_file: %s' % data_file)
-#            return redirect('view-profile', request.user.username)
+            
+            chemdata = ChemData(name=name, description=sanitize_html(description), data=data_file, user=request.user)
+            chemdata.save()
+            
+            return redirect('wrf_new_chem_data_step2', chemdata.pk)
         else:
             logger.debug('not valid')
     else:
@@ -79,8 +86,23 @@ def new_chem_data(request):
     return HttpResponse(html)
 
 @login_required
-def new_chem_data_step2(request):
+def new_chem_data_step2(request, id):
     '''step 2 in ChemData creation'''
+    import os.path
+    from wrf.models import ChemData
+    
+    try:
+        chemdata = ChemData.objects.get(pk=id)
+    except ChemData.DoesNotExist:
+        raise Http404
+    
+    t = get_template('aqm_web/wrf/new-chem-data2.html')
+    html = t.render(RequestContext(request, {
+                                             'section': 'wrf', 
+                                             'chemdata': chemdata,
+                                             'filename': os.path.basename(chemdata.data.name)
+                                             }))
+    return HttpResponse(html)
 
 @login_required
 def new_pollutant_params_popup(request):

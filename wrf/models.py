@@ -2,7 +2,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.test import TestCase
-from django.db.models.signals import pre_save, post_save
+from django.db.models.signals import pre_save, post_save, pre_delete
 import json
 from wrf import __version__ as wrf_version
 from namelist import encode as n_enc
@@ -254,3 +254,25 @@ def postsave_process_excel_chemdata(sender, instance, created, **kwargs):
             instance.save()
             
 post_save.connect(postsave_process_excel_chemdata, sender=ChemData)
+
+#def presave_process_excel_chemdata(sender, instance, **kwargs):
+#    ''''''
+#    instance.data.flush()
+#    path = instance.data.path
+#    worksheets = get_excel_worksheets(path)
+#    if worksheets is not None:
+#        json_dmp = json.dumps(worksheets)
+#        instance.worksheets = json_dmp
+#        instance.save()
+#            
+#pre_save.connect(presave_process_excel_chemdata, sender=ChemData)
+
+def predelete_chemdata(sender, instance, **kwargs):
+    '''Delete uploaded data'''
+    try:
+        instance.data.delete()
+    except:
+        pass
+    
+            
+pre_delete.connect(predelete_chemdata, sender=ChemData)

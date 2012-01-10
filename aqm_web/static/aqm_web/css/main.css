@@ -561,3 +561,9 @@ body {
 	box-shadow: 0 0 2px RGBA(0, 0, 0, 0.6);
 }
 
+/* ----------- ChemData Editor ----------- */
+
+.many-to-many-widget .model-list {
+	margin: 10px 0;
+	padding: 0;
+}

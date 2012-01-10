@@ -1,0 +1,13 @@
+{% extends "aqm_web/base-with-menu.html" %}
+{% load url from future %}
+
+{% block metadata %}
+	<title>New Emission Data (Step 2 of 2) | Air Quality Models Web Interface</title>
+  <script src="{{ STATIC_URL }}aqm_web/js/chemdata-step2.js"></script>
+{% endblock %}
+
+{% block all-elements %}
+
+	{% include "aqm_web/wrf/partial/new-chem-data2.html" %}
+
+{% endblock %}

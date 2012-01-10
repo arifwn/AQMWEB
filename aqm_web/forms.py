@@ -5,12 +5,21 @@ Created on Nov 7, 2011
 '''
 from django import forms
 from wrf.models import PollutantParam
+from tinymce.widgets import TinyMCE
 
 # -- Chem Data Form --
 
 class ChemDataForm(forms.Form):
     name = forms.CharField(max_length=200)
-    description = forms.CharField(widget=forms.Textarea)
+    description = forms.CharField(widget=TinyMCE(mce_attrs={
+                                                        'theme': "advanced",
+                                                        'plugins': "inlinepopups",
+                                                        'theme_advanced_buttons1' : "bold,italic,underline,strikethrough,blockquote,bullist,numlist,link,unlink,image,cleanup",
+                                                        'theme_advanced_buttons2' : "",
+                                                        'theme_advanced_buttons3' : "",
+                                                        'theme_advanced_toolbar_location' : "top",
+                                                        'theme_advanced_toolbar_align' : "right"
+                                                        }))
     data = forms.FileField(max_length=200)
     
     #should be populated by client js with json list of pollutant parameter ids

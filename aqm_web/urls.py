@@ -16,7 +16,7 @@ urlpatterns = patterns('aqm_web.views.generic',
     (r'^plotview/$', 'plotview'),
 )
 
-urlpatterns += patterns('aqm_web.views.wrf',
+urlpatterns += patterns('aqm_web.views.wrf_view',
     url(r'^wrf/new/$', 'new_task', name='wrf_new_task'),
     url(r'^wrf/list-task/$', 'list_task', name='wrf_list_task'),
     
@@ -25,6 +25,7 @@ urlpatterns += patterns('aqm_web.views.wrf',
     url(r'^wrf/list-task-group/$', 'list_task_group', name='wrf_list_task_group'),
     
     url(r'^wrf/new-chem-data/$', 'new_chem_data', name='wrf_new_chem_data'),
+    url(r'^wrf/new-chem-data-step2/(\d+)$', 'new_chem_data_step2', name='wrf_new_chem_data_step2'),
     url(r'^wrf/new/popup-chem-data$', 'popup_new_task_chem_data', name='wrf_popup_new_task_chem_data'),
     url(r'^wrf/list-chem-data/$', 'list_chem_data', name='wrf_list_chem_data'),
     

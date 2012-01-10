@@ -1,0 +1,134 @@
+{% load url from future %}
+{% load add_class %}
+<div class="row">
+	<div class="span16">
+		<div class="page-header">
+			<h1>New Emission Data (Step 2 of 2)</h1>
+		</div>
+		<div class="row">
+			<div class="span15 well">
+				<h3>{{ chemdata.name }}</h3>
+				<p>
+					<b>Description:</b>
+				</p>
+				{{ chemdata.description|safe }}
+				<p>
+					<b>File:</b> <a href="{{ chemdata.data.url }}">{{ filename }}</a>
+				</p>
+			</div>
+		</div>
+		<div class="model-editor">
+			<div class="many-to-many-widget">
+        <input type="button" id="chemdata-add-pollutant" class="btn primary" value="Add..." />
+        <input type="button" id="chemdata-edit-pollutant" class="btn" value="Edit..." />
+				<input type="button" id="chemdata-remove-pollutant" class="btn danger" value="Remove" />
+				<div class="model-list">
+					<select class="span5" size="5" multiple="multiple" id="chemdata-param-list" data-worksheets="{{ chemdata.worksheets }}">
+					  <option>CO</option>
+					  <option>SO</option>
+					  <option>NO</option>
+					</select>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div id="area-modal" class="modal hide fade in">
+  <div class="modal-header">
+    <a href="#" class="close">&times;</a>
+    <h3>Edit Pollutant</h3>
+  </div>
+  <div class="modal-body">
+    <form>
+      <div class="clearfix">
+        <label for="id-pollutant-list">Pollutant</label>
+        <div class="input">
+          <select id="id-pollutant-list" class="span4">
+          </select>
+        </div>
+      </div>
+      
+      <div class="clearfix">
+        <label for="id-worksheet-list">Worksheet</label>
+        <div class="input">
+          <select id="id-worksheet-list" class="span4">
+          </select>
+        </div>
+      </div>
+      
+      <div class="clearfix">
+        <label for="id-conv-factor">Conversion Factor</label>
+        <div class="input">
+          <input id="id-conv-factor" class="span4" type="text" placeholder="e.g. 1.0">
+          <span class="help-block">Use conversion factor to convert unit to mol / km&sup2; / hour</span>
+        </div>
+      </div>
+      
+      <div class="clearfix">
+        <label for="id-data-row-start">Data Rows</label>
+        <div class="input">
+          <div class="inline">
+            <input id="id-data-row-start" class="span2" type="text" placeholder="e.g. 2">
+            to
+            <input id="id-data-row-end" class="span2" type="text" placeholder="e.g. 102">
+            <span class="help-block">First and last row that contains data</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="clearfix">
+        <label for="id-emission-col">Data Rows</label>
+        <div class="input">
+          <div class="inline">
+            <div class="input-prepend">
+              <span class="add-on">Emission</span>
+              <input id="id-emission-col" class="span2" type="text"  placeholder="e.g. A">
+            </div>
+            
+          </div>
+        </div>
+      </div>
+      
+      <div class="clearfix">
+        <label for="id-lat-col"></label>
+        <div class="input">
+          <div class="inline">
+            <div class="input-prepend">
+              <span class="add-on">Lat</span>
+              <input id="id-lat-col" class="span2" type="text"placeholder="e.g. B">
+            </div>
+            <div class="input-prepend">
+              <span class="add-on">Lon</span>
+              <input id="id-lon-col" class="span2" type="text"placeholder="e.g. C">
+            </div>
+            
+          </div>
+        </div>
+      </div>
+      
+      <div class="clearfix">
+        <label for="id-x-col"></label>
+        <div class="input">
+          <div class="inline">
+            <div class="input-prepend">
+              <span class="add-on">X</span>
+              <input id="id-x-col" class="span2" type="text" placeholder="e.g. D">
+            </div>
+            <div class="input-prepend">
+              <span class="add-on">Y</span>
+              <input id="id-y-col" class="span2" type="text" placeholder="e.g. E">
+            </div>
+            
+          </div>
+        </div>
+      </div>
+      
+    </form>
+  </div>
+  <div class="modal-footer">
+    <input type="button" id="chemdata-modal-ok" class="btn primary" value="OK">
+    <input type="button" id="chemdata-modal-cancel" class="btn" value="Cancel">
+  </div>
+</div>

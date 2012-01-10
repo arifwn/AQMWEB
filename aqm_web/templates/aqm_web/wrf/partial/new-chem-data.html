@@ -1,8 +1,9 @@
 {% load url from future %}
+{% load add_class %}
 <div class="row">
   <div class="span16">
     <div class="page-header">
-      <h1>New Emission Data</h1>
+      <h1>New Emission Data (Step 1 of 2)</h1>
     </div>
     
     <form id="wrf-new-chem-data-form" action="" method="post" enctype="multipart/form-data">
@@ -11,21 +12,21 @@
         <div class="clearfix {% if form.name.errors %} error {% endif %}">
           <label for="id_name">Name:</label>
           <div class="input">
-            {{ form.name }} <span class="help-block">{{ form.name.errors }}</span>
+            {{ form.name|add_class:'span11' }} <span class="help-block">{{ form.name.errors }}</span>
           </div>
         </div>
         
         <div class="clearfix {% if form.description.errors %} error {% endif %}">
           <label for="id_description">Description:</label>
           <div class="input">
-            {{ form.description }} <span class="help-block">{{ form.description.errors }}</span>
+            {{ form.description|add_class:'span11' }} <span class="help-block">{{ form.description.errors }}</span>
           </div>
         </div>
         
         <div class="clearfix {% if form.data.errors %} error {% endif %}">
           <label for="id_data">Data File:</label>
           <div class="input">
-            {{ form.data }} <span class="help-block">{{ form.data.errors }}</span>
+            {{ form.data|add_class:'span11'  }} <span class="help-block">{{ form.data.errors }}</span>
           </div>
         </div>
         
