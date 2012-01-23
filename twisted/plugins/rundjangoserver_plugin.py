@@ -1,8 +1,8 @@
 '''
-AQM RPC Server
+Run Django on Twisted
 
-foreground: twistd -n aqmrpc
-background (demonized): twistd aqmrpc
+foreground: twistd -n --reactor=epoll rundjangoserver
+background (demonized): twistd --reactor=epoll rundjangoserver
 
 Created on Jan 22, 2012
 
