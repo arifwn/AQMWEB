@@ -24,7 +24,11 @@ from twisted.internet import reactor
 
 from django.core.handlers.wsgi import WSGIHandler
 
-
+if hasattr(settings, 'RUNSERVER_DEFAULT_ADDR'):
+    DEFAULT_ADDR = settings.RUNSERVER_DEFAULT_ADDR
+else:
+    DEFAULT_ADDR = '' # listen on all address
+    
 if hasattr(settings, 'RUNSERVER_DEFAULT_PORT'):
     DEFAULT_PORT = int(settings.RUNSERVER_DEFAULT_PORT)
 else:
@@ -37,7 +41,8 @@ else:
 
 
 class Options(usage.Options):
-    optParameters = [["port", "p", DEFAULT_PORT, "The port number to listen on."]]
+    optParameters = [["port", "p", DEFAULT_PORT, "The port number to listen on."],
+                     ["address", "a", DEFAULT_ADDR, "The address to listen on."]]
 
 class Root(resource.Resource):
     def __init__(self, wsgi_resource):
@@ -95,7 +100,7 @@ class AQMServiceMaker(object):
 #        ws = internet.SSLServer(port, site, context, interface=ip)
 
         
-        ws = internet.TCPServer(int(options["port"]), site)
+        ws = internet.TCPServer(int(options['port']), site, interface=options['address'])
         # add the web server service to the multi service
         ws.setServiceParent(multi)
         return multi
