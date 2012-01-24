@@ -30,9 +30,9 @@ else:
     DEFAULT_ADDR = '' # listen on all address
     
 if hasattr(settings, 'RUNSERVER_DEFAULT_PORT'):
-    DEFAULT_PORT = int(settings.RUNSERVER_DEFAULT_PORT)
+    DEFAULT_PORT = settings.RUNSERVER_DEFAULT_PORT
 else:
-    DEFAULT_PORT = 8000
+    DEFAULT_PORT = '8000'
 
 if hasattr(settings, 'DEBUG'):
     DEBUG = settings.DEBUG
@@ -42,7 +42,8 @@ else:
 
 class Options(usage.Options):
     optParameters = [["port", "p", DEFAULT_PORT, "The port number to listen on."],
-                     ["address", "a", DEFAULT_ADDR, "The address to listen on."]]
+                     ["address", "a", DEFAULT_ADDR, "The address to listen on."],
+                     ["servestatic", "s", 'yes', "Serve Static content directly from Twisted."]]
 
 class Root(resource.Resource):
     def __init__(self, wsgi_resource):
@@ -89,7 +90,7 @@ class AQMServiceMaker(object):
         root = Root(resource)
         
         # serve the static media
-        if DEBUG is False:
+        if (DEBUG is False) and (options['servestatic'] == 'yes'):
             static_resource = static.File(settings.STATIC_ROOT)
             media_resource = static.File(settings.MEDIA_ROOT)
             root.putChild(settings.STATIC_URL.strip('/'), static_resource)
