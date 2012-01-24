@@ -70,7 +70,7 @@ class ThreadPoolService(service.Service):
 
 class AQMServiceMaker(object):
     implements(IServiceMaker, IPlugin)
-    tapname = "rundjangoserver"
+    tapname = "rundjserver"
     description = "Django Application Server"
     options = Options
 
@@ -104,5 +104,3 @@ class AQMServiceMaker(object):
         # add the web server service to the multi service
         ws.setServiceParent(multi)
         return multi
-
-serviceMaker = AQMServiceMaker()

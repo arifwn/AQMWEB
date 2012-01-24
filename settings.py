@@ -147,7 +147,6 @@ INSTALLED_APPS = (
     'filebrowser',
 #    'south',
     'debug_toolbar',
-    'concurrent_server',
     'django_extensions'
 )
 
