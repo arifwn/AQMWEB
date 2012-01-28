@@ -24,20 +24,10 @@ from twisted.internet import reactor
 
 from django.core.handlers.wsgi import WSGIHandler
 
-if hasattr(settings, 'RUNSERVER_DEFAULT_ADDR'):
-    DEFAULT_ADDR = settings.RUNSERVER_DEFAULT_ADDR
-else:
-    DEFAULT_ADDR = '' # listen on all address
-    
-if hasattr(settings, 'RUNSERVER_DEFAULT_PORT'):
-    DEFAULT_PORT = settings.RUNSERVER_DEFAULT_PORT
-else:
-    DEFAULT_PORT = '8000'
 
-if hasattr(settings, 'DEBUG'):
-    DEBUG = settings.DEBUG
-else:
-    DEBUG = True
+DEBUG = getattr(settings, 'DEBUG', True)
+DEFAULT_ADDR = getattr(settings, 'RUNSERVER_DEFAULT_ADDR', '')
+DEFAULT_PORT = getattr(settings, 'RUNSERVER_DEFAULT_PORT', '8000')
 
 
 class Options(usage.Options):
