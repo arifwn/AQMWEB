@@ -4,13 +4,16 @@ Created on Nov 15, 2011
 @author: Arif
 '''
 from cStringIO import StringIO as StringIO
-import namelist
+from collections import OrderedDict
 
-class NamelistParser(namelist.StateMachine):
+from wrf.namelist.misc import StateMachine, get_string, get_value
+
+
+class NamelistParser(StateMachine):
     
     def __init__(self, string_data=None, file_data=None):
         
-        namelist.StateMachine.__init__(self)
+        super(NamelistParser, self).__init__()
         
         if file_data is not None:
             self.namelist_data = file_data
@@ -20,7 +23,7 @@ class NamelistParser(namelist.StateMachine):
             else:
                 self.namelist_data = StringIO(string_data)
         
-        self.parsed_data = {}
+        self.parsed_data = OrderedDict()
         self.current_section = ''
     
     def process(self, data):
@@ -31,7 +34,7 @@ class NamelistParser(namelist.StateMachine):
         if self.state == 'INIT':
             if data[0] == '&':
                 self.current_section = data.replace('&', '')
-                self.parsed_data[self.current_section] = dict()
+                self.parsed_data[self.current_section] = OrderedDict()
                 self.change_state('SECTION')
         
         if self.state == 'SECTION':
@@ -56,7 +59,7 @@ class NamelistParser(namelist.StateMachine):
         for val in val_list:
             s_val = val.strip()
             if len(s_val) > 0:
-                config_vals.append(namelist.get_value(s_val))
+                config_vals.append(get_value(s_val))
         
         return config_name, config_vals
         
@@ -80,7 +83,9 @@ def decode_namelist_string(input_string):
     return parser.parsed_data
 
 def test():
-    path = '../media/test_data/namelist.input'
+    import os
+    
+    path = os.path.join(os.path.dirname(__file__),'test/namelist.wps')
     s = open(path).read()
     parsed_data = decode_namelist_string(s)
     for key in parsed_data:

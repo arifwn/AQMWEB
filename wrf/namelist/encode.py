@@ -4,12 +4,14 @@ Created on Nov 15, 2011
 @author: Arif
 '''
 from cStringIO import StringIO as StringIO
-import namelist
 
-class NamelistEncoder(namelist.StateMachine):
+from wrf.namelist.misc import StateMachine, get_string, get_value
+
+
+class NamelistEncoder(StateMachine):
     
     def __init__(self, dict_data=None):
-        namelist.StateMachine.__init__(self)
+        super(NamelistEncoder, self).__init__()
         
         if dict_data is None:
             self.source_data = dict()
@@ -36,9 +38,9 @@ class NamelistEncoder(namelist.StateMachine):
         self.encode_line(item_key, data)
     
     def encode_line(self, item_key, data):
-        line = '%-37s =' % item_key
+        line = ' %-37s =' % item_key
         for item in data:
-            s_data = ' %s,' % namelist.get_string(item)
+            s_data = ' %s,' % get_string(item)
             line += s_data
         line += '\n'
         self.namelist_data.write(line)
@@ -50,15 +52,17 @@ class NamelistEncoder(namelist.StateMachine):
                 self.process(section_key, item_key, data)
             self.process()
 
+
 def encode_namelist(data):
     encoder = NamelistEncoder(data)
     encoder.encode()
     return encoder.namelist_data.getvalue()
     
 def test():
-    from namelist.decode import decode_namelist
+    import os
+    from wrf.namelist.decode import decode_namelist
     
-    path = '../media/test_data/namelist.input'
+    path = os.path.join(os.path.dirname(__file__),'test/namelist.wps')
     print path
     parsed_data = decode_namelist(path)
     
