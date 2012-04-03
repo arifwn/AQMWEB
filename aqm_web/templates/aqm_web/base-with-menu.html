@@ -1,32 +1,33 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
+<html>
+	<head>
+	<meta charset="utf-8">
+	<link href="{{ STATIC_URL }}aqm_web/css/main.css" rel="stylesheet">
+	<link href="{{ STATIC_URL }}aqm_web/css/jquery.ui.timepicker.css" rel="stylesheet">
+	<link href="{{ STATIC_URL }}aqm_web/css/ui-darkness/jquery-ui.custom.css" rel="stylesheet">
+	<script src="{{ STATIC_URL }}aqm_web/js/jquery.js"></script>
+	<script src="{{ STATIC_URL }}aqm_web/js/jquery-ui.custom.min.js"></script>
+	<script src="{{ STATIC_URL }}aqm_web/js/jquery.ui.timepicker.js"></script>
+
+	<script src="{{ STATIC_URL }}aqm_web/js/bootstrap-dropdown.js"></script>
+	<script src="{{ STATIC_URL }}aqm_web/js/bootstrap-alert.js"></script>
+	<script src="{{ STATIC_URL }}aqm_web/js/bootstrap-tooltip.js"></script>
+	<script src="{{ STATIC_URL }}aqm_web/js/bootstrap-modal.js"></script>
+	<script src="{{ STATIC_URL }}aqm_web/js/bootstrap-transition.js"></script>
+
+	<script src="{{ STATIC_URL }}aqm_web/js/main.js"></script>
+	<script src="{{ STATIC_URL }}aqm_web/js/simplebar.js"></script>
+	<script src="{{ STATIC_URL }}aqm_web/js/spinner.js"></script>
+	<script src="{{ STATIC_URL }}tiny_mce/tiny_mce.js"></script>
+
+	<link rel="shortcut icon" href="images/favicon.ico">
+	{% block metadata %}
+	{% endblock %}
+	</head>
 {% load url from future %}
 {% load fb_versions %}
-<html> 
-<head> 
-	<meta charset="utf-8"> 
-	<link href="{{ STATIC_URL }}aqm_web/css/bootstrap.css" rel="stylesheet"> 
-	<link href="{{ STATIC_URL }}aqm_web/css/main.css" rel="stylesheet"> 
-	
-	<script src="{{ STATIC_URL }}aqm_web/js/jquery-1.7.1.min.js"></script> 
-	<script src="{{ STATIC_URL }}aqm_web/js/jquery-ui-1.8.16.custom.min.js"></script> 
-	<script src="{{ STATIC_URL }}aqm_web/js/jquery.ui.timepicker.js"></script> 
-	
-	<script src="{{ STATIC_URL }}aqm_web/js/bootstrap-dropdown.js"></script> 
-	<script src="{{ STATIC_URL }}aqm_web/js/bootstrap-alerts.js"></script> 
-	<script src="{{ STATIC_URL }}aqm_web/js/bootstrap-twipsy.js"></script> 
-	<script src="{{ STATIC_URL }}aqm_web/js/bootstrap-modal.js"></script> 
-	
-	<script src="{{ STATIC_URL }}aqm_web/js/main.js"></script> 
-	<script src="{{ STATIC_URL }}aqm_web/js/simplebar.js"></script> 
-	<script src="{{ STATIC_URL }}aqm_web/js/spinner.js"></script>
-  <script src="{{ STATIC_URL }}tiny_mce/tiny_mce.js"></script>
-		
-  <link rel="shortcut icon" href="images/favicon.ico"> 
-  {% block metadata %}
-	{% endblock %}
-</head> 
-
-<body> 
+{% load active_menu%}
+<body>
 	{% url 'index' as url_index %}
 	{% url 'wrf_new_task' as url_wrf_new_task %}
 	{% url 'wrf_list_task' as url_wrf_list_task %}
@@ -37,81 +38,80 @@
 	{% url 'django.contrib.auth.views.logout_then_login' as url_logout %}
 	{% url 'django.contrib.auth.views.password_change' as url_change_password %}
 	{% url 'view-profile' user.username as url_view_profile %}
-	
-	<div class="topbar"> 
-      <div class="topbar-inner"> 
-	      <div class="container">
-	        <div class="container-fluid">  
-	          <a class="brand" href="{{ url_index }}">AQM Web Interface</a>  
-	          <ul class="nav"> 
-	            <li {% if url_index == request.path %}class="active"{% endif %}><a href="{{ url_index }}">Status</a></li> 
-	            <li class="dropdown {% if section == "wrf" %}active{% endif %}" data-dropdown="dropdown" > 
-	              <a href="#" class="dropdown-toggle">WRF/Chem</a> 
-	              <ul class="dropdown-menu"> 
-	                <li {% if url_wrf_new_task in request.path %}class="active"{% endif %}><a href="{{ url_wrf_new_task }}">New Task</a></li>
-	                <li {% if url_wrf_list_task in request.path %}class="active"{% endif %}><a href="{{ url_wrf_list_task }}">Task List</a></li>
-	                <li {% if url_wrf_list_task_group in request.path %}class="active"{% endif %}><a href="{{ url_wrf_list_task_group }}">Task Groups</a></li>
-	                <li class="divider"></li> 
-	                <li {% if url_wrf_list_chem_data in request.path %}class="active"{% endif %}><a href="{{ url_wrf_list_chem_data }}">Emission Data</a></li> 
-	                <li {% if url_wrf_list_meteo_data in request.path %}class="active"{% endif %}><a href="{{ url_wrf_list_meteo_data }}">Meteorological Data</a></li>
-	                <li class="divider"></li>
-	                <li {% if url_wrf_list_model_setting in request.path %}class="active"{% endif %}><a href="{{ url_wrf_list_model_setting }}">Model Settings</a></li>
-	              </ul> 
-	            </li> 
-	            <li class="dropdown" data-dropdown="dropdown" > 
-	              <a href="#"  class="dropdown-toggle">Aermod</a> 
-	              <ul class="dropdown-menu"> 
-	                <li><a href="#">New Task</a></li> 
-	                <li><a href="#">Task List</a></li> 
-	                <li class="divider"></li> 
-	                <li><a href="#">Model Settings</a></li> 
-	              </ul> 
-	            </li> 
-	            <li class="dropdown" data-dropdown="dropdown" > 
-	              <a href="#"  class="dropdown-toggle">Tasks</a> 
-	              <ul class="dropdown-menu"> 
-	                <li><a href="#">Running</a></li> 
-	                <li><a href="#">Finished</a></li> 
-	                <li><a href="#">Pending</a></li> 
-	                <li><a href="#">Error</a></li> 
-	              </ul> 
-	            </li> 
-	            <li><a href="#">Results</a></li> 
-	            {% if user.is_staff %} 
-	            <li><a href="/admin" target="_new">Administration</a></li> 
-	            {% endif %}
-	          </ul> 
-	          <ul class="nav secondary-nav"> 
-	            <li class="dropdown" data-dropdown="dropdown" > 
-                {% if user.get_profile.avatar %}
-                  {% version_object user.get_profile.avatar 't32x32' as im %}
-                {% else %}
-                  {% version_object 'image/profile/anon.png' 't32x32' as im %}
-                {% endif %}
-	              <a href="#" class="dropdown-toggle profile"><img class="avatar" src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" /></a> 
-	              <ul class="dropdown-menu"> 
-	                <li><a href="{{ url_view_profile }}">Profile</a></li>
-	                <li><a href="{{ url_change_password }}">Change Password</a></li> 
-	                <li class="divider"></li> 
-	                <li><a href="{{ url_logout }}">Log Out</a></li> 
-	              </ul> 
-	            </li> 
-	          </ul> 
-	          
-	        </div> 
+
+	<div class="navbar navbar-fixed-top mainmenu">
+        <div class="navbar-inner">
+            <div class="container">
+                <a class="brand" href="{{ url_index }}">AQM Web Interface</a>
+                <ul class="nav">
+                    <li class="{% active request url_index %}"><a href="{{ url_index }}">Status</a></li>
+                    <li class="dropdown {% active request url_wrf_new_task url_wrf_list_task url_wrf_list_task_group url_wrf_list_chem_data url_wrf_list_meteo_data url_wrf_list_model_setting %}">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">WRF/Chem <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li class="{% active request url_wrf_new_task %}"><a href="{{ url_wrf_new_task }}">New Task</a></li>
+                            <li class="{% active request url_wrf_list_task %}"><a href="{{ url_wrf_list_task }}">Task List</a></li>
+                            <li class="{% active request url_wrf_list_task_group %}"><a href="{{ url_wrf_list_task_group }}">Task Groups</a></li>
+                            <li class="divider"></li>
+                            <li class="{% active request url_wrf_list_chem_data %}"><a href="{{ url_wrf_list_chem_data }}">Emission Data</a></li>
+                            <li class="{% active request url_wrf_list_meteo_data %}"><a href="{{ url_wrf_list_meteo_data }}">Meteorological Data</a></li>
+                            <li class="divider"></li>
+                            <li class="{% active request url_wrf_list_model_setting %}"><a href="{{ url_wrf_list_model_setting }}">Model Settings</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Aermod <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">New Task</a></li>
+                            <li><a href="#">Task List</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#">Model Settings</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Tasks <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Running</a></li>
+                            <li><a href="#">Finished</a></li>
+                            <li><a href="#">Pending</a></li>
+                            <li><a href="#">Error</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#">Results</a></li>
+                    {% if user.is_staff %}
+                    <li><a href="/admin" target="_new">Administration</a></li>
+                    {% endif %}
+                </ul>
+
+                <ul class="nav pull-right">
+                    <li class="dropdown">
+                    {% if user.get_profile.avatar %}
+                            {% version_object user.get_profile.avatar 't32x32' as im %}
+                        {% else %}
+                            {% version_object 'image/profile/anon.png' 't32x32' as im %}
+                        {% endif %}
+                        <a href="#" class="dropdown-toggle profile" data-toggle="dropdown"><img class="avatar" src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" /></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{{ url_view_profile }}">Profile</a></li>
+                            <li><a href="{{ url_change_password }}">Change Password</a></li>
+                            <li class="divider"></li>
+                            <li><a href="{{ url_logout }}">Log Out</a></li>
+                        </ul>
+                    </li>
+                </ul>
+
 	  	</div>
-      </div> 
-    </div> 
+      </div>
+    </div>
 
 	<div class="container">
-		<div class="main-area">  
+		<div class="main-area">
 			{% block all-elements %}
 			{% endblock %}
 		</div>
-		<footer> 
-		 	<p>Air Quality Models Web Interface</p>  
-		</footer> 
+		<footer>
+		 	<p>Air Quality Models Web Interface</p>
+		</footer>
 	</div>
 
-</body> 
-</html> 
+</body>
+</html>

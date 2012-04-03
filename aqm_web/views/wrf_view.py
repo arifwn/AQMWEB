@@ -18,13 +18,13 @@ logger = logging.getLogger(__name__)
 @login_required
 def new_task(request):
     t = get_template('aqm_web/wrf/new-task.html')
-    html = t.render(RequestContext(request, {'section': 'wrf'}))
+    html = t.render(RequestContext(request, {}))
     return HttpResponse(html)
 
 @login_required
 def list_task(request):
     t = get_template('aqm_web/wrf/task-list.html')
-    html = t.render(RequestContext(request, {'section': 'wrf'}))
+    html = t.render(RequestContext(request, {}))
     return HttpResponse(html)
 
 
@@ -32,19 +32,19 @@ def list_task(request):
 @login_required
 def new_task_group(request):
     t = get_template('aqm_web/wrf/new-task.html')
-    html = t.render(RequestContext(request, {'section': 'wrf'}))
+    html = t.render(RequestContext(request, {}))
     return HttpResponse(html)
 
 @login_required
 def list_task_group(request):
     t = get_template('aqm_web/wrf/task-group-list.html')
-    html = t.render(RequestContext(request, {'section': 'wrf'}))
+    html = t.render(RequestContext(request, {}))
     return HttpResponse(html)
 
 @login_required
 def task_group_details(request):
     t = get_template('aqm_web/wrf/task-group-details.html')
-    html = t.render(RequestContext(request, {'section': 'wrf'}))
+    html = t.render(RequestContext(request, {}))
     return HttpResponse(html)
 
 # -- Chem Data Views --
@@ -80,7 +80,6 @@ def new_chem_data(request):
     
     t = get_template('aqm_web/wrf/new-chem-data.html')
     html = t.render(RequestContext(request, {
-                                             'section': 'wrf', 
                                              'form': form
                                              }))
     return HttpResponse(html)
@@ -98,7 +97,6 @@ def new_chem_data_step2(request, id):
     
     t = get_template('aqm_web/wrf/new-chem-data2.html')
     html = t.render(RequestContext(request, {
-                                             'section': 'wrf', 
                                              'chemdata': chemdata,
                                              'filename': os.path.basename(chemdata.data.name)
                                              }))
@@ -123,21 +121,21 @@ def remove_pollutant_params_popup(request):
 def modify_chem_data(request):
     '''view to modify a new chem data'''
     t = get_template('aqm_web/wrf/new-task.html')
-    html = t.render(RequestContext(request, {'section': 'wrf'}))
+    html = t.render(RequestContext(request, {}))
     return HttpResponse(html)
 
 @login_required
 def remove_chem_data(request):
     '''view to remove a new chem data'''
     t = get_template('aqm_web/wrf/new-task.html')
-    html = t.render(RequestContext(request, {'section': 'wrf'}))
+    html = t.render(RequestContext(request, {}))
     return HttpResponse(html)
 
 @login_required
 def list_chem_data(request):
     '''list available chem data'''
     t = get_template('aqm_web/wrf/chem-data-list.html')
-    html = t.render(RequestContext(request, {'section': 'wrf'}))
+    html = t.render(RequestContext(request, {}))
     return HttpResponse(html)
 
 @login_required
@@ -145,18 +143,18 @@ def popup_new_task_chem_data(request):
     '''TODO: this dummy view is accessed from create task page 
     as a popup. replace it'''
     t = get_template('aqm_web/wrf/popup-chem-select-data.html')
-    html = t.render(RequestContext(request, {'section': 'wrf'}))
+    html = t.render(RequestContext(request, {}))
     return HttpResponse(html)
 
 
 @login_required
 def list_meteo_data(request):
     t = get_template('aqm_web/wrf/meteo-data-list.html')
-    html = t.render(RequestContext(request, {'section': 'wrf'}))
+    html = t.render(RequestContext(request, {}))
     return HttpResponse(html)
 
 @login_required
 def list_model_setting(request):
     t = get_template('aqm_web/wrf/model-setting-list.html')
-    html = t.render(RequestContext(request, {'section': 'wrf'}))
+    html = t.render(RequestContext(request, {}))
     return HttpResponse(html)

@@ -1,54 +1,46 @@
 {% load url from future %}
-<!DOCTYPE html> 
-<html> 
-<head> 
-	<link href="{{ STATIC_URL }}aqm_web/css/bootstrap.css" rel="stylesheet"> 
-	<link href="{{ STATIC_URL }}aqm_web/css/main.css" rel="stylesheet"> 
-	
-	<script src="{{ STATIC_URL }}aqm_web/js/less-1.1.3.min.js"></script> 
-	<script src="{{ STATIC_URL }}aqm_web/js/jquery-1.7.1.min.js"></script> 
-	
-	<script src="{{ STATIC_URL }}aqm_web/js/bootstrap-dropdown.js"></script> 
-	<script src="{{ STATIC_URL }}aqm_web/js/bootstrap-alerts.js"></script> 
-	<script src="{{ STATIC_URL }}aqm_web/js/bootstrap-twipsy.js"></script> 
-	
-	<script src="{{ STATIC_URL }}aqm_web/js/main.js"></script> 
-	
-    <meta charset="utf-8"> 
-    
-    <link rel="shortcut icon" href="images/favicon.ico"> 
-    {% block metadata %}
-	{% endblock %}
-</head> 
+<!DOCTYPE html>
+<html>
+    <head> 
+        <link href="{{ STATIC_URL }}aqm_web/css/main.css" rel="stylesheet">
+        <script src="{{ STATIC_URL }}aqm_web/js/jquery.js"></script>
 
-<body> 
-	{% url 'aqm_web.views.generic.index' as url_index %}
-	{% url 'aqm_web.views.generic.status' as url_status %}
-	<div class="topbar">  
-      <div class="topbar-inner"> 
-	    <div class="container">
-	        <div class="container-fluid">  
-	          <a class="brand" href="{{ url_index }}">AQM Web Interface</a>  
-	          <ul class="nav"> 
-	            
-	          </ul> 
-	          <ul class="nav secondary-nav"> 
-	             
-	          </ul> 
-	          
-	        </div>
-	     </div> 
-      </div> 
-    </div> 
+        <script src="{{ STATIC_URL }}aqm_web/js/bootstrap-dropdown.js"></script>
+        <script src="{{ STATIC_URL }}aqm_web/js/bootstrap-alert.js"></script>
+        <script src="{{ STATIC_URL }}aqm_web/js/bootstrap-tooltip.js"></script>
 
-	<div class="container">  
-	{% block all-elements %}
-	{% endblock %}
-	
-	  <footer> 
-	    <p>Air Quality Models Web Interface</p>  
-	  </footer> 
-	</div>
+        <script src="{{ STATIC_URL }}aqm_web/js/main.js"></script>
 
-</body> 
-</html> 
+        <meta charset="utf-8">
+
+        <link rel="shortcut icon" href="images/favicon.ico">
+        {% block metadata %}
+        {% endblock %}
+    </head>
+
+    <body>
+        {% url 'aqm_web.views.generic.index' as url_index %}
+        {% url 'aqm_web.views.generic.status' as url_status %}
+        <div class="navbar navbar-fixed-top mainmenu">
+            <div class="navbar-inner">
+                <div class="container">
+                  <a class="brand" href="{{ url_index }}">AQM Web Interface</a>
+                  <ul class="nav">
+
+                  </ul>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+        {% block all-elements %}
+        {% endblock %}
+
+            <footer>
+                <p>Air Quality Models Web Interface</p>
+            </footer>
+        </div>
+
+    </body>
+</html>

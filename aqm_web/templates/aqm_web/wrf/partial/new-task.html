@@ -1,30 +1,36 @@
 {% load url from future %}
 
 <div class="row">
-<div class="span16">
+<div class="span12">
 	<div class="page-header">
 		<h1>New WRF/Chem Task</h1>
 	</div>
 
-	<form id="wrf-new-task-form">
+	<form id="wrf-new-task-form" class="form-horizontal">
 		<fieldset>
-			<div class="clearfix">
-				<label for="ntf-name">Name</label>
-				<div class="input"><input type="text" id="ntf-title" name="title" placeholder="enter task title" class="span12" ></div>
+			<div class="control-group">
+				<label class="control-label" for="ntf-name">Name</label>
+				<div class="controls">
+                    <input type="text" id="ntf-title" name="title" placeholder="enter task title" class="span9" >
+                </div>
 			</div>
-			<div class="clearfix">
-				<label for="ntf-desc">Description</label>
-				<div class="input"><textarea id="ntf-desc" name="description" placeholder="enter task description" class="span12" ></textarea></div>
+            
+			<div class="control-group">
+				<label class="control-label" for="ntf-desc">Description</label>
+				<div class="controls">
+                    <textarea id="ntf-desc" name="description" placeholder="enter task description" class="span9" ></textarea>
+                </div>
 			</div>
-			<div class="clearfix">
-				<label for="ntf-start-date">Period</label>
-				<div class="input">
-					<div class="inline">
-						<div class="input-prepend"><span class="add-on">start date</span><input type="text" id="ntf-start-date" placeholder="enter date" class="span2"></div>
-						<div class="input-prepend"><span class="add-on">start time</span><input type="text" id="ntf-start-time" placeholder="enter time" class="span2"></div>
+            
+			<div class="control-group">
+				<label class="control-label" for="ntf-start-date">Period</label>
+				<div class="controls">
+					<div class="form-inline">
+						<div class="input-prepend"><span class="add-on">start date</span><input type="text" id="ntf-start-date" placeholder="enter date" class="input-small"></div>
+						<div class="input-prepend"><span class="add-on">start time</span><input type="text" id="ntf-start-time" placeholder="enter time" class="input-small"></div>
 						to
-						<div class="input-prepend"><span class="add-on">end date</span><input type="text" id="ntf-end-date" placeholder="enter date" class="span2"></div>
-						<div class="input-prepend"><span class="add-on">end time</span><input type="text" id="ntf-end-time" placeholder="enter time" class="span2"></div>
+						<div class="input-prepend"><span class="add-on">end date</span><input type="text" id="ntf-end-date" placeholder="enter date" class="input-small"></div>
+						<div class="input-prepend"><span class="add-on">end time</span><input type="text" id="ntf-end-time" placeholder="enter time" class="input-small"></div>
 					</div>
 				</div>
 			</div>
@@ -32,18 +38,19 @@
 		
 		<fieldset>
 			<legend>Coordinate Settings</legend>
-			<div class="clearfix" id="ntf-ref-container">
-				<label for="ntf-ref-lat">Reference Coordinate</label>
-				<div class="input">
-					<div class="inline">
-						<div id="ntf-ref-lat-cont" class="input-prepend"><span class="add-on">latitude</span><input type="text" id="ntf-ref-lat" name="ref-lat" placeholder="" class="span3"></div>
-						<div id="ntf-ref-lon-cont" class="input-prepend"><span class="add-on">longitude</span><input type="text" id="ntf-ref-lon" name="ref-lon" 	placeholder="" class="span3"></div>
+			<div class="control-group" id="ntf-ref-container">
+				<label class="control-label" for="ntf-ref-lat">Reference Coordinate</label>
+				<div class="controls">
+					<div class="form-inline">
+						<div id="ntf-ref-lat-cont" class="input-prepend"><span class="add-on">latitude</span><input type="text" id="ntf-ref-lat" name="ref-lat" placeholder="" class="input-medium"></div>
+						<div id="ntf-ref-lon-cont" class="input-prepend"><span class="add-on">longitude</span><input type="text" id="ntf-ref-lon" name="ref-lon" 	placeholder="" class="input-medium"></div>
 					</div>
 				</div>
 			</div>
-			<div class="clearfix">
-				<label for="ntf-proj">Map Projection</label>
-				<div class="input">
+            
+			<div class="control-group">
+				<label class="control-label" for="ntf-proj">Map Projection</label>
+				<div class="controls">
 					<select id="ntf-proj" name="projection-type">
 						<option value="mercator">Mercator</option>
 						<option value="lambert">Lambert Conformal</option>
@@ -52,29 +59,31 @@
 					</select>
 				</div>
 			</div>
-			<div class="clearfix" id="ntf-true-lat-container">
-				<div class="input">
-					<div class="inline">
-						<div id="ntf-true-lat1-cont" class="input-prepend"><span class="add-on">true scale latitude 1</span><input type="text" id="ntf-true-lat1" name="true-lat1" placeholder="" class="span3"></div>
-						<div id="ntf-true-lat2-cont" class="input-prepend"><span class="add-on">true scale latitude 2</span><input type="text" id="ntf-true-lat2" name="true-lat2" placeholder="" class="span3"></div>
-						<div id="ntf-stand-lon-cont" class="input-prepend"><span class="add-on">stand lon</span><input type="text" id="ntf-stand-lon" name="stand-lon" placeholder="" class="span3"></div>
-						<div id="ntf-pole-lat-cont" class="input-prepend"><span class="add-on">pole lat</span><input type="text" id="ntf-pole-lat" name="pole-lat" placeholder="" class="span3"></div>
-						<div id="ntf-pole-lon-cont" class="input-prepend"><span class="add-on">pole lon</span><input type="text" id="ntf-pole-lon" name="pole-lon" placeholder="" class="span3"></div>
+            
+			<div class="control-group" id="ntf-true-lat-container">
+				<div class="controls">
+					<div class="form-inline">
+						<div id="ntf-true-lat1-cont" class="input-prepend"><span class="add-on">true scale latitude 1</span><input type="text" id="ntf-true-lat1" name="true-lat1" placeholder=""></div>
+						<div id="ntf-true-lat2-cont" class="input-prepend"><span class="add-on">true scale latitude 2</span><input type="text" id="ntf-true-lat2" name="true-lat2" placeholder=""></div>
+						<div id="ntf-stand-lon-cont" class="input-prepend"><span class="add-on">stand lon</span><input type="text" id="ntf-stand-lon" name="stand-lon" placeholder=""></div>
+						<div id="ntf-pole-lat-cont" class="input-prepend"><span class="add-on">pole lat</span><input type="text" id="ntf-pole-lat" name="pole-lat" placeholder=""></div>
+						<div id="ntf-pole-lon-cont" class="input-prepend"><span class="add-on">pole lon</span><input type="text" id="ntf-pole-lon" name="pole-lon" placeholder=""></div>
 					</div>
 				</div>
 			</div>
-			<div class="clearfix" id="ntf-true-lat-container">
-				<div class="input">
-					<input type="button" id="btn-map-preview" value="Preview" class="btn info">
+            
+			<div class="control-group" id="ntf-true-lat-container">
+				<div class="controls">
+					<input type="button" id="btn-map-preview" value="Preview" class="btn btn-info">
 				</div>
 			</div>
 		</fieldset>
 		
 		<fieldset>
 			<legend>Domain Settings</legend>
-			<div class="clearfix">
-				<div class="input">
-					<table id="domain-list" class="bordered-table zebra-striped span12">
+			<div class="control-group">
+				<div class="controls">
+					<table id="domain-list" class="table table-striped table-bordered table-condensed">
 						<tbody>
 							<tr>
 								<th></th>
@@ -88,22 +97,24 @@
 						</tbody>
 					</table>
 				
-					<input type="button" id="btn-add-domain" class="btn info" value="Add Domain" >
-					<input type="button" id="btn-remove-domain" class="btn danger" value="Remove Selected Domain" >
+					<input type="button" id="btn-add-domain" class="btn btn-info" value="Add Domain" >
+					<input type="button" id="btn-remove-domain" class="btn btn-danger" value="Remove Selected Domain" >
 				</div>
 			</div>
 			
-			<div class="clearfix">
+			<div class="control-group">
 				<label for="ntf-time-step">Time Step</label>
-				<div class="input"><input type="text" id="ntf-time-step" name="title" placeholder="enter model time step"></div>
+				<div class="controls">
+                    <input type="text" id="ntf-time-step" name="title" placeholder="enter model time step">
+                </div>
 			</div>
 		</fieldset>
 		
 		<fieldset>
 			<legend>Chemistry Options</legend>
 			
-			<div class="clearfix">
-				<div class="input">
+			<div class="control-group">
+				<div class="controls">
 					<label>
                     	<input type="checkbox" name="optionsCheckboxes" value="option1" checked="checked">
 						<span>Enable WRF/Chem</span>
@@ -111,10 +122,10 @@
 				</div>
 			</div>
 			
-			<div class="clearfix">
+			<div class="control-group">
 				<label for="ntf-chem-select-data">Data Source</label>
-				<div class="input">
-					<div class="inline">
+				<div class="controls">
+					<div class="form-inline">
 						<input type="hidden" id="ntf-chem-selected-data" value="">
 						<input type="button" class="btn" id="ntf-chem-select-data" value="Select Data">
 						<span id="ntf-chem-data"></span>
@@ -123,8 +134,8 @@
 			</div>
 		</fieldset>
 		
-		<div class="actions">
-			<input type="button" class="btn primary" value="Save">
+		<div class="form-actions">
+    		<input type="button" class="btn btn-primary btn-large" value="Save">
 		</div>
 	</form>
 </div>

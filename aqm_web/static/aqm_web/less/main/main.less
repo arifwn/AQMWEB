@@ -1,0 +1,475 @@
+
+@font-face {
+  font-family: 'Exo';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Exo Regular'), local('Exo-Regular'), url('../font/exo-regular.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Exo';
+  font-style: normal;
+  font-weight: bold;
+  src: local('Exo Bold'), local('Exo-Bold'), url('../font/exo-bold.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Montserrat Regular'), local('Montserrat-Regular'), url('../font/montserrat.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Imprima';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Imprima'), local('Imprima-Regular'), url('../font/imprima.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Italiana';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Italiana'), local('Italiana-Regular'), url('../font/italiana.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Economica';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Economica'), local('Economica-Regular'), url('../font/economica.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Droid Serif';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Droid Serif'), local('DroidSerif'), url('../font/droid-serif-normal.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Droid Serif';
+  font-style: normal;
+  font-weight: bold;
+  src: local('Droid Serif Bold'), local('DroidSerif-Bold'), url('../font/droid-serif-bold.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Droid Sans';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Droid Sans'), local('DroidSans'), url('../font/droid-sans-normal.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Droid Sans';
+  font-style: normal;
+  font-weight: bold;
+  src: local('Droid Sans Bold'), local('DroidSans-Bold'), url('../font/droid-sans-bold.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'PT Sans';
+  font-style: normal;
+  font-weight: normal;
+  src: local('PT Sans'), local('PTSans-Regular'), url('../font/pt-sans-normal.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'PT Sans';
+  font-style: normal;
+  font-weight: bold;
+  src: local('PT Sans Bold'), local('PTSans-Bold'), url('../font/pt-sans-bold.woff') format('woff');
+}
+
+@import "../bootstrap/bootstrap.less";
+@import "variables.less";
+
+
+body {
+  padding-top: 60px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+    font-family: 'Exo', sans-serif;
+    font-weight: bold;
+}
+
+.brand {
+    font-family: 'Exo', sans-serif;
+    font-weight: bold;
+}
+
+.navbar {
+    &.mainmenu {
+        a {
+            &.profile {
+                position: relative;
+                padding-left: 40px;
+                height: 40px;
+                padding-top: 0;
+                padding-bottom: 0;
+                .avatar {
+                    position: absolute;
+                    top: 4px;
+                    left: 4px;
+                    width: 32px;
+                    height: 32px;
+                    margin: 0;
+                    padding: 0;
+                    background-color: fade(@white, 80%);
+                    .border-radius(3px);
+                    .box-shadow(0 1px 0 fade(@black, 33%));
+                }
+            }
+        }
+    }
+}
+
+.container {
+    
+    .main-area {
+        background: white;
+        border-radius: 4px;
+    }
+}
+
+
+
+// Domain Modal
+
+.domain-modal {
+	width: 960px;
+	left: 30%;
+}
+
+// Task List
+.task-list {
+	margin: 5px 0 0 0;
+	padding: 0;
+	list-style: none;
+    
+    > li {
+        position: relative;
+        margin: 0 0 20px 0;
+        padding: 5px 2px;
+        min-height: 120px;
+        list-style: none;
+        padding-left: 150px;
+        
+        &:hover {
+            background: #FAFAFA;
+        }
+        
+        .header {
+            a {
+                color: #333;
+            }
+        }
+ 
+        .controls {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            height: 28px;
+            
+            > li {
+                float: left;
+                margin: 0;
+                padding: 0 5px;
+            }
+        }
+        
+        .task-progress {
+            position: absolute;
+            left: 10px;
+            top: 20px;
+            
+            .counter {
+                font-weight: bold;
+                font-size: 50px;
+                line-height: 50px;
+                
+                &.success {
+                    color: #46A546;
+                }
+                
+                &.warning {
+                    color: #f89406;
+                }
+                
+                &.notice {
+                    color: #62cffc;
+                }
+                
+                &.important {
+                    color: #c43c35;
+                }
+            }
+        }
+    }
+}
+
+// Spinner
+
+.spinner {
+	height: 10px;
+    margin-top: 20px;
+    
+    .arrow {
+        float: left;
+        width: 0;
+        height: 0;
+        border: 5px solid white;
+        border-color: rgba(255, 255, 255, 0);
+        border-left-width: 10px;
+        border-left-color: #EEE;
+        border-left-style: solid;
+        
+        &.active {
+            border-left-color: #62CFFC;
+        }
+    }
+}
+
+// Auto-Fixed Toolbox
+
+.toolbox {
+    &.fixed {
+        position: fixed;
+        top: 40px;
+        padding: 3px 20px;
+        margin: 0 -20px;
+        z-index: 999;
+        background: rgba(239, 239, 239, 0.7);
+        border-radius: 0 0 3px 3px;
+        border: solid 1px #C0C0C0;
+        border-top: none;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+        
+        &.slim {
+            padding: 3px;
+        }
+    }
+}
+
+
+// Chem Data List
+
+.chem-data-list {
+	margin: 5px 0 0 0;
+	padding: 0;
+	list-style: none;
+    
+    > li {
+        position: relative;
+        margin: 0 0 20px 0;
+        padding: 5px 2px;
+        min-height: 120px;
+        list-style: none;
+        
+        :hover {
+            background: #FAFAFA;
+        }
+
+       .header {
+            a {
+               color: #333;
+            }
+       }
+
+       .controls {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            height: 28px;
+ 
+            > li {
+                float: left;
+                margin: 0;
+                padding: 0 5px;
+            }
+        }
+    }
+}
+
+
+// Server Status
+
+.server-status {
+	padding: 10px;
+	margin: 0 0 20px 0;
+	background: white;
+	border: 1px solid #DDD;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+}
+
+.bar-chart {
+	position: relative;
+	width: 100%;
+	height: 22px;
+	margin: 1px;
+    
+    &.medium {
+        width: 300px;
+    }
+    
+    .inner-bar {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 3px;
+        padding: 1px;
+        border: solid 1px gray;
+        background-color: white;
+        
+        .bar {
+            width: 0;
+            height: 100%;
+            background-color: gray;
+        }
+    }
+
+    .inner-text {
+        position: absolute;
+        top: 0;
+        right: 0;
+        background-color: transparent;
+        text-align: right;
+        font-size: 14px;
+        line-height: 14px;
+        text-shadow: 0 0 1px white;
+    }
+    
+    &.color-green {
+        .inner-bar {
+            border-color: #46A546;
+        }
+        
+        .bar {
+            background-color: #46A546;
+        }
+    }
+    
+    &.color-blue {
+        .inner-bar {
+            border-color: #0064CD;
+        }
+        
+        .bar {
+            background-color: #0064CD;
+        }
+    }
+
+    &.color-red {
+        .inner-bar {
+            border-color: #C43C35;
+        }
+        .bar {
+            background-color: #C43C35;
+        }
+    }
+
+}
+
+
+// User Profile
+
+.user-profile {
+	position: relative;
+	min-height: 150px;
+    
+    .profile-area {
+        padding-left: 150px;
+        
+        ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            
+            > li {
+                margin: 0;
+                padding: 0;
+            }
+        }
+    }
+
+    .field-label {
+        font-weight: bold;
+    }
+
+    .meta {
+        position: absolute;
+        top: 0;
+        left: 0;
+        
+        .avatar {
+            img {
+                margin: 0;
+                padding: 0;
+                -moz-border-radius: 3px;
+                -webkit-border-radius: 3px;
+                -o-border-radius: 3px;
+                border-radius: 3px;
+                -moz-box-shadow: 0 0 2px RGBA(0, 0, 0, 0.6);
+                -webkit-box-shadow: 0 0 2px RGBA(0, 0, 0, 0.6);
+                -o-box-shadow: 0 0 2px RGBA(0, 0, 0, 0.6);
+                box-shadow: 0 0 2px RGBA(0, 0, 0, 0.6);
+            }
+        }
+    }
+}
+
+
+
+// Custom Scrollbar
+.custom-scroll-bar::-webkit-scrollbar {
+  width: 10px;
+  background: -webkit-gradient(linear,left top,right top,color-stop(0%,
+  rgba(202, 202, 202, 0.07)),color-stop(100%,
+  rgba(229, 229, 229, 0.07)));
+  background: -webkit-linear-gradient(left, rgba(202, 202, 202, 0.07) 0%, rgba(229, 229, 229, 0.07) 100%);
+  -webkit-box-shadow: 0 0 1px 0 rgba(0,0,0,.15) inset,0 1px 0 0 #fff;
+  box-shadow: 0 0 1px 0 rgba(0,0,0,.15) inset,0 1px 0 0 #fff;
+  background-color: #BBB;
+}
+.custom-scroll-bar::-webkit-scrollbar-thumb {
+  background: -webkit-gradient(linear,left top,right top,color-stop(0%,
+  rgba(233, 233, 233, 0.05)),color-stop(100%,
+  rgba(221, 221, 221, 0.05)));
+  background: -webkit-linear-gradient(left,
+  rgba(233, 233, 233, 0.05) 0%,
+  rgba(221, 221, 221, 0.05) 100%);
+  -webkit-box-shadow: 0 2px 1px 0 rgba(0,0,0,.05);
+  box-shadow: 0 2px 1px 0 rgba(0,0,0,.05);
+  background-color: #E9E9E9;
+}
+.custom-scroll-bar::-webkit-scrollbar, .custom-scroll-bar::-webkit-scrollbar-thumb {
+  overflow: visible;
+  .border-radius(4px);
+  border: solid 1px 
+  #A6A6A6;
+}
+Pseudo ::-webkit-file-upload-button element.custom-scroll-bar::-webkit-scrollbar-thumb {
+  background: -webkit-gradient(linear,left top,right top,color-stop(0%,
+  rgba(233, 233, 233, 0.05)),color-stop(100%,
+  rgba(221, 221, 221, 0.05)));
+  background: -webkit-linear-gradient(left,
+  rgba(233, 233, 233, 0.05) 0%,
+  rgba(221, 221, 221, 0.05) 100%);
+  -webkit-box-shadow: 0 2px 1px 0 rgba(0,0,0,.05);
+  box-shadow: 0 2px 1px 0 rgba(0,0,0,.05);
+  background-color: #E9E9E9;
+}
+Pseudo ::-webkit-input-placeholder element.custom-scroll-bar::-webkit-scrollbar-button {
+  height: 0;
+  display: block;
+  background-color: transparent;
+}

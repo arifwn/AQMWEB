@@ -1,7 +1,7 @@
 {% load url from future %}
 {% load fb_versions %}
 <div class="row">
-  <div class="span16">
+  <div class="span12">
     <h1>Edit Avatar</h1>
     <form action="" enctype="multipart/form-data" method="post">
       {% csrf_token %}
@@ -14,7 +14,7 @@
         </div>
       </fieldset>
       <div class="actions">
-        <input type="submit" value="Update Avatar" class="btn primary" />
+        <input type="submit" value="Update Avatar" class="btn btn-primary" />
       </div>
     </form>
   </div>

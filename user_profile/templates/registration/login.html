@@ -9,7 +9,7 @@
 {% block all-elements %}
 <div class="container">
 	<div class="row">
-		<div class="span8 offset4 columns">
+		<div class="span6 offset3 columns">
 		
 		{% if form.errors %}
 		<div class="alert-message block-message error" data-alert="alert">
@@ -18,21 +18,27 @@
 		</div>
 		{% endif %}
 		
-		<form class="well" method="post" action="{% url 'django.contrib.auth.views.login' %}">
+		<form class="form-horizontal well" method="post" action="{% url 'django.contrib.auth.views.login' %}">
 			{% csrf_token %}
 			<fieldset>
 				<legend>Login</legend>
-				<div class="clearfix">
-					{{ form.username.label_tag }}
-					<div class="input">{{ form.username }}</div>
+				<div class="control-group">
+                    <label class="control-label" for="id_username">{{ form.username.label }}</label>
+					<div class="controls">
+                        {{ form.username }}
+                    </div>
 				</div>
-				<div class="clearfix">
-					{{ form.password.label_tag }}
-					<div class="input">{{ form.password }}</div>
+				<div class="control-group">
+                    <label class="control-label" for="id_password">{{ form.password.label }}</label>
+					<div class="controls">
+                        {{ form.password }}
+                    </div>
 				</div>
-				<div class="actions">
-					{% query_string request "next" "html_form" %}
-					<input type="submit" class="btn primary" value="login">
+				<div class="control-group">
+                    <div class="controls">
+                        {% query_string request "next" "html_form" %}
+                        <input type="submit" class="btn btn-primary btn-large" value="Login">
+                    </div>
 				</div>
 			</fieldset>
 			
