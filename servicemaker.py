@@ -1,15 +1,15 @@
 '''
-Run Django on Twisted
+Run Django 1.4 using Twisted WSGI container
 
-foreground: twistd -n --reactor=epoll rundjangoserver
-background (demonized): twistd --reactor=epoll rundjangoserver
+foreground: twistd -n --reactor=epoll rundjserver
+background (demonized): twistd --reactor=epoll rundjserver
 
 Created on Jan 22, 2012
 
 @author: arif
 '''
+
 import os
-os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
 from django.conf import settings
 
 from zope.interface import implements
@@ -22,7 +22,7 @@ from twisted.web import server, resource, wsgi, static
 from twisted.python import threadpool
 from twisted.internet import reactor
 
-from django.core.handlers.wsgi import WSGIHandler
+from aqmwebinterface import wsgi as django_wsgi
 
 
 DEBUG = getattr(settings, 'DEBUG', True)
@@ -75,7 +75,7 @@ class AQMServiceMaker(object):
         tps.setServiceParent(multi)
 
         # create the WSGI resource using the thread pool and Django handler
-        resource = wsgi.WSGIResource(reactor, tps.pool, WSGIHandler())
+        resource = wsgi.WSGIResource(reactor, tps.pool, django_wsgi.application)
         # create a custom 'root' resource, that we can add other things to
         root = Root(resource)
         

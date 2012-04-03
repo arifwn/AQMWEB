@@ -10,3 +10,5 @@ media/wrf
 twistd.pid
 twistd.log
 dropin.cache
+*.komodoproject
+
