@@ -3,7 +3,7 @@ Created on Dec 14, 2011
 
 @author: arif
 '''
-from wrf.models import ChemData, PollutantParam, AltMeteoData, Domain, Task, Setting, BaseSetting, TaskGroup
+from wrf.models import ChemData, PollutantParam, AltMeteoData, Task, Setting, BaseSetting, TaskGroup
 from django.contrib import admin
 from django.contrib.auth.models import User
 from django.db import models
@@ -11,7 +11,7 @@ from django import forms
 from tinymce.widgets import TinyMCE
 
 class SettingAdmin(admin.ModelAdmin):
-    list_display = ['name', 'user', 'setting_version', 'removed']
+    list_display = ['name', 'user', 'created', 'modified', 'removed']
     
     def get_form(self, request, obj=None, **kwargs):
         form = super(SettingAdmin, self).get_form(request, obj, **kwargs)
@@ -35,7 +35,7 @@ class SettingAdmin(admin.ModelAdmin):
 admin.site.register(Setting, SettingAdmin)
 
 class BaseSettingAdmin(admin.ModelAdmin):
-    list_display = ['name', 'user', 'removed']
+    list_display = ['name', 'user', 'created', 'modified', 'removed']
     
     def get_form(self, request, obj=None, **kwargs):
         form = super(BaseSettingAdmin, self).get_form(request, obj, **kwargs)
@@ -112,18 +112,8 @@ class AltMeteoDataAdmin(admin.ModelAdmin):
 admin.site.register(AltMeteoData, AltMeteoDataAdmin)
 
 
-class DomainAdmin(admin.ModelAdmin):
-    list_display = ['name', 'user', 'width', 'height', 'parent']
-    
-    def get_form(self, request, obj=None, **kwargs):
-        form = super(DomainAdmin, self).get_form(request, obj, **kwargs)
-        form.base_fields['user'].initial = request.user
-        return form
-        
-admin.site.register(Domain, DomainAdmin)
-
 class TaskAdmin(admin.ModelAdmin):
-    list_display = ['name', 'user', 'period_start', 'period_end']
+    list_display = ['name', 'user', 'created', 'modified']
     
     def get_form(self, request, obj=None, **kwargs):
         form = super(TaskAdmin, self).get_form(request, obj, **kwargs)
@@ -148,7 +138,7 @@ admin.site.register(Task, TaskAdmin)
 
 
 class TaskGroupAdmin(admin.ModelAdmin):
-    list_display = ['name', 'user', 'running']
+    list_display = ['name', 'user']
     
     def get_form(self, request, obj=None, **kwargs):
         form = super(TaskGroupAdmin, self).get_form(request, obj, **kwargs)

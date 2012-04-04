@@ -1,4 +1,5 @@
 {% load url from future %}
+{% load add_class %}
 
 <div class="row">
 <div class="span12">
@@ -6,19 +7,33 @@
 		<h1>New WRF/Chem Task</h1>
 	</div>
 
-	<form id="wrf-new-task-form" class="form-horizontal">
+	<form action="{% url "wrf_new_task" %}" method="post" id="wrf-new-task-form" class="form-horizontal">
+        {% csrf_token %}
+        
+        {% if form.errors %}
+        <div class="alert alert-error">
+            <p>There are some errors in your password information. Please try again.</p>
+        </div>
+        {% endif %}
+        
+        {% if form.non_field_errors %}
+        <div class="alert alert-error">
+            <p>{{ form.non_field_errors }}</p>
+        </div>
+        {% endif %}
+        
 		<fieldset>
 			<div class="control-group">
-				<label class="control-label" for="ntf-name">Name</label>
+				<label class="control-label" for="id_task_name">{{ form.task_name.label }}</label>
 				<div class="controls">
-                    <input type="text" id="ntf-title" name="title" placeholder="enter task title" class="span9" >
+                    {{ form.task_name|add_class:"span9"}}
                 </div>
 			</div>
             
 			<div class="control-group">
-				<label class="control-label" for="ntf-desc">Description</label>
+				<label class="control-label" for="id_task_description">{{ form.task_description.label }}</label>
 				<div class="controls">
-                    <textarea id="ntf-desc" name="description" placeholder="enter task description" class="span9" ></textarea>
+                    {{ form.task_description|add_class:"span9"}}
                 </div>
 			</div>
             
@@ -103,13 +118,38 @@
 			</div>
 			
 			<div class="control-group">
-				<label for="ntf-time-step">Time Step</label>
+				<label class="control-label" for="ntf-time-step">Time Step</label>
 				<div class="controls">
                     <input type="text" id="ntf-time-step" name="title" placeholder="enter model time step">
                 </div>
 			</div>
 		</fieldset>
 		
+		<fieldset>
+            <legend>Direct Namelist Settings</legend>
+            
+			<div class="control-group">
+				<label class="control-label" for="id_task_namelist_wps">{{ form.task_namelist_wps.label }}</label>
+				<div class="controls">
+                    {{ form.task_namelist_wps|add_class:"span9"}}
+                </div>
+			</div>
+            
+			<div class="control-group">
+				<label class="control-label" for="id_task_namelist_wrf">{{ form.task_namelist_wrf.label }}</label>
+				<div class="controls">
+                    {{ form.task_namelist_wrf|add_class:"span9"}}
+                </div>
+			</div>
+            
+			<div class="control-group">
+				<label class="control-label" for="id_task_namelist_arwpost">{{ form.task_namelist_arwpost.label }}</label>
+				<div class="controls">
+                    {{ form.task_namelist_arwpost|add_class:"span9"}}
+                </div>
+			</div>
+        </fieldset>
+            
 		<fieldset>
 			<legend>Chemistry Options</legend>
 			
@@ -135,7 +175,7 @@
 		</fieldset>
 		
 		<div class="form-actions">
-    		<input type="button" class="btn btn-primary btn-large" value="Save">
+    		<input type="submit" class="btn btn-primary btn-large" value="Save">
 		</div>
 	</form>
 </div>
@@ -148,52 +188,52 @@
 		<h3>Title</h3>
 	</div>
 	<div class="modal-body">
-		<form id="wrf-new-task-form">
-		<fieldset>
-			<div class="clearfix" id="ntf-dom-name-container">
-				<label for="ntf-dom-name">Domain Name</label>
-				<div class="input">
-					<div class="inline">
-						<input type="text" id="ntf-dom-name" name="dom-name" placeholder="Enter domain name" class="span5" >
-						<input type="hidden" id="ntf-dom-id" name="dom-id" >
-						Parent: 
-						<select id="ntf-parent-domain" name="parent-domain">
-							<option value="none">-- None --</option>
-							<option value="1">Domain 1</option>
-						</select>
-					</div>
-				</div>
-			</div>
-			
-			<div class="clearfix" id="ntf-dom-width-container">
-				<label for="ntf-dom-width">Dimension</label>
-				<div class="input">
-					<div class="inline">
-						<div id="ntf-dom-width-cont" class="input-prepend"><span class="add-on">width</span><input type="text" id="ntf-dom-width" name="dom-width" class="span3" placeholder="enter value in grids"></div>
-						<div id="ntf-dom-height-cont" class="input-prepend"><span class="add-on">height</span><input type="text" id="ntf-dom-height" name="dom-height" class="span3" placeholder="enter value in grids"></div>
-						<div id="ntf-dom-dx-cont" class="input-prepend"><span class="add-on">dx</span><input type="text" id="ntf-dom-dx" name="dom-dx" class="span2" placeholder="enter value in meter"></div>
-						<div id="ntf-dom-dy-cont" class="input-prepend"><span class="add-on">dy</span><input type="text" id="ntf-dom-dy" name="dom-dy" class="span2" placeholder="enter value in meter"></div>
-						<div id="ntf-ratio-cont" class="input-prepend"><span class="add-on">parent grid ratio</span><input type="text" id="ntf-ratio" name="dom-ratio" class="span3" placeholder=""></div>
-					</div>
-				</div>
-			</div>
-			
-			<div id="ntf-dom-parent-start-container" class="clearfix">
-				<label for="ntf-dom-parent-start-i">Position</label>
-				<div class="input">
-					<div class="inline">
-						<div id="ntf-dom-parent-start-i-cont" class="input-prepend"><span class="add-on">i parent start</span><input type="text" id="ntf-dom-parent-start-i" name="dom-i-parent-start" class="span2" placeholder=""></div>
-						<div id="ntf-dom-parent-start-j-cont" class="input-prepend"><span class="add-on">j parent start</span><input type="text" id="ntf-dom-parent-start-j" name="dom-j-parent-start" class="span2" placeholder=""></div>
-						
-					</div>
-				</div>
-			</div>
-		</fieldset>
+		<form class="form-horizontal" id="wrf-new-task-form">
+            <fieldset>
+                <div class="control-group" id="ntf-dom-name-container">
+                    <label class="control-label" for="ntf-dom-name">Domain Name</label>
+                    <div class="controls">
+                        <div class="form-inline">
+                            <input type="text" id="ntf-dom-name" name="dom-name" placeholder="Enter domain name" class="span5" >
+                            <input type="hidden" id="ntf-dom-id" name="dom-id" >
+                            Parent: 
+                            <select id="ntf-parent-domain" name="parent-domain">
+                                <option value="none">-- None --</option>
+                                <option value="1">Domain 1</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="control-group" id="ntf-dom-width-container">
+                    <label class="control-label" for="ntf-dom-width">Dimension</label>
+                    <div class="controls">
+                        <div class="form-inline">
+                            <div id="ntf-dom-width-cont" class="input-prepend"><span class="add-on">width</span><input type="text" id="ntf-dom-width" name="dom-width" class="span3" placeholder="enter value in grids"></div>
+                            <div id="ntf-dom-height-cont" class="input-prepend"><span class="add-on">height</span><input type="text" id="ntf-dom-height" name="dom-height" class="span3" placeholder="enter value in grids"></div>
+                            <div id="ntf-dom-dx-cont" class="input-prepend"><span class="add-on">dx</span><input type="text" id="ntf-dom-dx" name="dom-dx" class="span2" placeholder="enter value in meter"></div>
+                            <div id="ntf-dom-dy-cont" class="input-prepend"><span class="add-on">dy</span><input type="text" id="ntf-dom-dy" name="dom-dy" class="span2" placeholder="enter value in meter"></div>
+                            <div id="ntf-ratio-cont" class="input-prepend"><span class="add-on">parent grid ratio</span><input type="text" id="ntf-ratio" name="dom-ratio" class="span3" placeholder=""></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="control-group" id="ntf-dom-parent-start-container">
+                    <label class="control-label" for="ntf-dom-parent-start-i">Position</label>
+                    <div class="controls">
+                        <div class="form-inline">
+                            <div id="ntf-dom-parent-start-i-cont" class="input-prepend"><span class="add-on">i parent start</span><input type="text" id="ntf-dom-parent-start-i" name="dom-i-parent-start" class="span2" placeholder=""></div>
+                            <div id="ntf-dom-parent-start-j-cont" class="input-prepend"><span class="add-on">j parent start</span><input type="text" id="ntf-dom-parent-start-j" name="dom-j-parent-start" class="span2" placeholder=""></div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
 		</form>
 	</div>
 	<div class="modal-footer">
-		<input type="button" id="btn-domain-modal-ok" class="btn primary" value="OK">
-		<input type="button" id="btn-domain-modal-cancel" class="btn secondary" value="Cancel">
+		<input type="button" id="btn-domain-modal-ok" class="btn btn-primary" value="OK">
+		<input type="button" id="btn-domain-modal-cancel" class="btn" value="Cancel">
 	</div>
 </div>
 
@@ -209,7 +249,7 @@
 		</div>
 	</div>
 	<div class="modal-footer">
-		<input type="button" id="btn-area-modal-close" class="btn secondary" value="Close">
+		<input type="button" id="btn-area-modal-close" class="btn" value="Close">
 	</div>
 </div>
 
@@ -302,8 +342,8 @@
 			var projection = $('#ntf-proj').val()
 			
 			if (projection === 'mercator') {
-				var latitude = get_float_or_error('#ntf-ref-lat', '#ntf-ref-lat-cont');
-				var longitude = get_float_or_error('#ntf-ref-lon', '#ntf-ref-lon-cont');
+				var latitude = get_float_or_error('#ntf-ref-lat', '#ntf-ref-container');
+				var longitude = get_float_or_error('#ntf-ref-lon', '#ntf-ref-container');
 				var true_lat = get_float_or_error('#ntf-true-lat1', '#ntf-true-lat-container');
 				
 				if (isNaN(latitude) || isNaN(longitude) || isNaN(true_lat)){

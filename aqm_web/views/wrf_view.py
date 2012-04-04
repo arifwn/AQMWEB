@@ -3,6 +3,10 @@ Created on Sep 27, 2011
 
 @author: Arif
 '''
+
+import logging
+logger = logging.getLogger(__name__)
+
 from django.shortcuts import render_to_response
 from django.contrib.auth.decorators import login_required
 from django.template import RequestContext
@@ -10,21 +14,57 @@ from django.template.loader import get_template
 from django.http import HttpResponse
 from django.http import Http404
 from django.shortcuts import redirect
+from django.contrib import messages
 
-import logging
-
-logger = logging.getLogger(__name__)
 
 @login_required
 def new_task(request):
+    ''' View for WRF Task Creation '''
+    from wrf.forms import NewTaskForm
+    from wrf.models import Setting, Task
+    
+    if request.method == 'POST':
+        task_form = NewTaskForm(request.POST)
+        if task_form.is_valid():
+            task_name = task_form.cleaned_data['task_name']
+            task_description = task_form.cleaned_data['task_description']
+            task_namelist_wps = task_form.cleaned_data['task_namelist_wps']
+            task_namelist_wrf = task_form.cleaned_data['task_namelist_wrf']
+            task_namelist_arwpost = task_form.cleaned_data['task_namelist_arwpost']
+            
+            # TODO: handle ChemData setting
+            
+            wrf_setting = Setting(name=task_name, user=request.user,
+                                  description=task_description,
+                                  namelist_wps=task_namelist_wps,
+                                  namelist_wrf=task_namelist_wrf,
+                                  namelist_arwpost=task_namelist_arwpost)
+            
+            wrf_setting.save()
+            
+            wrf_task = Task(name=task_name, user=request.user,
+                                  description=task_description,
+                                  setting=wrf_setting)
+            wrf_task.save()
+            
+            messages.success(request, 'Task created successfully!')
+            
+            return(redirect('wrf_list_task'))
+    else:
+        task_form = NewTaskForm()
+        
     t = get_template('aqm_web/wrf/new-task.html')
-    html = t.render(RequestContext(request, {}))
+    html = t.render(RequestContext(request,
+                                   {'form': task_form}))
     return HttpResponse(html)
 
 @login_required
 def list_task(request):
+    from wrf.models import Task
+    
+    tasks = Task.objects.extra(order_by=['-pk']).all()
     t = get_template('aqm_web/wrf/task-list.html')
-    html = t.render(RequestContext(request, {}))
+    html = t.render(RequestContext(request, {'tasks': tasks}))
     return HttpResponse(html)
 
 

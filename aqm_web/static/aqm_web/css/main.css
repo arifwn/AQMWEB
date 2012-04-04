@@ -698,8 +698,9 @@ h1,h2,h3,h4,h5{font-family:'Exo',sans-serif;font-weight:bold;}
 .task-list>li .controls{margin:0;padding:0;list-style:none;height:28px;}.task-list>li .controls>li{float:left;margin:0;padding:0 5px;}
 .task-list>li .task-progress{position:absolute;left:10px;top:20px;}.task-list>li .task-progress .counter{font-weight:bold;font-size:50px;line-height:50px;}.task-list>li .task-progress .counter.success{color:#46A546;}
 .task-list>li .task-progress .counter.warning{color:#f89406;}
-.task-list>li .task-progress .counter.notice{color:#62cffc;}
+.task-list>li .task-progress .counter.info{color:#3A87AD;}
 .task-list>li .task-progress .counter.important{color:#c43c35;}
+.task-list>li .task-progress .progress{margin-top:20px;}
 .spinner{height:10px;margin-top:20px;}.spinner .arrow{float:left;width:0;height:0;border:5px solid white;border-color:rgba(255, 255, 255, 0);border-left-width:10px;border-left-color:#EEE;border-left-style:solid;}.spinner .arrow.active{border-left-color:#62CFFC;}
 .toolbox.fixed{position:fixed;top:40px;padding:3px 20px;margin:0 -20px;z-index:999;background:rgba(239, 239, 239, 0.7);border-radius:0 0 3px 3px;border:solid 1px #C0C0C0;border-top:none;box-shadow:0 1px 3px rgba(0, 0, 0, 0.25);}.toolbox.fixed.slim{padding:3px;}
 .chem-data-list{margin:5px 0 0 0;padding:0;list-style:none;}.chem-data-list>li{position:relative;margin:0 0 20px 0;padding:5px 2px;min-height:120px;list-style:none;}.chem-data-list>li :hover{background:#FAFAFA;}

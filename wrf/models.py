@@ -5,33 +5,7 @@ from django.test import TestCase
 from django.db.models.signals import pre_save, post_save, pre_delete
 import json
 from wrf import __version__ as wrf_version
-from namelist import encode as n_enc
-from namelist import decode as n_dec
 from aqm_utils.datafile import get_excel_worksheets
-
-
-class Domain(models.Model):
-    name = models.CharField(max_length=200, db_index=True)
-    user = models.ForeignKey(User, db_index=True)
-    created = models.DateTimeField(auto_now_add=True, editable=False)
-    modified = models.DateTimeField(auto_now=True, editable=False)
-    width = models.IntegerField()
-    height = models.IntegerField()
-    dx = models.FloatField(blank=True, null=True)
-    dy = models.FloatField(blank=True, null=True)
-    
-    parent = models.ForeignKey('self', related_name='childs', blank=True, 
-                               null=True)
-    ratio = models.IntegerField(blank=True, null=True)
-    i_parent_start = models.IntegerField(blank=True, null=True)
-    j_parent_start = models.IntegerField(blank=True, null=True)
-    
-    def __unicode__(self):
-        return self.name
-
-    class Meta:
-        verbose_name  = 'Domain'
-        verbose_name_plural  = 'Domains'
 
 
 class Setting(models.Model):
@@ -41,13 +15,10 @@ class Setting(models.Model):
     description = models.TextField()
     created = models.DateTimeField(auto_now_add=True, editable=False)
     modified = models.DateTimeField(auto_now=True, editable=False)
-    setting_json = models.TextField(blank=True)
-    setting_version = models.TextField(blank=True)
-    generated_namelist = models.TextField(blank=True)
-    user_namelist_wrf = models.TextField(blank=True)
-    user_namelist_wps = models.TextField(blank=True)
-    
-    base_setting = models.ForeignKey('BaseSetting');
+    namelist_wrf = models.TextField(blank=True)
+    namelist_wps = models.TextField(blank=True)
+    namelist_arwpost = models.TextField(blank=True)
+    chemdata = models.ForeignKey('ChemData', blank=True, null=True)
     removed = models.BooleanField(default=False, db_index=True)
     
     def __unicode__(self):
@@ -57,20 +28,53 @@ class Setting(models.Model):
         verbose_name  = 'Setting'
         verbose_name_plural  = 'Settings'
     
-    def clean(self):
-        if self.setting_version is None:
-            self.setting_version = wrf_version
-        if self.setting_json is not None:
-            parsed_data = json.loads(self.setting_json)
-            self.generated_namelist = n_enc.encode_namelist(parsed_data)
+    def get_max_dom(self):
+        ''' Get the number of domain from WPS namelist '''
+        from wrf.namelist.decode import decode_namelist_string
+        
+        namelist_wps = getattr(self, 'parsed_namelist_wps', None)
+        if namelist_wps is None:
+            namelist_wps = decode_namelist_string(self.namelist_wps)
+        
+        try:
+            res = namelist_wps['share']['max_dom'][0]
+        except:
+            res = None
+        
+        return res
     
-    def load_namelist(self, namelist_data):
-        data = n_dec.decode_namelist_string(namelist_data)
-        json_data = json.dumps(data)
-        self.setting_json = json_data
+    def get_start_date(self):
+        ''' Return start date from WPS namelist as datetime object '''
+        from wrf.namelist.decode import decode_namelist_string
+        from wrf.namelist.misc import parse_date_string
+        
+        namelist_wps = getattr(self, 'parsed_namelist_wps', None)
+        if namelist_wps is None:
+            namelist_wps = decode_namelist_string(self.namelist_wps)
+        
+        try:
+            res = parse_date_string(namelist_wps['share']['start_date'][0])
+        except:
+            res = None
+        
+        return res
     
-    def get_setting(self):
-        data = json.loads(self.setting_json)
+    def get_end_date(self):
+        ''' Return start date from WPS namelist as datetime object '''
+        from wrf.namelist.decode import decode_namelist_string
+        from wrf.namelist.misc import parse_date_string
+        
+        namelist_wps = getattr(self, 'parsed_namelist_wps', None)
+        if namelist_wps is None:
+            namelist_wps = decode_namelist_string(self.namelist_wps)
+        
+        try:
+            res = parse_date_string(namelist_wps['share']['end_date'][0])
+        except:
+            res = None
+        
+        return res
+    
     
 class BaseSetting(models.Model):
     name = models.CharField(max_length=200, db_index=True)
@@ -80,8 +84,8 @@ class BaseSetting(models.Model):
     modified = models.DateTimeField(auto_now=True, editable=False)
     namelist_wrf = models.TextField()
     namelist_wps = models.TextField()
+    namelist_arwpost = models.TextField(blank=True)
     removed = models.BooleanField(default=False, db_index=True)
-    default = models.BooleanField(default=False, db_index=True)
     
     class Meta:
         verbose_name  = 'BaseSetting'
@@ -175,24 +179,6 @@ class Task(models.Model):
     created = models.DateTimeField(auto_now_add=True, editable=False)
     modified = models.DateTimeField(auto_now=True, editable=False)
     user = models.ForeignKey(User, db_index=True)
-    period_start = models.DateTimeField()
-    period_end = models.DateTimeField()
-    
-    # coordinate settings
-    PROJECTION_TYPE_CHOICE = (
-        ('mercator', 'Mercator'),
-        ('lambert', 'Lambert Conformal'),
-        ('polar', 'Polar Stereographic'),
-        ('cylindrical', 'Regular Latitude-Longitude / Cylindrical Equidistant'),
-    )
-    projection = models.CharField(max_length=20, choices=PROJECTION_TYPE_CHOICE)
-    true_lat_1 = models.FloatField(blank=True, null=True)
-    true_lat_2 = models.FloatField(blank=True, null=True)
-    stand_lon = models.FloatField(blank=True, null=True)
-    pole_lat = models.FloatField(blank=True, null=True)
-    pole_lon = models.FloatField(blank=True, null=True)
-    
-    domains = models.ManyToManyField(Domain)
     setting = models.ForeignKey(Setting);
 
     def __unicode__(self):
@@ -201,6 +187,20 @@ class Task(models.Model):
     class Meta:
         verbose_name  = 'Task'
         verbose_name_plural  = 'Tasks'
+    
+    def get_status(self):
+        ''' Get current task status: draft, running, finished, pending, error '''
+        if self.finished_entry.count() > 0:
+            if self.finished_entry.is_error:
+                return 'error'
+            else:
+                return 'finished'
+        elif self.running_entry.count() > 0:
+            return 'running'
+        elif self.queue_entry.count() > 0:
+            return 'pending'
+        else:
+            return 'draft'
 
 
 class TaskGroup(models.Model):
@@ -209,9 +209,9 @@ class TaskGroup(models.Model):
     created = models.DateTimeField(auto_now_add=True, editable=False)
     modified = models.DateTimeField(auto_now=True, editable=False)
     user = models.ForeignKey(User, db_index=True)
-    tasks = models.ManyToManyField(Task, related_name="groups")
+    tasks = models.ManyToManyField(Task, related_name='groups', blank=True, null=True)
     
-    running = models.BooleanField(default=False)
+    is_running = models.BooleanField(default=False)
 
     def __unicode__(self):
         return self.name
@@ -222,22 +222,58 @@ class TaskGroup(models.Model):
 
 
 class TaskQueue(models.Model):
+    ''' The queue to be consumed by RPC Server '''
+    # Caution: there should not be any duplicated entry for the same task!
     created = models.DateTimeField(auto_now_add=True, editable=False)
-    modified = models.DateTimeField(auto_now=True, editable=False)
-    processed = models.DateTimeField(blank=True, null=True)
-    finished = models.DateTimeField(blank=True, null=True)
-    is_running = models.BooleanField(default=False, db_index=True)
-    is_finished = models.BooleanField(default=False, db_index=True)
-    task = models.ForeignKey(Task, related_name='queues')
+    task = models.ForeignKey(Task, related_name='queue_entry')
     
     class Meta:
         verbose_name  = 'TaskQueue'
         verbose_name_plural  = 'TaskQueues'
-        
-    # if the task is not finished and not running, task consumer can process 
-    # this task and set is_running to True. When finished, set is_running to
-    # false and is_finished to True
 
+
+class RunningTask(models.Model):
+    # When consuming task, an entry put in this table to represent running task
+    # and the source item in TaskQueue is deleted
+    # Caution: there should not be any duplicated entry for the same task!
+    created = models.DateTimeField(auto_now_add=True, editable=False)
+    task = models.ForeignKey(Task, related_name='running_entry')
+    
+    # Which RPC Server consumed this task
+    server = models.ForeignKey('aqm_web.Server')
+    envid = models.IntegerField()
+    
+    # Currently running stage
+    stage = models.CharField(max_length=200, blank=True, db_index=True)
+    
+    class Meta:
+        verbose_name  = 'RunningTask'
+        verbose_name_plural  = 'RunningTasks'
+
+
+class FinishedTask(models.Model):
+    # When finished with the task, an entry put in this table
+    # and the source item in RunningTask is deleted
+    # Caution: there should not be any duplicated entry for the same task!
+    created = models.DateTimeField(auto_now_add=True, editable=False)
+    task = models.ForeignKey(Task, related_name='finished_entry')
+    
+    # Which RPC Server consumed this task
+    server = models.ForeignKey('aqm_web.Server')
+    envid = models.IntegerField()
+    
+    # Last running stage
+    stage = models.CharField(max_length=200, blank=True, db_index=True)
+    
+    # If RPC Server failed when processing this entry, the reason can be found
+    # here
+    is_error = models.BooleanField(default=False)
+    error_log = models.TextField(blank=True)
+    
+    class Meta:
+        verbose_name  = 'FinishedTask'
+        verbose_name_plural  = 'FinishedTasks'
+        
 
 # Prepopulate ChemData's worksheet textfield with dict of worksheets
 # contained within the selected file

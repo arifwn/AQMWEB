@@ -21,7 +21,9 @@ class NamelistParser(StateMachine):
             if string_data is None:
                 self.namelist_data = StringIO()
             else:
-                self.namelist_data = StringIO(string_data)
+                # string_data could be a unicode string,
+                # let's normalize it to str
+                self.namelist_data = StringIO(str(string_data))
         
         self.parsed_data = OrderedDict()
         self.current_section = ''

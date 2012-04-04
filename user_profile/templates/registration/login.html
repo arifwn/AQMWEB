@@ -12,8 +12,7 @@
 		<div class="span6 offset3 columns">
 		
 		{% if form.errors %}
-		<div class="alert-message block-message error" data-alert="alert">
-			<a class="close" href="#">x</a>
+		<div class="alert alerterror">
 			<p>Your username and password didn't match. Please try again.</p>
 		</div>
 		{% endif %}
@@ -22,16 +21,22 @@
 			{% csrf_token %}
 			<fieldset>
 				<legend>Login</legend>
-				<div class="control-group">
+				<div class="control-group {% if form.username.errors %}error{% endif %}">
                     <label class="control-label" for="id_username">{{ form.username.label }}</label>
 					<div class="controls">
                         {{ form.username }}
+                        {% if form.username.errors %}
+                            <span class="help-inline">{{ form.username.errors }}</span>
+                        {% endif %}
                     </div>
 				</div>
-				<div class="control-group">
+				<div class="control-group {% if form.password.errors %}error{% endif %}">
                     <label class="control-label" for="id_password">{{ form.password.label }}</label>
 					<div class="controls">
                         {{ form.password }}
+                        {% if form.password.errors %}
+                            <span class="help-inline">{{ form.password.errors }}</span>
+                        {% endif %}
                     </div>
 				</div>
 				<div class="control-group">

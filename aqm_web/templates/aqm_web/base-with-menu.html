@@ -84,7 +84,7 @@
 
                 <ul class="nav pull-right">
                     <li class="dropdown">
-                    {% if user.get_profile.avatar %}
+                        {% if user.get_profile.avatar %}
                             {% version_object user.get_profile.avatar 't32x32' as im %}
                         {% else %}
                             {% version_object 'image/profile/anon.png' 't32x32' as im %}
@@ -102,9 +102,19 @@
 	  	</div>
       </div>
     </div>
-
+    
 	<div class="container">
 		<div class="main-area">
+            
+            {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-{% if message.tags %}{{ message.tags }}{% endif %}">
+                    <a class="close" data-dismiss="alert">×</a>
+                    {{ message }}
+                </div>
+                {% endfor %}
+            {% endif %}
+            
 			{% block all-elements %}
 			{% endblock %}
 		</div>

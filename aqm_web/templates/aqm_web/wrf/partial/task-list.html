@@ -1,4 +1,5 @@
 {% load url from future %}
+{% load fb_versions %}
 {% load webdesign %}
 <div class="row">
 <div class="span16">
@@ -28,6 +29,93 @@
 	<div class="row">
 		<div class="span12">
 			<ul class="task-list">
+                
+                {% for task in tasks %}
+				<li>
+					<div class="header">
+						<h2><a href="#">{{ task.name }}</a></h2>
+					</div>
+					<div class="content">
+                        <div class="well">
+						{{ task.description }}
+                        </div>
+						<table class="table table-striped table-bordered table-condensed">
+							<thead>
+								<tr>
+									<th>User</th>
+									<th>Domain</th>
+									<th>Period</th>
+								</tr>
+							</thead>
+							<tbody>
+                                {% if user.get_profile.avatar %}
+                                    {% version_object user.get_profile.avatar 't32x32' as im %}
+                                {% else %}
+                                    {% version_object 'image/profile/anon.png' 't32x32' as im %}
+                                {% endif %}
+								<tr>
+									<td><a href="{% url 'view-profile' task.user.username %}"><img class="avatar" src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" /> {% firstof task.user.get_full_name task.user.username %}</a></td>
+									<td>{{ task.setting.get_max_dom }}</td>
+									<td>{{ task.setting.get_start_date|date:"jS F Y H:i" }} &mdash; {{ task.setting.get_end_date|date:"jS F Y H:i" }}</td>
+								</tr>
+							</tbody>
+						</table>
+						<ul class="controls">
+                        {% if task.get_status == "draft" %}
+                            <li><a class="btn btn-info" href="#">Run</a></li>
+							<li><a class="btn" href="#">Details</a></li>
+							<li><a class="btn" href="#">Edit</a></li>
+							<li><a class="btn btn-danger" href="#">Delete</a></li>
+                        {% elif task.get_status == "running" %}
+							<li><a class="btn btn-danger" href="#">Stop</a></li>
+							<li><a class="btn" href="#">Details</a></li>
+                        {% elif task.get_status == "finished" %}
+							<li><a class="btn btn-success" href="#">Results</a></li>
+							<li><a class="btn btn-info" href="#">Run Again</a></li>
+							<li><a class="btn" href="#">Details</a></li>
+							<li><a class="btn" href="#">Edit</a></li>
+							<li><a class="btn btn-danger" href="#">Delete</a></li>
+                        {% elif task.get_status == "pending" %}
+							<li><a class="btn btn-danger" href="#">Cancel</a></li>
+							<li><a class="btn" href="#">Details</a></li>
+                        {% elif task.get_status == "error" %}
+							<li><a class="btn btn-info" href="#">Retry last stage</a></li>
+							<li><a class="btn btn-info" href="#">Run</a></li>
+							<li><a class="btn" href="#">Details</a></li>
+							<li><a class="btn" href="#">Edit</a></li>
+							<li><a class="btn btn-danger" href="#">Delete</a></li>
+                        {% endif %}
+						</ul>
+					</div>
+                    <div class="task-progress">
+                    {% if task.get_status == "draft" %}
+						<div class="counter">0%</div>
+						<div class="stage"></div>
+						<div><span class="label">draft</span></div>
+                    {% elif task.get_status == "running" %}
+                        <div class="counter info">30%</div>
+                        <div class="stage">WPS/geogrid</div>
+                        <div><span class="label label-info">running</span></div>
+                        <div class="progress progress-striped active">
+                            <div class="bar" style="width: 30%;"></div>
+                        </div>
+                    {% elif task.get_status == "finished" %}
+                        <div class="counter success">100%</div>
+						<div class="stage"></div>
+						<div><span class="label label-success">finished</span></div>
+                    {% elif task.get_status == "pending" %}
+						<div class="counter warning">0%</div>
+						<div class="stage"></div>
+						<div><span class="label label-warning">pending</span></div>
+                    {% elif task.get_status == "error" %}
+						<div class="counter important">50%</div>
+						<div class="stage">WRF/real</div>
+						<div><span class="label label-important">error</span></div>
+                    {% endif %}
+                    </div>
+				</li>
+                {% endfor %}
+                
 				<li>
 					<div class="header">
 						<h2><a href="#">{% lorem 7 w random %}</a></h2>
@@ -61,7 +149,7 @@
 					<div class="task-progress">
 						<div class="counter success">100%</div>
 						<div class="stage"></div>
-						<div><span class="label success">finished</span></div>
+						<div><span class="label label-success">finished</span></div>
 					</div>
 				</li>
 				
@@ -96,7 +184,7 @@
 					<div class="task-progress">
 						<div class="counter warning">0%</div>
 						<div class="stage"></div>
-						<div><span class="label warning">pending</span></div>
+						<div><span class="label label-warning">pending</span></div>
 					</div>
 				</li>
 				
@@ -127,12 +215,14 @@
 							<li><a class="btn" href="#">Details</a></li>
 						</ul>
 					</div>
-					<div class="task-progress">
-						<div class="counter notice">30%</div>
-						<div class="stage">WPS/geogrid</div>
-						<div><span class="label notice">running</span></div>
-						<div class="icon" data-spinner="spinner"></div>
-					</div>
+                    <div class="task-progress">
+                        <div class="counter info">30%</div>
+                        <div class="stage">WPS/geogrid</div>
+                        <div><span class="label label-info">running</span></div>
+                        <div class="progress progress-striped active">
+                            <div class="bar" style="width: 30%;"></div>
+                        </div>
+                    </div>
 				</li>
 				
 				<li>
@@ -168,7 +258,7 @@
 					<div class="task-progress">
 						<div class="counter important">50%</div>
 						<div class="stage">WRF/real</div>
-						<div><span class="label important">error</span></div>
+						<div><span class="label label-important">error</span></div>
 					</div>
 				</li>
 				

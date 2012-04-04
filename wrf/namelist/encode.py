@@ -60,7 +60,7 @@ def encode_namelist(data):
     
 def test():
     import os
-    from wrf.namelist.decode import decode_namelist
+    from aqmrpc.wrf.namelist.decode import decode_namelist
     
     path = os.path.join(os.path.dirname(__file__),'test/namelist.wps')
     print path
