@@ -5,7 +5,7 @@ Created on Nov 24, 2011
 '''
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseForbidden
 from django.utils import simplejson as json
 from django.core.cache import cache
 
@@ -13,6 +13,9 @@ from django.core.cache import cache
 def get_server_utilization(request, server_id):
     from aqm_utils.xmlrpc import Client
     
+    if request.user.is_anonymous():
+        return HttpResponseForbidden()
+        
     server_addr_key = 'server_addr_%s' % server_id
     server_addr = cache.get(server_addr_key, None)
     if server_addr is None:

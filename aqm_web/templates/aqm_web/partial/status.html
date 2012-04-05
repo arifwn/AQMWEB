@@ -11,9 +11,10 @@ $(document).ready(function () {
 					var cpu = data['cpu'];
 					var cpu_label = cpu + '%';
 					simplebar.set('#cpu-usage-server-1', cpu, cpu_label);
-					var mem = data['memory'];
-					var percentage = (mem / max_memory) * 100;
-					var label = (mem / (1024 * 1024)) + 'MB';
+					var mem_used = data['memory_used'];
+					var mem_total = data['memory_total'];
+					var percentage = data['memory_percent'];
+					var label = Math.round(mem_used / (1024 * 1024)) + 'MB / ' + Math.round(mem_total / (1024 * 1024)) + 'MB';
 					simplebar.set('#memory-usage-server-1', percentage, label);
 					
 					$('#server_1 > .header > .label').text('healthy');
@@ -31,7 +32,7 @@ $(document).ready(function () {
 		});
 		
 		
-	}, 5000);
+	}, 2500);
 });
 </script>
 
@@ -55,15 +56,15 @@ $(document).ready(function () {
 									<tr>
 										<th>Current CPU Usage</th>
 										<td>
-											<div id="cpu-usage-server-1" class="color-green medium" data-simplebar="simplebar" data-simplebar-percentage="33" 
-											data-simplebar-text="33%"></div>
+											<div id="cpu-usage-server-1" class="color-green medium" data-simplebar="simplebar" data-simplebar-percentage="0" 
+											data-simplebar-text="loading..."></div>
 										</td>
 									</tr>
 									<tr>
 										<th>Current Memory Usage</th>
 										<td>
-											<div id="memory-usage-server-1" class="color-blue medium" data-simplebar="simplebar" data-simplebar-percentage="50" 
-											data-simplebar-text="4000MB"></div>
+											<div id="memory-usage-server-1" class="color-blue medium" data-simplebar="simplebar" data-simplebar-percentage="0" 
+											data-simplebar-text="loading..."></div>
 										</td>
 									</tr>
 									<tr>
