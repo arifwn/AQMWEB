@@ -6,26 +6,36 @@ Created on Nov 24, 2011
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
-from django.utils import simplejson
+from django.utils import simplejson as json
+from django.core.cache import cache
 
-import namelist.encode
-import namelist.decode
 
-#TODO: return http 401 if not authenticated
-def get_namelist(request, type):
-    test_namelist = settings.MEDIA_ROOT + 'test_data/namelist.input'
-    content_type = 'application/json'
-    ext = 'json'
+def get_server_utilization(request, server_id):
+    from aqm_utils.xmlrpc import Client
     
-    data = namelist.decode.decode_namelist(test_namelist)
+    server_addr_key = 'server_addr_%s' % server_id
+    server_addr = cache.get(server_addr_key, None)
+    if server_addr is None:
+        # TODO: read server info from db
+        addr = '127.0.0.1'
+        port = 8080
+        server_addr = 'https://%s:%d' % (addr, port)
+        cache.set(server_addr_key, server_addr)
     
-    if type == 'xml':
-        ext = 'xml'
-        content_type = 'text/xml'
+    
+    server_utilization_key = 'server_utilization_%s' % server_id
+    server_utilization = cache.get(server_utilization_key, None)
+    if server_utilization is None:
+        c = Client(server_addr)
+        try:
+            server_utilization = c.server.utilization()
+        except:
+            resp = HttpResponse()
+            resp.status_code = 503
+            return resp
         
-        #TODO: return data as xml
-        response = HttpResponse(simplejson.dumps(data), content_type='json')
-    else:
-        response = HttpResponse(simplejson.dumps(data), content_type=content_type)
+        cache.set(server_utilization_key, server_utilization, 5)
     
-    return response
+    json_str = json.dumps(server_utilization)
+    return HttpResponse(json_str)
+    

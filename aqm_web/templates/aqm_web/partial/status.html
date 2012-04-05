@@ -1,21 +1,37 @@
 <script>
+{% load url from future %}
+
 $(document).ready(function () {
-	var cpus = ['#cpu-usage-server-1', '#cpu-usage-server-2'];
-	var mems = ['#memory-usage-server-1', '#memory-usage-server-2'];
-	
+	var max_memory = 8 * 1024 * 1024 * 1024;
 	var timer = setInterval(function(){
-		for(var i=0; i<cpus.length; i++){
-			var percentage = parseInt(Math.random()*100);
-			var label = percentage+'%';
-			simplebar.set(cpus[i], percentage, label);
-		}
-		for(var i=0; i<mems.length; i++){
-			var mem = parseInt(Math.random()*2000 + 5000);
-			var percentage = (mem/8000)*100;
-			var label = mem+'MB';
-			simplebar.set(mems[i], percentage, label);
-		}
-	}, 2000);
+		
+		$.ajax({url: "{% url 'server-utilization' 1 %}",
+				dataType: 'json',
+				success: function(data){
+					var cpu = data['cpu'];
+					var cpu_label = cpu + '%';
+					simplebar.set('#cpu-usage-server-1', cpu, cpu_label);
+					var mem = data['memory'];
+					var percentage = (mem / max_memory) * 100;
+					var label = (mem / (1024 * 1024)) + 'MB';
+					simplebar.set('#memory-usage-server-1', percentage, label);
+					
+					$('#server_1 > .header > .label').text('healthy');
+					$('#server_1 > .header > .label').removeClass('label-important').addClass('label-success');
+					},
+				error: function(jqXHR, textStatus, errorThrown){
+					console.log(errorThrown);
+					if(errorThrown==='SERVICE UNAVAILABLE'){
+						$('#server_1 > .header > .label').text('service disruption');
+						$('#server_1 > .header > .label').removeClass('label-success').addClass('label-important');
+						simplebar.set('#cpu-usage-server-1', 0, '--');
+						simplebar.set('#memory-usage-server-1', 0, '--');
+					}
+				}
+		});
+		
+		
+	}, 5000);
 });
 </script>
 
@@ -28,10 +44,10 @@ $(document).ready(function () {
 
 			<div class="row">
 				<div class="span6">
-					<div class="server-status">
+					<div id="server_1" class="server-status">
 						<div class="header">
 							<h2>Server 1</h2>
-							<span class="label success">healty</span>
+							<span class="label label-success">healthy</span>
 						</div>
 						<div class="content">
 							<table>
@@ -76,56 +92,6 @@ $(document).ready(function () {
 							</table>
 						</div>
 					</div>
-					
-					<div class="server-status">
-						<div class="header">
-							<h2>Server 2</h2>
-							<span class="label success">healty</span>
-						</div>
-						<div class="content">
-							<table>
-								<tbody>
-									<tr>
-										<th>Current CPU Usage</th>
-										<td>
-											<div id="cpu-usage-server-2" class="color-green medium" data-simplebar="simplebar" data-simplebar-percentage="54" 
-											data-simplebar-text="54%"></div>
-										</td>
-									</tr>
-									<tr>
-										<th>Current Memory Usage</th>
-										<td>
-											<div id="memory-usage-server-2" class="color-blue medium" data-simplebar="simplebar" data-simplebar-percentage="75" 
-											data-simplebar-text="6000MB"></div>
-										</td>
-									</tr>
-									<tr>
-										<th>Current Disk Usage</th>
-										<td>
-											<div class="bar-chart color-red medium">
-												<div class="inner-bar">
-													<div class="bar" style="width: 83%"></div>
-												</div>
-												<div class="inner-text">1323 GB / 2000 GB</div>
-											</div>
-										</td>
-									</tr>
-									<tr>
-										<th>Slot Utilization</th>
-										<td>
-											<div class="bar-chart medium">
-												<div class="inner-bar">
-													<div class="bar" style="width: 100%"></div>
-												</div>
-												<div class="inner-text">4 of 4</div>
-											</div>
-										</td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
-					</div>
-					
 					
 				</div>
 				<div class="span5">

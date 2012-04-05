@@ -150,6 +150,10 @@ INSTALLED_APPS = (
     'django_extensions'
 )
 
+AQM_CERT_CERT = './cert/cert.pem'
+AQM_CERT_KEY = './cert/key.pem'
+AQM_CERT_CACERT = './cert/cacert.pem'
+
 INTERNAL_IPS = ('127.0.0.1',)
 DEBUG_TOOLBAR_CONFIG = {
                         'INTERCEPT_REDIRECTS': False,

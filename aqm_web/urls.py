@@ -34,7 +34,11 @@ urlpatterns += patterns('aqm_web.views.wrf_view',
 )
 
 urlpatterns += patterns('aqm_web.views.plot',
-    (r'^plot/mercator$', 'mercator'),
-    (r'^plot/lambert-conformal$', 'lambert_conformal'),
-    (r'^plot/test$', 'test_plot'),
+    url(r'^plot/mercator$', 'mercator'),
+    url(r'^plot/lambert-conformal$', 'lambert_conformal'),
+    url(r'^plot/test$', 'test_plot'),
+)
+
+urlpatterns += patterns('aqm_web.views.web_api',
+    url(r'^api/server-utilization/(\d+)$', 'get_server_utilization', name='server-utilization'),
 )

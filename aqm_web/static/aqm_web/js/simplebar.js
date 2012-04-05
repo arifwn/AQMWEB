@@ -16,9 +16,9 @@ simplebar.set = function(target, percentage, label){
 	$(target).attr('data-simplebar-percentage');
 	$(target).attr('data-simplebar-text');
 	if (percentage !== undefined){
-//		$(target).find('.bar').attr('style', 'width: '+percentage+'%;');
 		if (percentage > 100) percentage = 100;
-		$(target).find('.bar').animate({width: percentage+'%'}, 2000, 'linear');
+		$(target).find('.bar').animate({'width': percentage+'%'}, 300, 'swing');
+		//$(target).find('.bar').css({'width': percentage+'%'});
 	}
 	if (label !== undefined){
 		$(target).find('.inner-text').text(label);
