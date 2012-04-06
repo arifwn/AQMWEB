@@ -17,14 +17,14 @@ def debug_static(request, path):
 
 @login_required
 def index(request):
-    t = get_template('aqm_web/status.html')
-    html = t.render(RequestContext(request, {}))
-    return HttpResponse(html)
+    return status(request)
 
 @login_required
 def status(request):
+    from aqm_web.models import Server
+    servers = Server.objects.all()
     t = get_template('aqm_web/status.html')
-    html = t.render(RequestContext(request, {}))
+    html = t.render(RequestContext(request, {'servers': servers}))
     return HttpResponse(html)
     
 

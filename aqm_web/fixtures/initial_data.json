@@ -32,5 +32,14 @@
             "user": 1,
             "avatar": "image/profile/arif_pic.jpg"
         }
+    },
+    {
+        "pk": 1,
+        "model": "aqm_web.server",
+        "fields": {
+            "name": "Test Local Server",
+            "address": "127.0.0.1",
+            "port": 8080
+        }
     }
 ]

@@ -5,32 +5,41 @@ $(document).ready(function () {
 	var max_memory = 8 * 1024 * 1024 * 1024;
 	var timer = setInterval(function(){
 		
-		$.ajax({url: "{% url 'server-utilization' 1 %}",
+        {% for server in servers %}
+		$.ajax({url: "{% url 'server-utilization' server.pk %}",
 				dataType: 'json',
 				success: function(data){
 					var cpu = data['cpu'];
 					var cpu_label = cpu + '%';
-					simplebar.set('#cpu-usage-server-1', cpu, cpu_label);
-					var mem_used = data['memory_used'];
-					var mem_total = data['memory_total'];
-					var percentage = data['memory_percent'];
-					var label = Math.round(mem_used / (1024 * 1024)) + 'MB / ' + Math.round(mem_total / (1024 * 1024)) + 'MB';
-					simplebar.set('#memory-usage-server-1', percentage, label);
+					simplebar.set('#cpu-usage-server-{{ server.pk }}', cpu, cpu_label);
 					
-					$('#server_1 > .header > .label').text('healthy');
-					$('#server_1 > .header > .label').removeClass('label-important').addClass('label-success');
+                    var mem_used = data['memory_used'];
+					var mem_total = data['memory_total'];
+					var mem_percent = data['memory_percent'];
+					var label = Math.round(mem_used / (1024 * 1024)) + 'MB / ' + Math.round(mem_total / (1024 * 1024)) + 'MB';
+					simplebar.set('#memory-usage-server-{{ server.pk }}', mem_percent, label);
+					
+                    var disk_used = data['disk_used'];
+					var disk_total = data['disk_total'];
+					var disk_percent = data['disk_percent'];
+					var label = Math.round(disk_used / (1024 * 1024 * 1024)) + 'GB / ' + Math.round(disk_total / (1024 * 1024 * 1024)) + 'GB';
+					simplebar.set('#disk-usage-server-{{ server.pk }}', disk_percent, label);
+					
+					$('#server_{{ server.pk }} > .header > .label').text('healthy');
+					$('#server_{{ server.pk }} > .header > .label').removeClass('label-important').addClass('label-success');
 					},
 				error: function(jqXHR, textStatus, errorThrown){
-					console.log(errorThrown);
+					
 					if(errorThrown==='SERVICE UNAVAILABLE'){
-						$('#server_1 > .header > .label').text('service disruption');
-						$('#server_1 > .header > .label').removeClass('label-success').addClass('label-important');
-						simplebar.set('#cpu-usage-server-1', 0, '--');
-						simplebar.set('#memory-usage-server-1', 0, '--');
+						$('#server_{{ server.pk }} > .header > .label').text('service disruption');
+						$('#server_{{ server.pk }} > .header > .label').removeClass('label-success').addClass('label-important');
+						simplebar.set('#cpu-usage-server-{{ server.pk }}', 0, '--');
+						simplebar.set('#memory-usage-server-{{ server.pk }}', 0, '--');
+						simplebar.set('#disk-usage-server-{{ server.pk }}', 0, '--');
 					}
 				}
 		});
-		
+		{% endfor %}
 		
 	}, 2500);
 });
@@ -45,10 +54,11 @@ $(document).ready(function () {
 
 			<div class="row">
 				<div class="span6">
-					<div id="server_1" class="server-status">
+                    {% for server in servers %}
+                    <div id="server_{{ server.pk }}" class="server-status">
 						<div class="header">
-							<h2>Server 1</h2>
-							<span class="label label-success">healthy</span>
+							<h2>{{ server.name }} <small>{{ server.address }}:{{ server.port }}</small></h2>
+							<span class="label">loading...</span>
 						</div>
 						<div class="content">
 							<table>
@@ -56,26 +66,22 @@ $(document).ready(function () {
 									<tr>
 										<th>Current CPU Usage</th>
 										<td>
-											<div id="cpu-usage-server-1" class="color-green medium" data-simplebar="simplebar" data-simplebar-percentage="0" 
+											<div id="cpu-usage-server-{{ server.pk }}" class="color-green medium" data-simplebar="simplebar" data-simplebar-percentage="0" 
 											data-simplebar-text="loading..."></div>
 										</td>
 									</tr>
 									<tr>
 										<th>Current Memory Usage</th>
 										<td>
-											<div id="memory-usage-server-1" class="color-blue medium" data-simplebar="simplebar" data-simplebar-percentage="0" 
+											<div id="memory-usage-server-{{ server.pk }}" class="color-blue medium" data-simplebar="simplebar" data-simplebar-percentage="0" 
 											data-simplebar-text="loading..."></div>
 										</td>
 									</tr>
 									<tr>
 										<th>Current Disk Usage</th>
 										<td>
-											<div class="bar-chart color-red medium">
-												<div class="inner-bar">
-													<div class="bar" style="width: 83%"></div>
-												</div>
-												<div class="inner-text">1323 GB / 2000 GB</div>
-											</div>
+											<div id="disk-usage-server-{{ server.pk }}" class="color-red medium" data-simplebar="simplebar" data-simplebar-percentage="0"
+                                            data-simplebar-text="loading..."></div>
 										</td>
 									</tr>
 									<tr>
@@ -93,7 +99,8 @@ $(document).ready(function () {
 							</table>
 						</div>
 					</div>
-					
+                    {% endfor %}
+                    
 				</div>
 				<div class="span5">
 					<table class="table table-striped table-bordered table-condensed" style="background: white;">
