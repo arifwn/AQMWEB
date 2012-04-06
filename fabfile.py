@@ -9,7 +9,7 @@ env.hosts = []
 def dump_data():
     '''Dump primary data into a database fixtures'''
     
-    local('python manage.py dumpdata --indent=4 --exclude=contenttypes --exclude=contenttypes --exclude=sessions --exclude=auth.permission > aqm_web/fixtures/initial_data.json')
+    local('python manage.py dumpdata --indent=4 --exclude=admin.logentry --exclude=contenttypes --exclude=contenttypes --exclude=sessions --exclude=auth.permission > dump.json')
 
 def dump_db():
     dump_prefix = 'backup-drop-if-exist-%s' % datetime.datetime.now().strftime('%Y-%m-%d-T-%H-%M-%S')

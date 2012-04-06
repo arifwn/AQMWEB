@@ -2,7 +2,6 @@
 {% load url from future %}
 
 $(document).ready(function () {
-	var max_memory = 8 * 1024 * 1024 * 1024;
 	var timer = setInterval(function(){
 		
         {% for server in servers %}
