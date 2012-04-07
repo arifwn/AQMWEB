@@ -19,7 +19,7 @@ from twisted.plugin import IPlugin
 from twisted.application.service import IServiceMaker
 from twisted.application import internet, service
 from twisted.web import server, resource, wsgi, static
-from twisted.python import threadpool
+from twisted.python import log, threadpool
 from twisted.internet import reactor, ssl
 
 from aqmwebinterface import wsgi as django_wsgi
@@ -93,8 +93,10 @@ class AQMServiceMaker(object):
         if((SSL_KEY is not None) and (SSL_CERT is not None)):
             sslcontext = ssl.DefaultOpenSSLContextFactory(SSL_KEY, SSL_CERT)
             ws = internet.SSLServer(int(options['port']), site, sslcontext, interface=options['address'])
+            log.msg('Server started with SSL!')
         else:
             ws = internet.TCPServer(int(options['port']), site, interface=options['address'])
+            log.msg('WARNING! Server NOT started SSL!')
         
         # add the web server service to the multi service
         ws.setServiceParent(multi)
