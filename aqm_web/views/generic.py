@@ -22,7 +22,7 @@ def index(request):
 @login_required
 def status(request):
     from aqm_web.models import Server
-    servers = Server.objects.all()
+    servers = Server.objects.filter(is_enabled=True).all()
     t = get_template('aqm_web/status.html')
     html = t.render(RequestContext(request, {'servers': servers}))
     return HttpResponse(html)

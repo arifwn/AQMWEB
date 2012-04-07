@@ -19,7 +19,7 @@ class Setting(models.Model):
     namelist_wps = models.TextField(blank=True)
     namelist_arwpost = models.TextField(blank=True)
     chemdata = models.ForeignKey('ChemData', blank=True, null=True)
-    removed = models.BooleanField(default=False, db_index=True)
+    is_removed = models.BooleanField(default=False, db_index=True)
     
     def __unicode__(self):
         return self.name
@@ -85,7 +85,7 @@ class BaseSetting(models.Model):
     namelist_wrf = models.TextField()
     namelist_wps = models.TextField()
     namelist_arwpost = models.TextField(blank=True)
-    removed = models.BooleanField(default=False, db_index=True)
+    is_removed = models.BooleanField(default=False, db_index=True)
     
     class Meta:
         verbose_name  = 'BaseSetting'
@@ -139,7 +139,7 @@ class ChemData(models.Model):
     data = models.FileField(upload_to='wrf/chem_data/%Y/%m/', max_length=200)
     worksheets = models.TextField(blank=True)
     parameters = models.ManyToManyField(PollutantParam, blank=True, null=True)
-    removed = models.BooleanField(default=False, db_index=True)
+    is_removed = models.BooleanField(default=False, db_index=True)
     
     class Meta:
         verbose_name  = 'ChemData'
@@ -163,7 +163,7 @@ class AltMeteoData(models.Model):
     )
     data_type = models.CharField(max_length=10, choices=DATA_TYPE_CHOICE, 
                                  db_index=True)
-    removed = models.BooleanField(default=False, db_index=True)
+    is_removed = models.BooleanField(default=False, db_index=True)
     
     class Meta:
         verbose_name  = 'AltMeteoData'

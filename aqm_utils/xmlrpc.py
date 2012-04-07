@@ -3,6 +3,8 @@ import xmlrpclib
 
 from django.conf import settings
 
+import aqm_web
+
 
 class SafeTransportWithCert(xmlrpclib.SafeTransport):
     
@@ -10,7 +12,7 @@ class SafeTransportWithCert(xmlrpclib.SafeTransport):
         xmlrpclib.SafeTransport.__init__(self, use_datetime)
         self.__cert_file = settings.SSL_CERT_CERT
         self.__key_file  = settings.SSL_CERT_KEY
-        self.user_agent = 'Test Client 0.0.1'
+        self.user_agent = 'AQM Web Interface %s' % aqm_web.__version__
     
     def make_connection(self,host):
         host_with_cert = (host, {

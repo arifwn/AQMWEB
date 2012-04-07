@@ -11,7 +11,7 @@ from django import forms
 from tinymce.widgets import TinyMCE
 
 class SettingAdmin(admin.ModelAdmin):
-    list_display = ['name', 'user', 'created', 'modified', 'removed']
+    list_display = ['name', 'user', 'created', 'modified', 'is_removed']
     
     def get_form(self, request, obj=None, **kwargs):
         form = super(SettingAdmin, self).get_form(request, obj, **kwargs)
@@ -35,7 +35,7 @@ class SettingAdmin(admin.ModelAdmin):
 admin.site.register(Setting, SettingAdmin)
 
 class BaseSettingAdmin(admin.ModelAdmin):
-    list_display = ['name', 'user', 'created', 'modified', 'removed']
+    list_display = ['name', 'user', 'created', 'modified', 'is_removed']
     
     def get_form(self, request, obj=None, **kwargs):
         form = super(BaseSettingAdmin, self).get_form(request, obj, **kwargs)
@@ -64,7 +64,7 @@ class PollutantParamAdmin(admin.ModelAdmin):
 admin.site.register(PollutantParam, PollutantParamAdmin)
 
 class ChemDataAdmin(admin.ModelAdmin):
-    list_display = ['name', 'user', 'removed']
+    list_display = ['name', 'user', 'is_removed']
     
     def get_form(self, request, obj=None, **kwargs):
         form = super(ChemDataAdmin, self).get_form(request, obj, **kwargs)
@@ -88,7 +88,7 @@ class ChemDataAdmin(admin.ModelAdmin):
 admin.site.register(ChemData, ChemDataAdmin)
 
 class AltMeteoDataAdmin(admin.ModelAdmin):
-    list_display = ['name', 'user', 'data_type', 'removed']
+    list_display = ['name', 'user', 'data_type', 'is_removed']
     
     def get_form(self, request, obj=None, **kwargs):
         form = super(AltMeteoDataAdmin, self).get_form(request, obj, **kwargs)

@@ -10,6 +10,7 @@ class Server(models.Model):
     address = models.CharField(max_length=100)
     port = models.IntegerField()
     secret_key = models.TextField()
+    is_enabled = models.BooleanField(default=True, db_index=True)
     
     def __unicode__(self):
         return self.name
