@@ -8,7 +8,8 @@ from django.test import TestCase
 class Server(models.Model):
     name = models.CharField(max_length=200, db_index=True)
     address = models.CharField(max_length=100)
-    port = models.IntegerField()    
+    port = models.IntegerField()
+    secret_key = models.TextField()
     
     def __unicode__(self):
         return self.name

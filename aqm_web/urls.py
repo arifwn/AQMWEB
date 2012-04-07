@@ -4,6 +4,10 @@ Created on Sep 18, 2011
 @author: Arif
 '''
 from django.conf.urls.defaults import *
+from piston.resource import Resource
+
+from aqm_web.handlers import ServerStatusHandler
+from aqm_web.authentication import CookieAuthentication
 
 urlpatterns = patterns('aqm_web.views.generic',
     url(r'^$', 'index', name='index'),
@@ -39,6 +43,11 @@ urlpatterns += patterns('aqm_web.views.plot',
     url(r'^plot/test$', 'test_plot'),
 )
 
-urlpatterns += patterns('aqm_web.views.web_api',
-    url(r'^api/server-utilization/(\d+)$', 'get_server_utilization', name='server-utilization'),
+# REST API
+auth = CookieAuthentication(realm="AQM Web Interface")
+ad = { 'authentication': auth }
+serverstatus_resource = Resource(handler=ServerStatusHandler, **ad)
+
+urlpatterns += patterns('',
+    url(r'^rest/server/status/(?P<server_id>[^/]+)/$', serverstatus_resource, name='server-utilization'), 
 )

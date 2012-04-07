@@ -28,8 +28,7 @@ $(document).ready(function () {
 					$('#server_{{ server.pk }} > .header > .label').removeClass('label-important').addClass('label-success');
 					},
 				error: function(jqXHR, textStatus, errorThrown){
-					
-					if(errorThrown==='SERVICE UNAVAILABLE'){
+					if(errorThrown==='INTERNAL SERVER ERROR'){
 						$('#server_{{ server.pk }} > .header > .label').text('service disruption');
 						$('#server_{{ server.pk }} > .header > .label').removeClass('label-success').addClass('label-important');
 						simplebar.set('#cpu-usage-server-{{ server.pk }}', 0, '--');

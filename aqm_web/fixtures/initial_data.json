@@ -39,7 +39,8 @@
         "fields": {
             "name": "Test Local Server",
             "address": "127.0.0.1",
-            "port": 8080
+            "port": 8080,
+            "secret_key": "!x!1b(-#6bg40l4#=qs5ew3u!%nak=f5oq&#2*lf$f04xk5_u2"
         }
     },
     {
