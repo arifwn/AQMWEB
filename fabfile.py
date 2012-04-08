@@ -19,7 +19,7 @@ def compile_less():
     local('lessc --compress aqm_web/static/aqm_web/less/main/main.less > aqm_web/static/aqm_web/css/main.css')
     
 def compile_coffee():
-    local('coffee -o aqm_web/static/aqm_web/js -c aqm_web/static/aqm_web/coffee/chemdata-step2.coffee')
+    local('coffee -o aqm_web/static/aqm_web/js -c aqm_web/static/aqm_web/coffee/*.coffee')
 
 def get_all_files(directory, ext='.py'):
     import os

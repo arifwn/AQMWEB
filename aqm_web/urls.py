@@ -6,7 +6,7 @@ Created on Sep 18, 2011
 from django.conf.urls.defaults import *
 from piston.resource import Resource
 
-from aqm_web.handlers import ServerStatusHandler
+from aqm_web.handlers import ServerStatusHandler, TaskHandler
 from aqm_web.authentication import CookieAuthentication
 
 urlpatterns = patterns('aqm_web.views.generic',
@@ -46,8 +46,12 @@ urlpatterns += patterns('aqm_web.views.plot',
 # REST API
 auth = CookieAuthentication(realm="AQM Web Interface")
 ad = { 'authentication': auth }
+
 serverstatus_resource = Resource(handler=ServerStatusHandler, **ad)
+task_resource = Resource(handler=TaskHandler, **ad)
 
 urlpatterns += patterns('',
-    url(r'^rest/server/status/(?P<server_id>[^/]+)/$', serverstatus_resource, name='server-utilization'), 
+    url(r'^rest/server/status/(?P<server_id>[^/]+)/$', serverstatus_resource, name='rest-server-utilization'),
+    url(r'^rest/task/$', task_resource, name='rest-task-list'), 
+    url(r'^rest/task/(?P<task_id>[^/]+)/$', task_resource, name='rest-task'), 
 )

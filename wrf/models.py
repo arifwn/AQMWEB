@@ -180,6 +180,9 @@ class Task(models.Model):
     modified = models.DateTimeField(auto_now=True, editable=False)
     user = models.ForeignKey(User, db_index=True)
     setting = models.ForeignKey(Setting);
+    
+    stage_list = ['Model Preparation', 'WPS', 'WRF/Real', 'WRF/Emission',
+                  'WRF', 'ARWpost']
 
     def __unicode__(self):
         return self.name
@@ -190,18 +193,40 @@ class Task(models.Model):
     
     def get_status(self):
         ''' Get current task status: draft, running, finished, pending, error '''
-        if self.finished_entry.count() > 0:
-            if self.finished_entry.is_error:
-                return 'error'
-            else:
-                return 'finished'
-        elif self.running_entry.count() > 0:
-            return 'running'
-        elif self.queue_entry.count() > 0:
-            return 'pending'
-        else:
+        try:
+            if self.queue.status == 'finished':
+                if self.queue.is_error:
+                    return 'error'
+            return self.queue.status
+        except TaskQueue.DoesNotExist:
             return 'draft'
-
+    
+    def get_stage(self):
+        ''' Get current task stage. '''
+        try:
+            return self.queue.stage
+        except TaskQueue.DoesNotExist:
+            return ''
+    
+    def get_progress_percent(self):
+        ''' Get current task progress completion in percent. '''
+        try:
+            stage = self.queue.stage
+        except TaskQueue.DoesNotExist:
+            return 0
+        
+        if self.queue.status == 'pending':
+            return 0
+        elif (self.queue.status == 'finished') and not self.queue.is_error:
+            return 100
+        
+        try:
+            index = self.stage_list.index(stage)
+        except ValueError:
+            return -1
+        
+        percent = (float(index) / float(len(self.stage_list))) * 100.0
+        return int(percent)
 
 class TaskGroup(models.Model):
     name = models.CharField(max_length=200, db_index=True)
@@ -225,44 +250,20 @@ class TaskQueue(models.Model):
     ''' The queue to be consumed by RPC Server '''
     # Caution: there should not be any duplicated entry for the same task!
     created = models.DateTimeField(auto_now_add=True, editable=False)
-    task = models.ForeignKey(Task, related_name='queue_entry')
+    task = models.OneToOneField(Task, related_name='queue')
     
-    class Meta:
-        verbose_name  = 'TaskQueue'
-        verbose_name_plural  = 'TaskQueues'
-
-
-class RunningTask(models.Model):
-    # When consuming task, an entry put in this table to represent running task
-    # and the source item in TaskQueue is deleted
-    # Caution: there should not be any duplicated entry for the same task!
-    created = models.DateTimeField(auto_now_add=True, editable=False)
-    task = models.ForeignKey(Task, related_name='running_entry')
-    
-    # Which RPC Server consumed this task
+    # Which RPC Server assigned this task
     server = models.ForeignKey('aqm_web.Server')
-    envid = models.IntegerField()
+    envid = models.IntegerField(blank=True, null=True)
+    
+    STATUS_TYPE = [('pending', 'Pending'),
+        ('running', 'Running'),
+        ('finished', 'Finished'),
+        ('canceled', 'Canceled')]
+    status = models.CharField(max_length=20, db_index=True,
+                              choices=STATUS_TYPE, default='pending')
     
     # Currently running stage
-    stage = models.CharField(max_length=200, blank=True, db_index=True)
-    
-    class Meta:
-        verbose_name  = 'RunningTask'
-        verbose_name_plural  = 'RunningTasks'
-
-
-class FinishedTask(models.Model):
-    # When finished with the task, an entry put in this table
-    # and the source item in RunningTask is deleted
-    # Caution: there should not be any duplicated entry for the same task!
-    created = models.DateTimeField(auto_now_add=True, editable=False)
-    task = models.ForeignKey(Task, related_name='finished_entry')
-    
-    # Which RPC Server consumed this task
-    server = models.ForeignKey('aqm_web.Server')
-    envid = models.IntegerField()
-    
-    # Last running stage
     stage = models.CharField(max_length=200, blank=True, db_index=True)
     
     # If RPC Server failed when processing this entry, the reason can be found
@@ -270,10 +271,13 @@ class FinishedTask(models.Model):
     is_error = models.BooleanField(default=False)
     error_log = models.TextField(blank=True)
     
+    def __unicode__(self):
+        return self.task.name
+    
     class Meta:
-        verbose_name  = 'FinishedTask'
-        verbose_name_plural  = 'FinishedTasks'
-        
+        verbose_name  = 'TaskQueue'
+        verbose_name_plural  = 'TaskQueues'
+
 
 # Prepopulate ChemData's worksheet textfield with dict of worksheets
 # contained within the selected file

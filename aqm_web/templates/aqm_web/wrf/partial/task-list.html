@@ -1,6 +1,25 @@
 {% load url from future %}
 {% load fb_versions %}
 {% load webdesign %}
+<script>
+$(document).ready(function () {
+    var task_list = [];
+    
+    $.ajax({url: "{% url 'rest-task-list' %}",
+            dataType: 'json',
+            type: 'GET',
+            success: function(data){
+                $('.task-list').empty();
+                task_list = data;
+                render_task_list('.task-list', data);
+            },
+            error: function(jqXHR, textStatus, errorThrown){
+                console.log(errorThrown);
+            }
+    });
+});
+</script>
+
 <div class="row">
 <div class="span16">
 	<div class="page-header">
@@ -29,7 +48,12 @@
 	<div class="row">
 		<div class="span12">
 			<ul class="task-list">
-                
+                <li>
+                    <div class="span2 offset3">
+                        <div id="map-loading-spinner" data-spinner="noauto" style=""></div>
+                    </div>
+                </li>
+                {% comment %}
                 {% for task in tasks %}
 				<li>
 					<div class="header">
@@ -297,6 +321,7 @@
 						<div><span class="label">draft</span></div>
 					</div>
 				</li>
+            {% endcomment %}
 			</ul>
 		</div>
 	</div>

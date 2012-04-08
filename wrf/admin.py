@@ -3,7 +3,7 @@ Created on Dec 14, 2011
 
 @author: arif
 '''
-from wrf.models import ChemData, PollutantParam, AltMeteoData, Task, Setting, BaseSetting, TaskGroup
+from wrf.models import ChemData, PollutantParam, AltMeteoData, Task, Setting, BaseSetting, TaskGroup, TaskQueue
 from django.contrib import admin
 from django.contrib.auth.models import User
 from django.db import models
@@ -135,6 +135,13 @@ class TaskAdmin(admin.ModelAdmin):
         return form
         
 admin.site.register(Task, TaskAdmin)
+
+
+class TaskQueueAdmin(admin.ModelAdmin):
+    list_display = ['task', 'server', 'created', 'envid', 'status',
+                    'stage', 'is_error']
+        
+admin.site.register(TaskQueue, TaskQueueAdmin)
 
 
 class TaskGroupAdmin(admin.ModelAdmin):

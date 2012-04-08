@@ -5,8 +5,9 @@ $(document).ready(function () {
 	var timer = setInterval(function(){
 		
         {% for server in servers %}
-		$.ajax({url: "{% url 'server-utilization' server.pk %}",
+		$.ajax({url: "{% url 'rest-server-utilization' server.pk %}",
 				dataType: 'json',
+                type: 'GET',
 				success: function(data){
 					var cpu = data['cpu'];
 					var cpu_label = cpu + '%';
