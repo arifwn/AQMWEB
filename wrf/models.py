@@ -191,6 +191,10 @@ class Task(models.Model):
         verbose_name  = 'Task'
         verbose_name_plural  = 'Tasks'
     
+    @models.permalink
+    def get_rest_url(self):
+        return ('rest-task', [str(self.id)])
+    
     def get_status(self):
         ''' Get current task status: draft, running, finished, pending, error '''
         try:

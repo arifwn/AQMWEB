@@ -12,6 +12,7 @@ $(document).ready(function () {
                 $('.task-list').empty();
                 task_list = data;
                 render_task_list('.task-list', data);
+				setup_task_list_auto_update(data, 5000);
             },
             error: function(jqXHR, textStatus, errorThrown){
                 console.log(errorThrown);

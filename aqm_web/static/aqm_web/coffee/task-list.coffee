@@ -1,10 +1,48 @@
 
+# append all task in the given list to the target
 window.render_task_list = (target, task_list) ->
     console.log task_list
     append_task target, task for task in task_list
 
+# update displayed html with data from a given task
+window.update_task = (task) ->
+    # console.log "updating task-#{ task.id }", task
+    task_html = get_task_html task
+    $("#task-#{ task.id }").empty()
+    $("#task-#{ task.id }").append task_html
 
+# setup automatic update of every task in the given list
+window.setup_task_list_auto_update = (task_list, interval) ->
+    setup_task_auto_update task, interval for task in task_list
+
+# setup automatic update of a given task
+setup_task_auto_update = (task, interval) ->
+    updater = (task) ->
+        $.ajax {url: task.get_rest_url,
+        dataType: "json",
+        type: "GET",
+        success: update_task,
+        error: (jqXHR, textStatus, errorThrown) ->
+            console.log errorThrown
+        }
+        
+    
+    timer = setInterval ()->
+        updater task
+    , interval
+
+# append a task html to the end of the target
 append_task = (target, task) ->
+    task_html = get_task_html task
+    html = """
+    <li id="task-#{ task.id }">
+        #{ task_html }
+    </li>
+    """
+    $(target).append html
+
+# construct a html snippet from a given task
+get_task_html = (task) ->
     controls_html = ""
     progress_html = ""
     
@@ -95,38 +133,35 @@ append_task = (target, task) ->
         """
     
     html = """
-    <li id="task-#{ task.id }">
-        <div class="header">
-            <h2><a href="#">#{ task.name }</a></h2>
+    <div class="header">
+        <h2><a href="#">#{ task.name }</a></h2>
+    </div>
+    <div class="content">
+        <div class="well">
+        #{ task.description }
         </div>
-        <div class="content">
-            <div class="well">
-			#{ task.description }
-            </div>
-            <table class="table table-striped table-bordered table-condensed">
-                <thead>
-                    <tr>
-                        <th>User</th>
-                        <th>Domain</th>
-                        <th>Period</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><a href="/accounts/profile/#{ task.user.username }"><img class="avatar" src="/media/image/profile/anon_t32x32.png" width="32" height="32" /> #{ task.user.get_full_name }</a></td>
-                        <td>#{ task.setting.get_max_dom }</td>
-                        <td>#{ task.setting.get_start_date } &mdash; #{ task.setting.get_end_date }</td>
-                    </tr>
-                </tbody>
-            </table>
-            <ul class="controls">
-                #{ controls_html }
-            </ul>
-        </div>
-        
-        <div class="task-progress">
-            #{ progress_html }
-        </div>
-    </li>
+        <table class="table table-striped table-bordered table-condensed">
+            <thead>
+                <tr>
+                    <th>User</th>
+                    <th>Domain</th>
+                    <th>Period</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="/accounts/profile/#{ task.user.username }"><img class="avatar" src="/accounts/avatar/t32x32/#{ task.user.username }" width="32" height="32" style="height: 32px;" /></a> <a href="/accounts/profile/#{ task.user.username }">#{ task.user.get_full_name } (#{ task.user.username })</a></td>
+                    <td>#{ task.setting.get_max_dom }</td>
+                    <td>#{ task.setting.get_start_date } &mdash; #{ task.setting.get_end_date }</td>
+                </tr>
+            </tbody>
+        </table>
+        <ul class="controls">
+            #{ controls_html }
+        </ul>
+    </div>
+    
+    <div class="task-progress">
+        #{ progress_html }
+    </div>
     """
-    $(target).append html

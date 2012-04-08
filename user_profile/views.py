@@ -5,13 +5,14 @@ from django.template import RequestContext
 from django.template.loader import get_template
 from django.http import HttpResponse
 from django.shortcuts import redirect
+from django.conf import settings
 
 @login_required
 def view_profile(request, username):
     try:
         user = User.objects.get(username=username)
         profile = user.get_profile()
-    except:
+    except User.DoesNotExist:
         raise Http404
     
     t = get_template('user_profile/view-profile.html')
@@ -70,3 +71,28 @@ def edit_profile(request):
                                              'form': form
                                              }))
     return HttpResponse(html)
+
+
+def avatar_t32x32(request, username=None):
+    ''' Redirect to 32x32 avatar icon. Create one if not available '''
+    from filebrowser.functions import version_generator
+    from filebrowser.sites import get_default_site
+    
+    if username is None:
+        anon_path = version_generator('image/profile/anon.png', 't32x32', site=get_default_site())
+        anon_url = '%s%s' %(settings.MEDIA_URL, anon_path)
+        return redirect(anon_url)
+    
+    try:
+        user = User.objects.get(username=username)
+        profile = user.get_profile()
+    except User.DoesNotExist:
+        anon_path = version_generator('image/profile/anon.png', 't32x32', site=get_default_site())
+        anon_url = '%s%s' %(settings.MEDIA_URL, anon_path)
+        return redirect(anon_url)
+    
+    avatar_path = version_generator(profile.avatar.__unicode__(), 't32x32', site=get_default_site())
+    avatar_url = '%s%s' %(settings.MEDIA_URL, avatar_path)
+    return redirect(avatar_url)
+    
+    
