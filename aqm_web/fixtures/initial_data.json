@@ -18,6 +18,24 @@
         }
     },
     {
+        "pk": 2,
+        "model": "auth.user",
+        "fields": {
+            "username": "localserver",
+            "first_name": "",
+            "last_name": "",
+            "is_active": true,
+            "is_superuser": false,
+            "is_staff": false,
+            "last_login": "2012-04-10T03:40:21.547",
+            "groups": [],
+            "user_permissions": [],
+            "password": "pbkdf2_sha256$10000$PobBBR2pslUi$pUh5F0PmHFldZUXQk427YqS/gNdouRY8ugsl8km92gs=",
+            "email": "",
+            "date_joined": "2012-04-10T03:40:21.547"
+        }
+    },
+    {
         "pk": 1,
         "model": "sites.site",
         "fields": {
@@ -40,7 +58,7 @@
             "name": "Test Local Server",
             "address": "127.0.0.1",
             "port": 8080,
-            "secret_key": "!x!1b(-#6bg40l4#=qs5ew3u!%nak=f5oq&#2*lf$f04xk5_u2",
+            "user": 2,
             "is_enabled": true
         }
     },

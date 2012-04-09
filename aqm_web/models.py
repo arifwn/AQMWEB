@@ -9,7 +9,7 @@ class Server(models.Model):
     name = models.CharField(max_length=200, db_index=True)
     address = models.CharField(max_length=100)
     port = models.IntegerField()
-    secret_key = models.TextField()
+    user = models.ForeignKey(User, db_index=True)
     is_enabled = models.BooleanField(default=True, db_index=True)
     
     def __unicode__(self):
