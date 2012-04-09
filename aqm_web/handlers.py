@@ -26,7 +26,7 @@ class ServerStatusHandler(BaseHandler):
                 return rc.NOT_FOUND
                 
             server_addr = 'https://%s:%d' % (srv.address, srv.port)
-            cache.set(server_addr_key, server_addr)
+            cache.set(server_addr_key, server_addr, 30)
         
         server_utilization_key = 'server_utilization_%s' % server_id
         server_utilization = cache.get(server_utilization_key, None)
@@ -34,6 +34,7 @@ class ServerStatusHandler(BaseHandler):
             c = Client(server_addr)
             try:
                 server_utilization = c.server.utilization()
+                server_utilization['id'] = server_id
             except:
                 # remote server not available at the moment
                 return rc.INTERNAL_ERROR
@@ -43,6 +44,24 @@ class ServerStatusHandler(BaseHandler):
         return server_utilization
 
 
+class ServerHandler(BaseHandler):
+    model = Server
+    methods_allowed = ('GET',)
+    fields = ('id', 'name', 'address', 'port', 'is_enabled',
+              'get_rest_url', 'get_status_rest_url')
+    
+    def read(self, request, server_id=None):
+        if server_id is not None:
+            try:
+                return Server.objects.get(pk=server_id)
+            except Server.DoesNotExist:
+                return rc.NOT_FOUND
+            except ValueError:
+                return rc.BAD_REQUEST
+        else:
+            return Server.objects.filter(is_enabled=True).all()
+        
+
 class TaskHandler(BaseHandler):
     model = Task
     methods_allowed = ('GET',)
@@ -51,9 +70,9 @@ class TaskHandler(BaseHandler):
               ('user', ('id', 'username', 'first_name', 'last_name', 'email', 'get_full_name')),
               ('setting', ('get_max_dom', 'get_start_date', 'get_end_date')))
     
-    def read(self, request, task_id=None):
+    def read(self, request, task_id=None, all_user=False):
         
-        if task_id:
+        if task_id is not None:
             try:
                 return Task.objects.get(pk=task_id)
             except Task.DoesNotExist:
@@ -61,5 +80,22 @@ class TaskHandler(BaseHandler):
             except ValueError:
                 return rc.BAD_REQUEST
         else:
-            return Task.objects.extra(order_by=['-created']).all()
+            if all_user:
+                # return task created by ALL user
+                return Task.objects.extra(order_by=['-created']).all()
+            else:
+                # only return task created by CURRENT user
+                return Task.objects.filter(user=request.user).extra(order_by=['-created']).all()
+
+class TaskControlHandler(BaseHandler):
+    methods_allowed = ('POST',)
+    
+    def create(self, request):
+        try:
+            command = request.data['command']
+            task_id = request.data['task_id']
+        except KeyError:
+            return rc.BAD_REQUEST
+        
+        return [command, task_id]
     

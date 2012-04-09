@@ -2,45 +2,20 @@
 {% load url from future %}
 
 $(document).ready(function () {
-	var timer = setInterval(function(){
-		
-        {% for server in servers %}
-		$.ajax({url: "{% url 'rest-server-utilization' server.pk %}",
-				dataType: 'json',
-                type: 'GET',
-				success: function(data){
-					var cpu = data['cpu'];
-					var cpu_label = cpu + '%';
-					simplebar.set('#cpu-usage-server-{{ server.pk }}', cpu, cpu_label);
-					
-                    var mem_used = data['memory_used'];
-					var mem_total = data['memory_total'];
-					var mem_percent = data['memory_percent'];
-					var label = Math.round(mem_used / (1024 * 1024)) + 'MB / ' + Math.round(mem_total / (1024 * 1024)) + 'MB';
-					simplebar.set('#memory-usage-server-{{ server.pk }}', mem_percent, label);
-					
-                    var disk_used = data['disk_used'];
-					var disk_total = data['disk_total'];
-					var disk_percent = data['disk_percent'];
-					var label = Math.round(disk_used / (1024 * 1024 * 1024)) + 'GB / ' + Math.round(disk_total / (1024 * 1024 * 1024)) + 'GB';
-					simplebar.set('#disk-usage-server-{{ server.pk }}', disk_percent, label);
-					
-					$('#server_{{ server.pk }} > .header > .label').text('healthy');
-					$('#server_{{ server.pk }} > .header > .label').removeClass('label-important').addClass('label-success');
-					},
-				error: function(jqXHR, textStatus, errorThrown){
-					if(errorThrown==='INTERNAL SERVER ERROR'){
-						$('#server_{{ server.pk }} > .header > .label').text('service disruption');
-						$('#server_{{ server.pk }} > .header > .label').removeClass('label-success').addClass('label-important');
-						simplebar.set('#cpu-usage-server-{{ server.pk }}', 0, '--');
-						simplebar.set('#memory-usage-server-{{ server.pk }}', 0, '--');
-						simplebar.set('#disk-usage-server-{{ server.pk }}', 0, '--');
-					}
-				}
-		});
-		{% endfor %}
-		
-	}, 2500);
+    var server_list = [];
+    
+    $.ajax({url: "{% url 'rest-server-detail-list' %}",
+            dataType: 'json',
+            type: 'GET',
+            success: function(data){
+                server_list = data;
+				setup_server_list_auto_update(data, 3000);
+            },
+            error: function(jqXHR, textStatus, errorThrown){
+                console.log(errorThrown);
+            }
+    });
+    
 });
 </script>
 

@@ -6,7 +6,7 @@ Created on Sep 18, 2011
 from django.conf.urls.defaults import *
 from piston.resource import Resource
 
-from aqm_web.handlers import ServerStatusHandler, TaskHandler
+from aqm_web.handlers import ServerStatusHandler, TaskHandler, TaskControlHandler, ServerHandler
 from aqm_web.authentication import CookieAuthentication
 
 urlpatterns = patterns('aqm_web.views.generic',
@@ -48,10 +48,16 @@ auth = CookieAuthentication(realm="AQM Web Interface")
 ad = { 'authentication': auth }
 
 serverstatus_resource = Resource(handler=ServerStatusHandler, **ad)
+server_resource = Resource(handler=ServerHandler, **ad)
 task_resource = Resource(handler=TaskHandler, **ad)
+task_control_resource = Resource(handler=TaskControlHandler, **ad)
 
 urlpatterns += patterns('',
     url(r'^rest/server/status/(?P<server_id>[^/]+)/$', serverstatus_resource, name='rest-server-utilization'),
-    url(r'^rest/task/$', task_resource, name='rest-task-list'), 
-    url(r'^rest/task/(?P<task_id>[^/]+)/$', task_resource, name='rest-task'), 
+    url(r'^rest/server/detail/$', server_resource, name='rest-server-detail-list'),
+    url(r'^rest/server/detail/(?P<server_id>[^/]+)/$', server_resource, name='rest-server-detail'),
+    url(r'^rest/task/$', task_resource, name='rest-task-list'),
+    url(r'^rest/task/all/$', task_resource, kwargs={'task_id': None, 'all_user': True}, name='rest-task-list-all'), 
+    url(r'^rest/task/detail/(?P<task_id>[^/]+)/$', task_resource, name='rest-task'),
+    url(r'^rest/task/control/$', task_control_resource, name='rest-task-control-list'),
 )

@@ -1,8 +1,65 @@
 
+window.task_list_timers = []
+window.task_list_data = []
+window.task_command_url = ''
+
+# clear auto update timer
+window.reset_task_list = (target) ->
+    # reset update timer
+    clearInterval timer for timer in window.task_list_timers
+    window.task_list_timers = []
+    
+    # reset filter button
+    $(".toolbox .nav > li").removeClass "active"
+    $("#filter-all").parent().addClass "active"
+    
+    # display loading spinner
+    loading_html = """
+    <li>
+        <div class="alert alert-info">
+            <p>Loading...</p>
+        </div>
+    </li>
+    """
+    
+    $(target).empty()
+    $(target).append loading_html
+    
+    
+
 # append all task in the given list to the target
 window.render_task_list = (target, task_list) ->
-    console.log task_list
+    #console.log task_list
+    window.task_list_data = task_list
     append_task target, task for task in task_list
+
+# reinstall button event handler
+window.reinit_event_handler = (task)->
+    # run
+	$("#task-#{ task.id } .control-run").click (e) ->
+		button = this
+		task_command 'run', task.id, button
+        
+    # rerun
+	$("#task-#{ task.id } .control-rerun").click (e) ->
+		button = this
+		task_command 'rerun', task.id, button
+        
+    # retry
+	$("#task-#{ task.id } .control-retry").click (e) ->
+		button = this
+		task_command 'retry', task.id, button
+        
+    # stop
+	$("#task-#{ task.id } .control-stop").click (e) ->
+		button = this
+		task_command 'stop', task.id, button
+        
+    # cancel
+	$("#task-#{ task.id } .control-cancel").click (e) ->
+		button = this
+		task_command 'cancel', task.id, button
+        
 
 # update displayed html with data from a given task
 window.update_task = (task) ->
@@ -10,6 +67,7 @@ window.update_task = (task) ->
     task_html = get_task_html task
     $("#task-#{ task.id }").empty()
     $("#task-#{ task.id }").append task_html
+    window.reinit_event_handler task
 
 # setup automatic update of every task in the given list
 window.setup_task_list_auto_update = (task_list, interval) ->
@@ -27,9 +85,22 @@ setup_task_auto_update = (task, interval) ->
         }
         
     
+    real_interval = 0
+    if task.get_status == "running"
+        # if it currently running, update at full speed
+        real_interval = interval
+    else if task.get_status == "running"
+        # if it pending, don't update as fast
+        real_interval = 5 * interval
+    else
+        # no need for speedy update
+        real_interval = 10 * interval
+    
     timer = setInterval ()->
         updater task
-    , interval
+    , real_interval
+    
+    window.task_list_timers.push timer
 
 # append a task html to the end of the target
 append_task = (target, task) ->
@@ -40,6 +111,7 @@ append_task = (target, task) ->
     </li>
     """
     $(target).append html
+    window.reinit_event_handler task
 
 # construct a html snippet from a given task
 get_task_html = (task) ->
@@ -48,7 +120,7 @@ get_task_html = (task) ->
     
     if task.get_status == "draft"
         controls_html = """
-        <li><a class="btn btn-info" href="#">Run</a></li>
+        <li><button class="btn btn-info control-run">Run</button></li>
         <li><a class="btn" href="#">Details</a></li>
         <li><a class="btn" href="#">Edit</a></li>
         <li><a class="btn btn-danger" href="#">Delete</a></li>
@@ -62,7 +134,7 @@ get_task_html = (task) ->
         
     else if task.get_status == "pending"
         controls_html = """
-        <li><a class="btn btn-danger" href="#">Cancel</a></li>
+        <li><button class="btn btn-danger control-cancel">Cancel</button></li>
 		<li><a class="btn" href="#">Details</a></li>
         """
         
@@ -74,7 +146,7 @@ get_task_html = (task) ->
         
     else if task.get_status == "running"
         controls_html = """
-        <li><a class="btn btn-danger" href="#">Stop</a></li>
+        <li><button class="btn btn-danger control-stop">Stop</button></li>
 		<li><a class="btn" href="#">Details</a></li>
         """
         
@@ -90,7 +162,7 @@ get_task_html = (task) ->
     else if task.get_status == "finished"
         controls_html = """
         <li><a class="btn btn-success" href="#">Results</a></li>
-        <li><a class="btn btn-info" href="#">Run Again</a></li>
+        <li><button class="btn btn-info control-rerun">Run Again</button></li>
         <li><a class="btn" href="#">Details</a></li>
         <li><a class="btn" href="#">Edit</a></li>
         <li><a class="btn btn-danger" href="#">Delete</a></li>
@@ -104,8 +176,8 @@ get_task_html = (task) ->
         
     else if task.get_status == "error"
         controls_html = """
-        <li><a class="btn btn-info" href="#">Retry last stage</a></li>
-        <li><a class="btn btn-info" href="#">Run</a></li>
+        <li><button class="btn btn-info control-retry">Retry last stage</button></li>
+        <li><button class="btn btn-info control-run">Run</button></li>
         <li><a class="btn" href="#">Details</a></li>
         <li><a class="btn" href="#">Edit</a></li>
         <li><a class="btn btn-danger" href="#">Delete</a></li>
@@ -119,8 +191,8 @@ get_task_html = (task) ->
         
     else if task.get_status == "canceled"
         controls_html = """
-        <li><a class="btn btn-info" href="#">Resume from last stage</a></li>
-        <li><a class="btn btn-info" href="#">Run</a></li>
+        <li><button class="btn btn-info control-retry">Resume from last stage</button></li>
+        <li><button class="btn btn-info control-run">Run</button></li>
         <li><a class="btn" href="#">Details</a></li>
         <li><a class="btn" href="#">Edit</a></li>
         <li><a class="btn btn-danger" href="#">Delete</a></li>
@@ -165,3 +237,41 @@ get_task_html = (task) ->
         #{ progress_html }
     </div>
     """
+
+# display all task
+window.filter_display = (task_list, filter) ->
+    $(".toolbox .nav > li").removeClass "active"
+    $("#filter-#{ filter }").parent().addClass "active"
+    $('html, body').animate {scrollTop: 0}, 300
+    
+    #console.log "#filter-#{ filter }", window.task_list_data
+    
+    filter_display = (task) ->
+        if filter == "all"
+            $("#task-#{ task.id }").removeClass "hidden"
+        else
+            if task.get_status == filter
+                $("#task-#{ task.id }").removeClass "hidden"
+            else
+                $("#task-#{ task.id }").addClass "hidden"
+    
+    filter_display task for task in window.task_list_data
+
+# perform command to a task
+window.task_command = (command, task_id, button) ->
+    #console.log command, task_id, button, window.task_command_url
+    $(button).attr 'disabled', 'disabled'
+    
+    $.ajax {url: window.task_command_url,
+    dataType: "json",
+    type: "POST",
+    data: {task_id: task_id, command: command},
+    success: (data)->
+        $(button).removeAttr 'disabled'
+        console.log data
+    ,
+    error: (jqXHR, textStatus, errorThrown) ->
+        $(button).removeAttr 'disabled'
+        console.log errorThrown
+    }
+    

@@ -62,9 +62,8 @@ def new_task(request):
 def list_task(request):
     from wrf.models import Task
     
-    tasks = Task.objects.extra(order_by=['-pk']).all()
     t = get_template('aqm_web/wrf/task-list.html')
-    html = t.render(RequestContext(request, {'tasks': tasks}))
+    html = t.render(RequestContext(request, {}))
     return HttpResponse(html)
 
 

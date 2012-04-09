@@ -18,4 +18,12 @@ class Server(models.Model):
     class Meta:
         verbose_name  = 'Server'
         verbose_name_plural  = 'Server'
-        
+    
+    @models.permalink
+    def get_rest_url(self):
+        return ('rest-server-detail', [str(self.id)])
+    
+    @models.permalink
+    def get_status_rest_url(self):
+        return ('rest-server-utilization', [str(self.id)])
+    
