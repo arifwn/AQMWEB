@@ -20,13 +20,21 @@
         type: "GET",
         success: update_server,
         error: function(jqXHR, textStatus, errorThrown) {
-          if (errorThrown === "INTERNAL SERVER ERROR") {
+          console.log(errorThrown, jqXHR);
+          if (jqXHR.status === 0) {
+            $("#server_" + server.id + " > .header > .label").text("check your internet connection");
+          } else if (jqXHR.status === 404) {
+            $("#server_" + server.id + " > .header > .label").text("server does not exist");
+          } else if (jqXHR.status === 500) {
+            $("#server_" + server.id + " > .header > .label").text("internal web server error");
+          } else if (jqXHR.status === 503) {
             $("#server_" + server.id + " > .header > .label").text("service disruption");
-            $("#server_" + server.id + " > .header > .label").removeClass("label-success").addClass("label-important");
-            simplebar.set("#cpu-usage-server-" + server.id, 0, "--");
-            simplebar.set("#memory-usage-server-" + server.id, 0, "--");
-            return simplebar.set("#disk-usage-server-" + server.id, 0, "--");
           }
+          $("#server_" + server.id + " > .header > .label").removeClass("label-success").addClass("label-important");
+          simplebar.set("#cpu-usage-server-" + server.id, 0, "--");
+          simplebar.set("#memory-usage-server-" + server.id, 0, "--");
+          simplebar.set("#disk-usage-server-" + server.id, 0, "--");
+          return simplebar.set("#slot-usage-server-" + server.id, 0, "--");
         }
       });
     };
@@ -36,7 +44,7 @@
   };
 
   update_server = function(server_stat) {
-    var disk_label, disk_total, disk_used, memory_label, memory_total, memory_used;
+    var disk_label, disk_total, disk_used, memory_label, memory_total, memory_used, slot_label, slot_percent;
     simplebar.set("#cpu-usage-server-" + server_stat.id, server_stat.cpu, "" + server_stat.cpu + "%");
     memory_used = Math.round(server_stat.memory_used / (1024 * 1024));
     memory_total = Math.round(server_stat.memory_total / (1024 * 1024));
@@ -46,6 +54,9 @@
     disk_total = Math.round(server_stat.disk_total / (1024 * 1024 * 1024));
     disk_label = "" + disk_used + " GB / " + disk_total + " GB";
     simplebar.set("#disk-usage-server-" + server_stat.id, server_stat.disk_percent, disk_label);
+    slot_percent = (server_stat.slot_used / server_stat.slot_total) * 100;
+    slot_label = "" + server_stat.slot_used + " of " + server_stat.slot_total;
+    simplebar.set("#slot-usage-server-" + server_stat.id, slot_percent, slot_label);
     $("#server_" + server_stat.id + " > .header > .label").text("healthy");
     return $("#server_" + server_stat.id + " > .header > .label").removeClass("label-important").addClass("label-success");
   };

@@ -38,27 +38,27 @@ window.reinit_event_handler = (task)->
     # run
 	$("#task-#{ task.id } .control-run").click (e) ->
 		button = this
-		task_command 'run', task.id, button
+		task_command 'run', task, button
         
     # rerun
 	$("#task-#{ task.id } .control-rerun").click (e) ->
 		button = this
-		task_command 'rerun', task.id, button
+		task_command 'rerun', task, button
         
     # retry
 	$("#task-#{ task.id } .control-retry").click (e) ->
 		button = this
-		task_command 'retry', task.id, button
+		task_command 'retry', task, button
         
     # stop
 	$("#task-#{ task.id } .control-stop").click (e) ->
 		button = this
-		task_command 'stop', task.id, button
+		task_command 'stop', task, button
         
     # cancel
 	$("#task-#{ task.id } .control-cancel").click (e) ->
 		button = this
-		task_command 'cancel', task.id, button
+		task_command 'cancel', task, button
         
 
 # update displayed html with data from a given task
@@ -91,7 +91,7 @@ setup_task_auto_update = (task, interval) ->
         real_interval = interval
     else if task.get_status == "running"
         # if it pending, don't update as fast
-        real_interval = 5 * interval
+        real_interval = 3 * interval
     else
         # no need for speedy update
         real_interval = 10 * interval
@@ -258,20 +258,43 @@ window.filter_display = (task_list, filter) ->
     filter_display task for task in window.task_list_data
 
 # perform command to a task
-window.task_command = (command, task_id, button) ->
-    #console.log command, task_id, button, window.task_command_url
-    $(button).attr 'disabled', 'disabled'
+window.task_command = (command, task, button) ->
+    $(button).button('toggle')
     
     $.ajax {url: window.task_command_url,
     dataType: "json",
     type: "POST",
-    data: {task_id: task_id, command: command},
+    data: {task_id: task.id, command: command},
     success: (data)->
-        $(button).removeAttr 'disabled'
-        console.log data
+        $(button).button('toggle')
+        if data.success
+            # update the task display
+            $.ajax {url: task.get_rest_url,
+            dataType: "json",
+            type: "GET",
+            success: update_task
+            }
+            # TODO: reinit the update timer according to newly aquired task status
+            # obtain new task list
+            $.ajax {url: window.task_list_url,
+            dataType: "json",
+            type: "GET",
+            success: (data) ->
+                # reset update timer
+                clearInterval timer for timer in window.task_list_timers
+                window.task_list_timers = []
+                window.task_list_data = data
+                # setup auto update
+                window.setup_task_list_auto_update(data, 5000)
+                console.log "timer updated!"
+            }
+            
+            console.log "operation succeed!"
+        else
+            window.aqm.alert "Error", data.message
     ,
     error: (jqXHR, textStatus, errorThrown) ->
-        $(button).removeAttr 'disabled'
-        console.log errorThrown
+        $(button).button('toggle')
+        window.aqm.alert "Error", "Connection Failed: #{ textStatus } #{ errorThrown }"
     }
     

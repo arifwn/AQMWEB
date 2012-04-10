@@ -18,6 +18,7 @@ class Setting(models.Model):
     namelist_wrf = models.TextField(blank=True)
     namelist_wps = models.TextField(blank=True)
     namelist_arwpost = models.TextField(blank=True)
+    grads_template = models.TextField(blank=True)
     chemdata = models.ForeignKey('ChemData', blank=True, null=True)
     is_removed = models.BooleanField(default=False, db_index=True)
     

@@ -61,12 +61,8 @@ $(document).ready(function () {
 									<tr>
 										<th>Slot Utilization</th>
 										<td>
-											<div class="bar-chart medium">
-												<div class="inner-bar">
-													<div class="bar" style="width: 100%"></div>
-												</div>
-												<div class="inner-text">4 of 4</div>
-											</div>
+                                            <div id="slot-usage-server-{{ server.pk }}" class="medium" data-simplebar="simplebar" data-simplebar-percentage="0"
+                                            data-simplebar-text="loading..."></div>
 										</td>
 									</tr>
 								</tbody>
@@ -81,35 +77,35 @@ $(document).ready(function () {
 						<tbody>
 							<tr>
 								<th>Currently Running Task</th>
-								<td>8</td>
+								<td>--</td>
 							</tr>
 							<tr>
 								<th>Pending Tasks</th>
-								<td>13</td>
+								<td>--</td>
 							</tr>
 							<tr>
 								<th>Current Longest Task</th>
-								<td>24 hour 55 minutes</td>
+								<td>--</td>
 							</tr>
 							<tr>
 								<th>Biggest Task</th>
-								<td>4.2 Gb</td>
+								<td>--</td>
 							</tr>
 							<tr>
 								<th>Task Slot Capacity</th>
-								<td>8</td>
+								<td>--</td>
 							</tr>
 							<tr>
 								<th>Modelling Server Available</th>
-								<td>2</td>
+								<td>--</td>
 							</tr>
 							<tr>
 								<th>Current Longest Uptime</th>
-								<td>57 days 23 hours 14 minutes</td>
+								<td>--</td>
 							</tr>
 							<tr>
 								<th>Current Shortest Uptime</th>
-								<td>2 days 14 hours 43 minutes</td>
+								<td>--</td>
 							</tr>
 						</tbody>
 					</table>

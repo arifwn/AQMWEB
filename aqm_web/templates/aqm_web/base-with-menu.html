@@ -10,6 +10,7 @@
 	<script src="{{ STATIC_URL }}aqm_web/js/jquery.ui.timepicker.js"></script>
 
 	<script src="{{ STATIC_URL }}aqm_web/js/bootstrap-dropdown.js"></script>
+	<script src="{{ STATIC_URL }}aqm_web/js/bootstrap-button.js"></script>
 	<script src="{{ STATIC_URL }}aqm_web/js/bootstrap-alert.js"></script>
 	<script src="{{ STATIC_URL }}aqm_web/js/bootstrap-tooltip.js"></script>
 	<script src="{{ STATIC_URL }}aqm_web/js/bootstrap-modal.js"></script>
@@ -122,6 +123,24 @@
 		 	<p>Air Quality Models Web Interface</p>
 		</footer>
 	</div>
-
+    <div class="modal hide fade" id="alert-modal">
+        <div class="modal-header">
+            <a class="close" data-dismiss="modal">×</a>
+            <h3>Modal Title</h3>
+        </div>
+        <div class="modal-body">
+            <p>Modal Body</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn close-modal">Close</button>
+        </div>
+    </div>
+    <script>
+$(document).ready(function () {
+    $('#alert-modal .close-modal').click(function(e){
+        $('#alert-modal').modal('hide');
+    });
+});
+    </script>
 </body>
 </html>

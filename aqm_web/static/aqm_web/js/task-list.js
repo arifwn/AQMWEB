@@ -37,27 +37,27 @@
     $("#task-" + task.id + " .control-run").click(function(e) {
       var button;
       button = this;
-      return task_command('run', task.id, button);
+      return task_command('run', task, button);
     });
     $("#task-" + task.id + " .control-rerun").click(function(e) {
       var button;
       button = this;
-      return task_command('rerun', task.id, button);
+      return task_command('rerun', task, button);
     });
     $("#task-" + task.id + " .control-retry").click(function(e) {
       var button;
       button = this;
-      return task_command('retry', task.id, button);
+      return task_command('retry', task, button);
     });
     $("#task-" + task.id + " .control-stop").click(function(e) {
       var button;
       button = this;
-      return task_command('stop', task.id, button);
+      return task_command('stop', task, button);
     });
     return $("#task-" + task.id + " .control-cancel").click(function(e) {
       var button;
       button = this;
-      return task_command('cancel', task.id, button);
+      return task_command('cancel', task, button);
     });
   };
 
@@ -96,7 +96,7 @@
     if (task.get_status === "running") {
       real_interval = interval;
     } else if (task.get_status === "running") {
-      real_interval = 5 * interval;
+      real_interval = 3 * interval;
     } else {
       real_interval = 10 * interval;
     }
@@ -167,23 +167,50 @@
     return _results;
   };
 
-  window.task_command = function(command, task_id, button) {
-    $(button).attr('disabled', 'disabled');
+  window.task_command = function(command, task, button) {
+    $(button).button('toggle');
     return $.ajax({
       url: window.task_command_url,
       dataType: "json",
       type: "POST",
       data: {
-        task_id: task_id,
+        task_id: task.id,
         command: command
       },
       success: function(data) {
-        $(button).removeAttr('disabled');
-        return console.log(data);
+        $(button).button('toggle');
+        if (data.success) {
+          $.ajax({
+            url: task.get_rest_url,
+            dataType: "json",
+            type: "GET",
+            success: update_task
+          });
+          $.ajax({
+            url: window.task_list_url,
+            dataType: "json",
+            type: "GET",
+            success: function(data) {
+              var timer, _i, _len, _ref;
+              _ref = window.task_list_timers;
+              for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                timer = _ref[_i];
+                clearInterval(timer);
+              }
+              window.task_list_timers = [];
+              window.task_list_data = data;
+              window.setup_task_list_auto_update(data, 5000);
+              return console.log("timer updated!");
+            }
+          });
+          return console.log("operation succeed!");
+        } else {
+          return window.aqm.alert("Error", data.message);
+        }
       },
       error: function(jqXHR, textStatus, errorThrown) {
-        $(button).removeAttr('disabled');
-        return console.log(errorThrown);
+        $(button).button('toggle');
+        return window.aqm.alert("Error", "Connection Failed: " + textStatus + " " + errorThrown);
       }
     });
   };

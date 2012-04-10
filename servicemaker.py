@@ -30,6 +30,8 @@ DEFAULT_ADDR = getattr(settings, 'RUNSERVER_DEFAULT_ADDR', '')
 DEFAULT_PORT = getattr(settings, 'RUNSERVER_DEFAULT_PORT', '8000')
 SSL_KEY = getattr(settings, 'SSL_CERT_KEY')
 SSL_CERT = getattr(settings, 'SSL_CERT_CERT')
+TPSIZE_MIN = getattr(settings, 'THREADPOOL_MIN_SIZE', 10)
+TPSIZE_MAX = getattr(settings, 'THREADPOOL_MAX_SIZE', 50)
 
 
 class Options(usage.Options):
@@ -73,7 +75,9 @@ class AQMServiceMaker(object):
         multi = service.MultiService()
 
         # make a new ThreadPoolService and add it to the multi service
-        tps = ThreadPoolService(threadpool.ThreadPool())
+        tps = ThreadPoolService(threadpool.ThreadPool(minthreads=TPSIZE_MIN,
+                                                      maxthreads=TPSIZE_MAX,
+                                                      name="HTTP Threadpool"))
         tps.setServiceParent(multi)
 
         # create the WSGI resource using the thread pool and Django handler
@@ -96,7 +100,7 @@ class AQMServiceMaker(object):
             log.msg('Server started with SSL!')
         else:
             ws = internet.TCPServer(int(options['port']), site, interface=options['address'])
-            log.msg('WARNING! Server NOT started SSL!')
+            log.msg('WARNING! Server NOT started with SSL!')
         
         # add the web server service to the multi service
         ws.setServiceParent(multi)
