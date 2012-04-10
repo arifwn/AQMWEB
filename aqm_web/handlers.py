@@ -8,6 +8,8 @@ from piston.utils import rc, throttle
 
 from aqm_utils.xmlrpc import Client
 from aqm_web.models import Server
+
+import wrf.commands
 from wrf.models import Task, TaskQueue
 
 
@@ -93,9 +95,21 @@ class TaskControlHandler(BaseHandler):
     def create(self, request):
         try:
             command = request.data['command']
-            task_id = request.data['task_id']
+            task_id = int(request.data['task_id'])
         except KeyError:
             return rc.BAD_REQUEST
         
-        return [command, task_id]
+        if command == 'run':
+            return wrf.commands.run_task(task_id)
+        elif command == 'retry':
+            return wrf.commands.retry_task(task_id)
+        if command == 'rerun':
+            return wrf.commands.rerun_task(task_id)
+        if command == 'stop':
+            return wrf.commands.stop_task(task_id)
+        if command == 'cancel':
+            return wrf.commands.cancel_task(task_id)
+        else:
+            return rc.BAD_REQUEST
+        
     

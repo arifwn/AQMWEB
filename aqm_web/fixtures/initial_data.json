@@ -156,8 +156,8 @@
         "fields": {
             "created": "2012-04-07T23:21:12.926",
             "task": 1,
-            "server": 1,
-            "envid": 2,
+            "server": null,
+            "envid": null,
             "status": "pending",
             "stage": "",
             "is_error": false,

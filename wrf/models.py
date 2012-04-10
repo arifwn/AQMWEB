@@ -257,7 +257,7 @@ class TaskQueue(models.Model):
     task = models.OneToOneField(Task, related_name='queue')
     
     # Which RPC Server assigned this task
-    server = models.ForeignKey('aqm_web.Server')
+    server = models.ForeignKey('aqm_web.Server',blank=True, null=True)
     envid = models.IntegerField(blank=True, null=True)
     
     STATUS_TYPE = [('pending', 'Pending'),
