@@ -120,7 +120,7 @@ get_task_html = (task) ->
     
     if task.get_status == "draft"
         controls_html = """
-        <li><button class="btn btn-info control-run">Run</button></li>
+        <li><button class="btn btn-info control-run" data-loading-text="Run" autocomplete="off">Run</button></li>
         <li><a class="btn" href="#">Details</a></li>
         <li><a class="btn" href="#">Edit</a></li>
         <li><a class="btn btn-danger" href="#">Delete</a></li>
@@ -134,7 +134,7 @@ get_task_html = (task) ->
         
     else if task.get_status == "pending"
         controls_html = """
-        <li><button class="btn btn-danger control-cancel">Cancel</button></li>
+        <li><button class="btn btn-danger control-cancel" data-loading-text="Cancel" autocomplete="off">Cancel</button></li>
 		<li><a class="btn" href="#">Details</a></li>
         """
         
@@ -146,7 +146,7 @@ get_task_html = (task) ->
         
     else if task.get_status == "running"
         controls_html = """
-        <li><button class="btn btn-danger control-stop">Stop</button></li>
+        <li><button class="btn btn-danger control-stop" data-loading-text="Stop" autocomplete="off">Stop</button></li>
 		<li><a class="btn" href="#">Details</a></li>
         """
         
@@ -162,7 +162,7 @@ get_task_html = (task) ->
     else if task.get_status == "finished"
         controls_html = """
         <li><a class="btn btn-success" href="#">Results</a></li>
-        <li><button class="btn btn-info control-rerun">Run Again</button></li>
+        <li><button class="btn btn-info control-rerun" data-loading-text="Run Again" autocomplete="off">Run Again</button></li>
         <li><a class="btn" href="#">Details</a></li>
         <li><a class="btn" href="#">Edit</a></li>
         <li><a class="btn btn-danger" href="#">Delete</a></li>
@@ -176,8 +176,8 @@ get_task_html = (task) ->
         
     else if task.get_status == "error"
         controls_html = """
-        <li><button class="btn btn-info control-retry">Retry last stage</button></li>
-        <li><button class="btn btn-info control-run">Run</button></li>
+        <li><button class="btn btn-info control-retry" data-loading-text="Retry last stage" autocomplete="off">Retry last stage</button></li>
+        <li><button class="btn btn-info control-run" data-loading-text="Run" autocomplete="off">Run</button></li>
         <li><a class="btn" href="#">Details</a></li>
         <li><a class="btn" href="#">Edit</a></li>
         <li><a class="btn btn-danger" href="#">Delete</a></li>
@@ -191,8 +191,8 @@ get_task_html = (task) ->
         
     else if task.get_status == "canceled"
         controls_html = """
-        <li><button class="btn btn-info control-retry">Resume from last stage</button></li>
-        <li><button class="btn btn-info control-run">Run</button></li>
+        <li><button class="btn btn-info control-retry" data-loading-text="Resume from last stage" autocomplete="off">Resume from last stage</button></li>
+        <li><button class="btn btn-info control-run" data-loading-text="Run" autocomplete="off">Run</button></li>
         <li><a class="btn" href="#">Details</a></li>
         <li><a class="btn" href="#">Edit</a></li>
         <li><a class="btn btn-danger" href="#">Delete</a></li>
@@ -259,14 +259,14 @@ window.filter_display = (task_list, filter) ->
 
 # perform command to a task
 window.task_command = (command, task, button) ->
-    $(button).button('toggle')
+    $(button).button('loading')
     
     $.ajax {url: window.task_command_url,
     dataType: "json",
     type: "POST",
     data: {task_id: task.id, command: command},
     success: (data)->
-        $(button).button('toggle')
+        $(button).button('reset')
         if data.success
             # update the task display
             $.ajax {url: task.get_rest_url,

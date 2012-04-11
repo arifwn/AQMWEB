@@ -119,22 +119,22 @@
     controls_html = "";
     progress_html = "";
     if (task.get_status === "draft") {
-      controls_html = "<li><button class=\"btn btn-info control-run\">Run</button></li>\n<li><a class=\"btn\" href=\"#\">Details</a></li>\n<li><a class=\"btn\" href=\"#\">Edit</a></li>\n<li><a class=\"btn btn-danger\" href=\"#\">Delete</a></li>";
+      controls_html = "<li><button class=\"btn btn-info control-run\" data-loading-text=\"Run\" autocomplete=\"off\">Run</button></li>\n<li><a class=\"btn\" href=\"#\">Details</a></li>\n<li><a class=\"btn\" href=\"#\">Edit</a></li>\n<li><a class=\"btn btn-danger\" href=\"#\">Delete</a></li>";
       progress_html = "<div class=\"counter\">" + task.get_progress_percent + "%</div>\n<div class=\"stage\">" + task.get_stage + "</div>\n<div><span class=\"label\">draft</span></div>";
     } else if (task.get_status === "pending") {
-      controls_html = "        <li><button class=\"btn btn-danger control-cancel\">Cancel</button></li>\n<li><a class=\"btn\" href=\"#\">Details</a></li>";
+      controls_html = "        <li><button class=\"btn btn-danger control-cancel\" data-loading-text=\"Cancel\" autocomplete=\"off\">Cancel</button></li>\n<li><a class=\"btn\" href=\"#\">Details</a></li>";
       progress_html = "<div class=\"counter warning\">" + task.get_progress_percent + "%</div>\n<div class=\"stage\">" + task.get_stage + "</div>\n<div><span class=\"label label-warning\">pending</span></div>";
     } else if (task.get_status === "running") {
-      controls_html = "        <li><button class=\"btn btn-danger control-stop\">Stop</button></li>\n<li><a class=\"btn\" href=\"#\">Details</a></li>";
+      controls_html = "        <li><button class=\"btn btn-danger control-stop\" data-loading-text=\"Stop\" autocomplete=\"off\">Stop</button></li>\n<li><a class=\"btn\" href=\"#\">Details</a></li>";
       progress_html = "<div class=\"counter info\">" + task.get_progress_percent + "%</div>\n<div class=\"stage\">" + task.get_stage + "</div>\n<div><span class=\"label label-info\">running</span></div>\n<div class=\"progress progress-striped active\">\n    <div class=\"bar\" style=\"width: 30%;\"></div>\n</div>";
     } else if (task.get_status === "finished") {
-      controls_html = "<li><a class=\"btn btn-success\" href=\"#\">Results</a></li>\n<li><button class=\"btn btn-info control-rerun\">Run Again</button></li>\n<li><a class=\"btn\" href=\"#\">Details</a></li>\n<li><a class=\"btn\" href=\"#\">Edit</a></li>\n<li><a class=\"btn btn-danger\" href=\"#\">Delete</a></li>";
+      controls_html = "<li><a class=\"btn btn-success\" href=\"#\">Results</a></li>\n<li><button class=\"btn btn-info control-rerun\" data-loading-text=\"Run Again\" autocomplete=\"off\">Run Again</button></li>\n<li><a class=\"btn\" href=\"#\">Details</a></li>\n<li><a class=\"btn\" href=\"#\">Edit</a></li>\n<li><a class=\"btn btn-danger\" href=\"#\">Delete</a></li>";
       progress_html = "<div class=\"counter success\">" + task.get_progress_percent + "%</div>\n<div class=\"stage\">" + task.get_stage + "</div>\n<div><span class=\"label label-success\">finished</span></div>";
     } else if (task.get_status === "error") {
-      controls_html = "<li><button class=\"btn btn-info control-retry\">Retry last stage</button></li>\n<li><button class=\"btn btn-info control-run\">Run</button></li>\n<li><a class=\"btn\" href=\"#\">Details</a></li>\n<li><a class=\"btn\" href=\"#\">Edit</a></li>\n<li><a class=\"btn btn-danger\" href=\"#\">Delete</a></li>";
+      controls_html = "<li><button class=\"btn btn-info control-retry\" data-loading-text=\"Retry last stage\" autocomplete=\"off\">Retry last stage</button></li>\n<li><button class=\"btn btn-info control-run\" data-loading-text=\"Run\" autocomplete=\"off\">Run</button></li>\n<li><a class=\"btn\" href=\"#\">Details</a></li>\n<li><a class=\"btn\" href=\"#\">Edit</a></li>\n<li><a class=\"btn btn-danger\" href=\"#\">Delete</a></li>";
       progress_html = "<div class=\"counter important\">" + task.get_progress_percent + "%</div>\n<div class=\"stage\">" + task.get_stage + "</div>\n<div><span class=\"label label-important\">error</span></div>";
     } else if (task.get_status === "canceled") {
-      controls_html = "<li><button class=\"btn btn-info control-retry\">Resume from last stage</button></li>\n<li><button class=\"btn btn-info control-run\">Run</button></li>\n<li><a class=\"btn\" href=\"#\">Details</a></li>\n<li><a class=\"btn\" href=\"#\">Edit</a></li>\n<li><a class=\"btn btn-danger\" href=\"#\">Delete</a></li>";
+      controls_html = "<li><button class=\"btn btn-info control-retry\" data-loading-text=\"Resume from last stage\" autocomplete=\"off\">Resume from last stage</button></li>\n<li><button class=\"btn btn-info control-run\" data-loading-text=\"Run\" autocomplete=\"off\">Run</button></li>\n<li><a class=\"btn\" href=\"#\">Details</a></li>\n<li><a class=\"btn\" href=\"#\">Edit</a></li>\n<li><a class=\"btn btn-danger\" href=\"#\">Delete</a></li>";
       progress_html = "<div class=\"counter important\">" + task.get_progress_percent + "%</div>\n<div class=\"stage\">" + task.get_stage + "</div>\n<div><span class=\"label label-important\">canceled</span></div>";
     }
     return html = "<div class=\"header\">\n    <h2><a href=\"#\">" + task.name + "</a></h2>\n</div>\n<div class=\"content\">\n    <div class=\"well\">\n    " + task.description + "\n    </div>\n    <table class=\"table table-striped table-bordered table-condensed\">\n        <thead>\n            <tr>\n                <th>User</th>\n                <th>Domain</th>\n                <th>Period</th>\n            </tr>\n        </thead>\n        <tbody>\n            <tr>\n                <td><a href=\"/accounts/profile/" + task.user.username + "\"><img class=\"avatar\" src=\"/accounts/avatar/t32x32/" + task.user.username + "\" width=\"32\" height=\"32\" style=\"height: 32px;\" /></a> <a href=\"/accounts/profile/" + task.user.username + "\">" + task.user.get_full_name + " (" + task.user.username + ")</a></td>\n                <td>" + task.setting.get_max_dom + "</td>\n                <td>" + task.setting.get_start_date + " &mdash; " + task.setting.get_end_date + "</td>\n            </tr>\n        </tbody>\n    </table>\n    <ul class=\"controls\">\n        " + controls_html + "\n    </ul>\n</div>\n\n<div class=\"task-progress\">\n    " + progress_html + "\n</div>";
@@ -168,7 +168,7 @@
   };
 
   window.task_command = function(command, task, button) {
-    $(button).button('toggle');
+    $(button).button('loading');
     return $.ajax({
       url: window.task_command_url,
       dataType: "json",
@@ -178,7 +178,7 @@
         command: command
       },
       success: function(data) {
-        $(button).button('toggle');
+        $(button).button('reset');
         if (data.success) {
           $.ajax({
             url: task.get_rest_url,
