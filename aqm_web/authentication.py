@@ -1,4 +1,6 @@
-
+'''
+Custom Piston Authentication module
+'''
 from django.contrib.auth import authenticate
 
 from piston.authentication import HttpBasicAuthentication

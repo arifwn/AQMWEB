@@ -221,22 +221,19 @@ def stop_task(task_id):
     except TaskQueue.DoesNotExist:
         return {'success': False, 'message': 'Queued Task does not exist.'}
     
-    data = {}
-    data['id'] = task_id
-    data['name'] = task.name
-    data['envid'] = task.queue.envid
-    target_server_client = Client('https://%s:%d' % (target_server.address, target_server.port))
+    taskqueue = task.queue
+    target_server_client = Client('https://%s:%d' % (target_server.address,
+                                                     target_server.port))
     
     try:
-        target_server_client.wrf.stop_job()
-        taskqueue = task.queue
-        taskqueue.status = 'canceled'
-        taskqueue.save()
-        status = {'success': True, 'message': ''}
-        return status
-    except:
-        status = {'success': False, 'message': 'Cannot stop specified task.'}
-        return status
+        if target_server_client.wrf.stop_job(taskqueue.envid):
+            taskqueue.status = 'canceled'
+            taskqueue.save()
+            return {'success': True, 'message': ''}
+        else:
+            return {'success': False, 'message': 'Cannot stop specified task.'}
+    except Exception, e:
+        return {'success': False, 'message': 'Cannot stop specified task. RPC Fault: %s' % e}
 
 def cancel_task(task_id):
     ''' Cancel queued task. '''# read the task
