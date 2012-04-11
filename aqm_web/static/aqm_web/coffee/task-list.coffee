@@ -177,7 +177,7 @@ get_task_html = (task) ->
     else if task.get_status == "error"
         controls_html = """
         <li><button class="btn btn-info control-retry" data-loading-text="Retry last stage" autocomplete="off">Retry last stage</button></li>
-        <li><button class="btn btn-info control-run" data-loading-text="Run" autocomplete="off">Run</button></li>
+        <li><button class="btn btn-info control-rerun" data-loading-text="Run Again" autocomplete="off">Run Again</button></li>
         <li><a class="btn" href="#">Details</a></li>
         <li><a class="btn" href="#">Edit</a></li>
         <li><a class="btn btn-danger" href="#">Delete</a></li>
@@ -192,7 +192,7 @@ get_task_html = (task) ->
     else if task.get_status == "canceled"
         controls_html = """
         <li><button class="btn btn-info control-retry" data-loading-text="Resume from last stage" autocomplete="off">Resume from last stage</button></li>
-        <li><button class="btn btn-info control-run" data-loading-text="Run" autocomplete="off">Run</button></li>
+        <li><button class="btn btn-info control-rerun" data-loading-text="Run Again" autocomplete="off">Run Again</button></li>
         <li><a class="btn" href="#">Details</a></li>
         <li><a class="btn" href="#">Edit</a></li>
         <li><a class="btn btn-danger" href="#">Delete</a></li>
@@ -259,6 +259,7 @@ window.filter_display = (task_list, filter) ->
 
 # perform command to a task
 window.task_command = (command, task, button) ->
+    console.log command
     $(button).button('loading')
     
     $.ajax {url: window.task_command_url,

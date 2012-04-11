@@ -220,6 +220,9 @@ class Task(models.Model):
         except TaskQueue.DoesNotExist:
             return 0
         
+        if len(stage.strip()) == 0:
+            return 0
+        
         if self.queue.status == 'pending':
             return 0
         elif (self.queue.status == 'finished') and not self.queue.is_error:
