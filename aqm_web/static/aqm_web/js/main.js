@@ -1,3 +1,4 @@
+(function() {
 
   window.aqm = {};
 
@@ -6,3 +7,5 @@
     $('#alert-modal .modal-body p').text(message);
     return $('#alert-modal').modal('show');
   };
+
+}).call(this);
