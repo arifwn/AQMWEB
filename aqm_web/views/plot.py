@@ -88,7 +88,7 @@ def mercator(request):
         m.plot(x, y, 'ro')
     
     response = HttpResponse(content_type='image/png')
-    canvas.print_figure(response, dpi=100)
+    canvas.print_figure(response, dpi=80)
     return response
 
 @login_required

@@ -66,6 +66,18 @@ def list_task(request):
     html = t.render(RequestContext(request, {}))
     return HttpResponse(html)
 
+@login_required
+def view_task(request, task_id):
+    from wrf.models import Task
+    
+    try:
+        task = Task.objects.get(id=task_id)
+    except Task.DoesNotExist:
+        raise Http404
+    
+    t = get_template('aqm_web/wrf/task-detail.html')
+    html = t.render(RequestContext(request, {'task': task}))
+    return HttpResponse(html)
 
 # -- Task Group --
 @login_required
@@ -81,8 +93,8 @@ def list_task_group(request):
     return HttpResponse(html)
 
 @login_required
-def task_group_details(request):
-    t = get_template('aqm_web/wrf/task-group-details.html')
+def task_group_detail(request):
+    t = get_template('aqm_web/wrf/task-group-detail.html')
     html = t.render(RequestContext(request, {}))
     return HttpResponse(html)
 

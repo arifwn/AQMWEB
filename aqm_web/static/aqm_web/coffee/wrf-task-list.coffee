@@ -13,11 +13,10 @@ window.reset_task_list = (target) ->
     $(".toolbox .nav > li").removeClass "active"
     $("#filter-all").parent().addClass "active"
     
-    # display loading spinner
     loading_html = """
     <li>
         <div class="alert alert-info">
-            <p>Loading...</p>
+            <p><img src="#{ static_url }aqm_web/img/spinner.gif" alt="Loading..."></p>
         </div>
     </li>
     """
@@ -121,7 +120,7 @@ get_task_html = (task) ->
     if task.get_status == "draft"
         controls_html = """
         <li><button class="btn btn-info control-run" data-loading-text="Run" autocomplete="off">Run</button></li>
-        <li><a class="btn" href="#">Details</a></li>
+        <li><a class="btn" href="#{ task.get_url }">Details</a></li>
         <li><a class="btn" href="#">Edit</a></li>
         <li><a class="btn btn-danger" href="#">Delete</a></li>
         """
@@ -135,7 +134,7 @@ get_task_html = (task) ->
     else if task.get_status == "pending"
         controls_html = """
         <li><button class="btn btn-danger control-cancel" data-loading-text="Cancel" autocomplete="off">Cancel</button></li>
-		<li><a class="btn" href="#">Details</a></li>
+		<li><a class="btn" href="#{ task.get_url }">Details</a></li>
         """
         
         progress_html = """
@@ -147,7 +146,7 @@ get_task_html = (task) ->
     else if task.get_status == "running"
         controls_html = """
         <li><button class="btn btn-danger control-stop" data-loading-text="Stop" autocomplete="off">Stop</button></li>
-		<li><a class="btn" href="#">Details</a></li>
+		<li><a class="btn" href="#{ task.get_url }">Details</a></li>
         """
         
         progress_html = """
@@ -163,7 +162,7 @@ get_task_html = (task) ->
         controls_html = """
         <li><a class="btn btn-success" href="#">Results</a></li>
         <li><button class="btn btn-info control-rerun" data-loading-text="Run Again" autocomplete="off">Run Again</button></li>
-        <li><a class="btn" href="#">Details</a></li>
+        <li><a class="btn" href="#{ task.get_url }">Details</a></li>
         <li><a class="btn" href="#">Edit</a></li>
         <li><a class="btn btn-danger" href="#">Delete</a></li>
         """
@@ -178,7 +177,7 @@ get_task_html = (task) ->
         controls_html = """
         <li><button class="btn btn-info control-retry" data-loading-text="Retry last stage" autocomplete="off">Retry last stage</button></li>
         <li><button class="btn btn-info control-rerun" data-loading-text="Run Again" autocomplete="off">Run Again</button></li>
-        <li><a class="btn" href="#">Details</a></li>
+        <li><a class="btn" href="#{ task.get_url }">Details</a></li>
         <li><a class="btn" href="#">Edit</a></li>
         <li><a class="btn btn-danger" href="#">Delete</a></li>
         """
@@ -193,7 +192,7 @@ get_task_html = (task) ->
         controls_html = """
         <li><button class="btn btn-info control-retry" data-loading-text="Resume from last stage" autocomplete="off">Resume from last stage</button></li>
         <li><button class="btn btn-info control-rerun" data-loading-text="Run Again" autocomplete="off">Run Again</button></li>
-        <li><a class="btn" href="#">Details</a></li>
+        <li><a class="btn" href="#{ task.get_url }">Details</a></li>
         <li><a class="btn" href="#">Edit</a></li>
         <li><a class="btn btn-danger" href="#">Delete</a></li>
         """
@@ -206,7 +205,7 @@ get_task_html = (task) ->
     
     html = """
     <div class="header">
-        <h2><a href="#">#{ task.name }</a></h2>
+        <h2><a href="#{ task.get_url }">#{ task.name }</a></h2>
     </div>
     <div class="content">
         <div class="well">
@@ -223,8 +222,8 @@ get_task_html = (task) ->
             <tbody>
                 <tr>
                     <td><a href="/accounts/profile/#{ task.user.username }"><img class="avatar" src="/accounts/avatar/t32x32/#{ task.user.username }" width="32" height="32" style="height: 32px;" /></a> <a href="/accounts/profile/#{ task.user.username }">#{ task.user.get_full_name } (#{ task.user.username })</a></td>
-                    <td>#{ task.setting.get_max_dom }</td>
-                    <td>#{ task.setting.get_start_date } &mdash; #{ task.setting.get_end_date }</td>
+                    <td>#{ task.setting.max_dom }</td>
+                    <td>#{ task.setting.start_date } &mdash; #{ task.setting.end_date }</td>
                 </tr>
             </tbody>
         </table>

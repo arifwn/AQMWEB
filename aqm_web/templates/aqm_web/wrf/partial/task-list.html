@@ -2,8 +2,9 @@
 <script>
 $(document).ready(function () {
     var task_list = [];
-	task_command_url = "{% url 'rest-task-control-list' %}";
-	task_list_url = "{% url 'rest-task-list' %}";
+    task_command_url = "{% url 'rest-task-control-list' %}";
+    task_list_url = "{% url 'rest-task-list' %}";
+    static_url = "{{ STATIC_URL }}";
     
     $.ajax({url: task_list_url,
             dataType: 'json',
@@ -106,8 +107,8 @@ $(document).ready(function () {
 			<div class="span2">
                 <a class="btn btn-primary" href="{% url 'wrf_new_task' %}">New Task</a>
 			</div>
-			<div class="span4"><label class="checkbox"><input id="display-all-user" type="checkbox"> <span>Show Tasks Created by Other Users</span></label></div>
-			<div class="span6">
+			<div class="span3"><label class="checkbox"><input id="display-all-user" type="checkbox"> <span>Show Tasks Created by Other Users</span></label></div>
+			<div class="span7">
 				<ul class="nav nav-pills" style="margin: 0;">
 					<li class="active"><a id="filter-all" href="#">All</a></li>
 					<li><a id="filter-draft" href="#">Draft</a></li>
@@ -126,7 +127,7 @@ $(document).ready(function () {
 			<ul class="task-list">
                 <li>
 					<div class="alert alert-info">
-						<p>Loading...</p>
+						<p><img src="{{ STATIC_URL }}aqm_web/img/spinner.gif" alt="Loading..."></p>
 					</div>
                 </li>
 			</ul>

@@ -19,6 +19,14 @@ class Server(models.Model):
         verbose_name  = 'Server'
         verbose_name_plural  = 'Server'
     
+    def get_status(self):
+        from aqm_utils.server import get_status
+        try:
+            st = get_status()
+        except IOError:
+            st = None
+        return st
+    
     @models.permalink
     def get_rest_url(self):
         return ('rest-server-detail', [str(self.id)])

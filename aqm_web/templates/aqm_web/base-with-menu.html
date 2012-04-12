@@ -3,22 +3,27 @@
 	<head>
 	<meta charset="utf-8">
 	<link href="{{ STATIC_URL }}aqm_web/css/main.css" rel="stylesheet">
+	<link href="{{ STATIC_URL }}aqm_web/css/prettify.css" rel="stylesheet">
 	<link href="{{ STATIC_URL }}aqm_web/css/jquery.ui.timepicker.css" rel="stylesheet">
 	<link href="{{ STATIC_URL }}aqm_web/css/ui-darkness/jquery-ui.custom.css" rel="stylesheet">
 	<script src="{{ STATIC_URL }}aqm_web/js/jquery.js"></script>
 	<script src="{{ STATIC_URL }}aqm_web/js/jquery-ui.custom.min.js"></script>
 	<script src="{{ STATIC_URL }}aqm_web/js/jquery.ui.timepicker.js"></script>
 
-	<script src="{{ STATIC_URL }}aqm_web/js/bootstrap-dropdown.js"></script>
-	<script src="{{ STATIC_URL }}aqm_web/js/bootstrap-button.js"></script>
 	<script src="{{ STATIC_URL }}aqm_web/js/bootstrap-alert.js"></script>
-	<script src="{{ STATIC_URL }}aqm_web/js/bootstrap-tooltip.js"></script>
+	<script src="{{ STATIC_URL }}aqm_web/js/bootstrap-button.js"></script>
+	<script src="{{ STATIC_URL }}aqm_web/js/bootstrap-collapse.js"></script>
+	<script src="{{ STATIC_URL }}aqm_web/js/bootstrap-dropdown.js"></script>
 	<script src="{{ STATIC_URL }}aqm_web/js/bootstrap-modal.js"></script>
+	<script src="{{ STATIC_URL }}aqm_web/js/bootstrap-tab.js"></script>
+	<script src="{{ STATIC_URL }}aqm_web/js/bootstrap-tooltip.js"></script>
 	<script src="{{ STATIC_URL }}aqm_web/js/bootstrap-transition.js"></script>
 
 	<script src="{{ STATIC_URL }}aqm_web/js/main.js"></script>
 	<script src="{{ STATIC_URL }}aqm_web/js/simplebar.js"></script>
 	<script src="{{ STATIC_URL }}aqm_web/js/spinner.js"></script>
+	<script src="{{ STATIC_URL }}aqm_web/js/prettify.js"></script>
+	<script src="{{ STATIC_URL }}aqm_web/js/lang-namelist.js"></script>
 	<script src="{{ STATIC_URL }}tiny_mce/tiny_mce.js"></script>
 
 	<link rel="shortcut icon" href="images/favicon.ico">
@@ -31,7 +36,8 @@
 <body>
 	{% url 'index' as url_index %}
 	{% url 'wrf_new_task' as url_wrf_new_task %}
-	{% url 'wrf_list_task' as url_wrf_list_task %}
+	{% url 'wrf-task-list' as url_wrf_list_task %}
+	{% url 'wrf-task-detail' task.id as url_wrf_task_detail %}
 	{% url 'wrf_list_task_group' as url_wrf_list_task_group %}
 	{% url 'wrf_list_chem_data' as url_wrf_list_chem_data %}
 	{% url 'wrf_list_meteo_data' as url_wrf_list_meteo_data %}
@@ -46,7 +52,7 @@
                 <a class="brand" href="{{ url_index }}">AQM Web Interface</a>
                 <ul class="nav">
                     <li class="{% active request url_index %}"><a href="{{ url_index }}">Status</a></li>
-                    <li class="dropdown {% active request url_wrf_new_task url_wrf_list_task url_wrf_list_task_group url_wrf_list_chem_data url_wrf_list_meteo_data url_wrf_list_model_setting %}">
+                    <li class="dropdown {% active request url_wrf_new_task url_wrf_task_detail url_wrf_list_task url_wrf_list_task_group url_wrf_list_chem_data url_wrf_list_meteo_data url_wrf_list_model_setting %}">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">WRF/Chem <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li class="{% active request url_wrf_new_task %}"><a href="{{ url_wrf_new_task }}">New Task</a></li>
@@ -119,9 +125,9 @@
 			{% block all-elements %}
 			{% endblock %}
 		</div>
-		<footer>
+		<div class="footer">
 		 	<p>Air Quality Models Web Interface</p>
-		</footer>
+		</div>
 	</div>
     <div class="modal hide fade" id="alert-modal">
         <div class="modal-header">

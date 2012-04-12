@@ -22,10 +22,11 @@ urlpatterns = patterns('aqm_web.views.generic',
 
 urlpatterns += patterns('aqm_web.views.wrf_view',
     url(r'^wrf/new/$', 'new_task', name='wrf_new_task'),
-    url(r'^wrf/list-task/$', 'list_task', name='wrf_list_task'),
+    url(r'^wrf/task/(\d+)/$', 'view_task', name='wrf-task-detail'),
+    url(r'^wrf/task/$', 'list_task', name='wrf-task-list'),
     
     url(r'^wrf/new-group/$', 'new_task_group', name='wrf_new_task_group'),
-    url(r'^wrf/task-group-details/$', 'task_group_details', name='wrf_task_group_details'),
+    url(r'^wrf/task-group-details/$', 'task_group_detail', name='wrf_task_group_detail'),
     url(r'^wrf/list-task-group/$', 'list_task_group', name='wrf_list_task_group'),
     
     url(r'^wrf/new-chem-data/$', 'new_chem_data', name='wrf_new_chem_data'),
@@ -38,7 +39,7 @@ urlpatterns += patterns('aqm_web.views.wrf_view',
 )
 
 urlpatterns += patterns('aqm_web.views.plot',
-    url(r'^plot/mercator$', 'mercator'),
+    url(r'^plot/mercator$', 'mercator', name='map-preview-mercator'),
     url(r'^plot/lambert-conformal$', 'lambert_conformal'),
     url(r'^plot/test$', 'test_plot'),
 )

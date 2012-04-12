@@ -100,13 +100,70 @@ h5 {
     font-weight: bold;
 }
 
-.brand {
+.btn,
+.nav {
     font-family: 'Exo', sans-serif;
-    font-weight: bold;
 }
 
 .navbar {
     &.mainmenu {
+        .brand {
+            font-family: 'Exo', sans-serif;
+            font-weight: bold;
+            color: @defaultDarkColor;
+        }
+        
+        a {
+            .transition(all .2s linear);
+        }
+        
+        > .navbar-inner {
+            #gradient > .vertical(@baseLightColor1, @baseLightColor2);
+            .border-radius(0);
+          
+            .nav {
+                > li {
+                    > a {
+                        color: fade(@defaultDarkColor, 88%);
+                        text-shadow: 0 1px 0 rgba(255, 255, 255, 0.555);
+                        
+                        // Hover state
+                        &:hover {
+                            #gradient > .radial(fade(@white, 88%), fade(@white, 0%));
+                            color: @defaultDarkColor;
+                        }
+                    }
+                    
+                    &.active {
+                        #gradient > .radial(fade(@white, 88%), fade(@white, 0%));
+                        
+                        > a {
+                            #gradient > .radial(fade(@white, 88%), fade(@white, 0%));
+                            color: @defaultDarkColor;
+                            font-weight: bold;
+                        }
+                    }
+                }
+                
+           
+                > li.open > a {
+                    #gradient > .radial(fade(@white, 88%), fade(@white, 0%));
+                } 
+            
+                > li .caret,
+                > li.open .caret {
+                    border-top-color: @defaultDarkColor;
+                }
+                
+            }
+          
+          
+            > .container {
+                position: relative;
+            }
+        
+        }
+        
         a {
             &.profile {
                 position: relative;
@@ -444,6 +501,36 @@ h5 {
 }
 
 
+// footer
+.footer {
+    margin-top: 20px;
+    padding-top: 10px;
+    border-top: solid 1px #DDD;
+}
+
+// Misc.
+.avatar32 {
+    margin: 0;
+    padding: 0;
+    .border-radius(3px);
+    .box-shadow(0 0 1px fade(@black, 33%));
+}
+
+.hilight {
+    color: @green;
+}
+
+.task-controls {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    
+    li {
+        float: left;
+        padding: 0 5px 0 0;
+        min-height: 51px;
+    }
+}
 
 // Custom Scrollbar
 .custom-scroll-bar::-webkit-scrollbar {
