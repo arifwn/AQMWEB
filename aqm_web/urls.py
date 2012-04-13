@@ -63,5 +63,6 @@ urlpatterns += patterns('',
     url(r'^rest/task/detail/(?P<task_id>[^/]+)/$', task_resource, name='rest-task'),
     url(r'^rest/task/control/$', task_control_resource, name='rest-task-control-list'),
     url(r'^rest/chemdata/$', chemdata_resource, name='rest-chemdata-list'),
-    url(r'^rest/chemdata/(?P<chemdata_id>[^/]+)/$', chemdata_resource, name='rest-chemdata-detail'),
+    url(r'^rest/chemdata/all/$', chemdata_resource, kwargs={'chemdata_id': None, 'all_user': True}, name='rest-chemdata-list-all'),
+    url(r'^rest/chemdata/detail/(?P<chemdata_id>[^/]+)/$', chemdata_resource, name='rest-chemdata-detail'),
 )

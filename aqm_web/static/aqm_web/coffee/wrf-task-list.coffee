@@ -119,10 +119,10 @@ get_task_html = (task) ->
     
     if task.get_status == "draft"
         controls_html = """
-        <li><button class="btn btn-info control-run" data-loading-text="Run" autocomplete="off">Run</button></li>
-        <li><a class="btn" href="#{ task.get_url }">Details</a></li>
-        <li><a class="btn" href="#">Edit</a></li>
-        <li><a class="btn btn-danger" href="#">Delete</a></li>
+        <li><button class="btn btn-info control-run" data-loading-text="Run" autocomplete="off"><i class="icon-play icon-white"></i> Run</button></li>
+        <li><a class="btn" href="#{ task.get_url }"><i class="icon-th-list"></i> Details</a></li>
+        <li><a class="btn" href="#"><i class="icon-edit"></i> Edit</a></li>
+        <li><a class="btn btn-danger" href="#"><i class="icon-remove icon-white"></i> Delete</a></li>
         """
         
         progress_html = """
@@ -133,8 +133,8 @@ get_task_html = (task) ->
         
     else if task.get_status == "pending"
         controls_html = """
-        <li><button class="btn btn-danger control-cancel" data-loading-text="Cancel" autocomplete="off">Cancel</button></li>
-		<li><a class="btn" href="#{ task.get_url }">Details</a></li>
+        <li><button class="btn btn-danger control-cancel" data-loading-text="Cancel" autocomplete="off"><i class="icon-remove-sign icon-white"></i> Cancel</button></li>
+		<li><a class="btn" href="#{ task.get_url }"><i class="icon-th-list"></i> Details</a></li>
         """
         
         progress_html = """
@@ -145,8 +145,8 @@ get_task_html = (task) ->
         
     else if task.get_status == "running"
         controls_html = """
-        <li><button class="btn btn-danger control-stop" data-loading-text="Stop" autocomplete="off">Stop</button></li>
-		<li><a class="btn" href="#{ task.get_url }">Details</a></li>
+        <li><button class="btn btn-danger control-stop" data-loading-text="Stop" autocomplete="off"><i class="icon-stop icon-white"></i> Stop</button></li>
+		<li><a class="btn" href="#{ task.get_url }"><i class="icon-th-list"></i> Details</a></li>
         """
         
         progress_html = """
@@ -161,10 +161,10 @@ get_task_html = (task) ->
     else if task.get_status == "finished"
         controls_html = """
         <li><a class="btn btn-success" href="#">Results</a></li>
-        <li><button class="btn btn-info control-rerun" data-loading-text="Run Again" autocomplete="off">Run Again</button></li>
-        <li><a class="btn" href="#{ task.get_url }">Details</a></li>
-        <li><a class="btn" href="#">Edit</a></li>
-        <li><a class="btn btn-danger" href="#">Delete</a></li>
+        <li><button class="btn btn-info control-rerun" data-loading-text="Run Again" autocomplete="off"><i class="icon-repeat icon-white"></i> Run Again</button></li>
+        <li><a class="btn" href="#{ task.get_url }"><i class="icon-th-list"></i> Details</a></li>
+        <li><a class="btn" href="#"><i class="icon-edit"></i> Edit</a></li>
+        <li><a class="btn btn-danger" href="#"><i class="icon-remove icon-white"></i> Delete</a></li>
         """
         
         progress_html = """
@@ -175,11 +175,11 @@ get_task_html = (task) ->
         
     else if task.get_status == "error"
         controls_html = """
-        <li><button class="btn btn-info control-retry" data-loading-text="Retry last stage" autocomplete="off">Retry last stage</button></li>
-        <li><button class="btn btn-info control-rerun" data-loading-text="Run Again" autocomplete="off">Run Again</button></li>
-        <li><a class="btn" href="#{ task.get_url }">Details</a></li>
-        <li><a class="btn" href="#">Edit</a></li>
-        <li><a class="btn btn-danger" href="#">Delete</a></li>
+        <li><button class="btn btn-info control-retry" data-loading-text="Retry last stage" autocomplete="off"><i class="icon-refresh icon-white"></i> Retry last stage</button></li>
+        <li><button class="btn btn-info control-rerun" data-loading-text="Run Again" autocomplete="off"><i class="icon-repeat icon-white"></i> Run Again</button></li>
+        <li><a class="btn" href="#{ task.get_url }"><i class="icon-th-list"></i> Details</a></li>
+        <li><a class="btn" href="#"><i class="icon-edit"></i> Edit</a></li>
+        <li><a class="btn btn-danger" href="#"><i class="icon-remove icon-white"></i> Delete</a></li>
         """
         
         progress_html = """
@@ -190,11 +190,11 @@ get_task_html = (task) ->
         
     else if task.get_status == "canceled"
         controls_html = """
-        <li><button class="btn btn-info control-retry" data-loading-text="Resume from last stage" autocomplete="off">Resume from last stage</button></li>
-        <li><button class="btn btn-info control-rerun" data-loading-text="Run Again" autocomplete="off">Run Again</button></li>
-        <li><a class="btn" href="#{ task.get_url }">Details</a></li>
-        <li><a class="btn" href="#">Edit</a></li>
-        <li><a class="btn btn-danger" href="#">Delete</a></li>
+        <li><button class="btn btn-info control-retry" data-loading-text="Resume from last stage" autocomplete="off"><i class="icon-refresh icon-white"></i> Resume from last stage</button></li>
+        <li><button class="btn btn-info control-rerun" data-loading-text="Run Again" autocomplete="off"><i class="icon-repeat icon-white"></i> Run Again</button></li>
+        <li><a class="btn" href="#{ task.get_url }"><i class="icon-th-list"></i> Details</a></li>
+        <li><a class="btn" href="#"><i class="icon-edit"></i> Edit</a></li>
+        <li><a class="btn btn-danger" href="#"><i class="icon-remove icon-white"></i> Delete</a></li>
         """
         
         progress_html = """

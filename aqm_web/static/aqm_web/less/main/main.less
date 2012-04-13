@@ -105,6 +105,11 @@ h5 {
     font-family: 'Exo', sans-serif;
 }
 
+.btn {
+    font-weight: bold;
+    font-size: 12px;
+}
+
 .navbar {
     &.mainmenu {
         .brand {
@@ -334,7 +339,7 @@ h5 {
 
 // Chem Data List
 
-.chem-data-list {
+.chemdata-list {
 	margin: 5px 0 0 0;
 	padding: 0;
 	list-style: none;
@@ -346,7 +351,7 @@ h5 {
         min-height: 120px;
         list-style: none;
         
-        :hover {
+        &:hover {
             background: #FAFAFA;
         }
 
@@ -367,6 +372,13 @@ h5 {
                 margin: 0;
                 padding: 0 5px;
             }
+        }
+        
+        .avatar {
+            margin: 0;
+            padding: 0;
+            .border-radius(3px);
+            .box-shadow(0 0 1px fade(@black, 33%));
         }
     }
 }

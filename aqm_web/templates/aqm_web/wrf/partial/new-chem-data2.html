@@ -1,5 +1,28 @@
 {% load url from future %}
 {% load add_class %}
+
+<script>
+$(document).ready(function () {
+	
+	chemdata_url = "{% url 'rest-chemdata-detail' chemdata.id %}";
+	chemdata_list_url = "{% url 'wrf_list_chem_data' %}";
+	chemdata = undefined;
+	
+    $.ajax({url: chemdata_url,
+            dataType: 'json',
+            type: 'GET',
+            success: function(data){
+                chemdata = data;
+                process_chemdata(chemdata);
+            },
+            error: function(jqXHR, textStatus, errorThrown){
+				window.aqm.alert("Connectivity Error", "Cannot connect to remote server: " + textStatus + " " + errorThrown);
+            }
+    });
+	
+});
+</script>
+
 <div class="row">
 	<div class="span16">
 		<div class="page-header">
@@ -20,18 +43,17 @@
 		<div class="model-editor">
             <div class="many-to-many-widget">
                 <p>
-                    <input type="button" id="chemdata-add-pollutant" class="btn btn-primary" value="Add..." />
-                    <input type="button" id="chemdata-edit-pollutant" class="btn" value="Edit..." />
-                    <input type="button" id="chemdata-remove-pollutant" class="btn btn-danger" value="Remove" />
+                    <button id="chemdata-add-pollutant" class="btn btn-primary"><i class="icon-plus icon-white"></i> Add...</button>
+                    <button id="chemdata-edit-pollutant" class="btn"><i class="icon-edit"></i> Edit...</button>
+                    <button id="chemdata-remove-pollutant" class="btn btn-danger"><i class="icon-remove icon-white"></i> Remove</button>
                 </p>
 				<div class="model-list">
-					<select class="span5" size="5" multiple="multiple" id="chemdata-param-list" data-worksheets="{{ chemdata.worksheets }}">
-					  <option>CO</option>
-					  <option>SO</option>
-					  <option>NO</option>
-					</select>
+					<select class="span5" size="5" multiple="multiple" id="chemdata-param-list" data-worksheets="{{ chemdata.worksheets }}"></select>
 				</div>
 			</div>
+		</div>
+		<div>
+			<p><button id="chemdata-save" class="btn btn-primary" data-loading-text="Saving..."><i class="icon-upload icon-white"></i> Save</button></p>
 		</div>
 	</div>
 </div>
@@ -66,7 +88,7 @@
               <p class="help-block">Use conversion factor to convert unit to mol / km&sup2; / hour</p>
             </div>
         </div>
-      
+		
         <div class="control-group">
             <label class="control-label" for="id-data-row-start">Data Rows</label>
             <div class="controls">
@@ -78,9 +100,24 @@
               </div>
             </div>
         </div>
-      
+		
         <div class="control-group">
-            <label class="control-label" for="id-emission-col">Data Rows</label>
+            <label class="control-label" for="id-data-dim-w">Data Dimension</label>
+            <div class="controls">
+				<div class="inline">
+					<div class="input-prepend">
+						<span class="add-on">Width</span><input id="id-data-dim-w" class="input-small" type="text" placeholder="e.g. 100">
+					</div>
+					<div class="input-prepend">
+						<span class="add-on">Height</span><input id="id-data-dim-h" class="input-small" type="text" placeholder="e.g. 100">
+					</div>
+					<p class="help-block">Dimension of the data</p>
+				</div>
+            </div>
+        </div>
+		
+        <div class="control-group">
+            <label class="control-label" for="id-emission-col">Data Columns</label>
             <div class="controls">
                 <div class="input-prepend">
                     <span class="add-on">Emission</span><input id="id-emission-col" class="span2" type="text"  placeholder="e.g. A">

@@ -81,6 +81,43 @@
     },
     {
         "pk": 1,
+        "model": "wrf.pollutantparam",
+        "fields": {
+            "row_end": 9802,
+            "created": "2012-04-13T22:03:11.173",
+            "row_start": 2,
+            "worksheet": 0,
+            "data_h": 99,
+            "lon": "F",
+            "modified": "2012-04-13T22:03:11.173",
+            "value": "I",
+            "lat": "G",
+            "conversion_factor": 0.1141552511415525,
+            "data_w": 99,
+            "y": "E",
+            "x": "D",
+            "pollutant": "E_SO2"
+        }
+    },
+    {
+        "pk": 1,
+        "model": "wrf.chemdata",
+        "fields": {
+            "name": "Test Emission Data",
+            "parameters": [
+                1
+            ],
+            "created": "2012-04-13T22:00:41.347",
+            "modified": "2012-04-13T22:03:17.049",
+            "is_removed": false,
+            "user": 1,
+            "worksheets": "[\"Export_Output_8\"]",
+            "data": "wrf/chem_data/2012/04/grid_marsel-new.xlsx",
+            "description": "<p>A humble test data...</p>"
+        }
+    },
+    {
+        "pk": 1,
         "model": "wrf.task",
         "fields": {
             "name": "Test WRF",

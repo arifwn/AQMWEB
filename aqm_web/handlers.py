@@ -2,6 +2,7 @@
 
 from django.utils import simplejson as json
 from django.core.cache import cache
+from django.contrib import messages
 
 from piston.handler import BaseHandler
 from piston.utils import rc, throttle
@@ -51,16 +52,16 @@ class ServerHandler(BaseHandler):
 
 class ChemDataHandler(BaseHandler):
     model = ChemData
-    methods_allowed = ('GET',)
+    methods_allowed = ('GET', 'POST')
     fields = ('id', 'name', 'description', 'created', 'modified',
-              'data', 'worksheets', 'is_removed',
+              'data', 'worksheets', 'is_removed', 
               ('user', ('id', 'username', 'first_name', 'last_name', 'email',
                         'get_full_name')),
               ('parameters', ('worksheet', 'x', 'y', 'lat', 'lon', 'value',
                               'conversion_factor', 'pollutant', 'id', 'created',
-                              'modified')))
+                              'modified', 'row_start', 'row_end', 'data_w', 'data_h')))
     
-    def read(self, request, chemdata_id=None):
+    def read(self, request, chemdata_id=None, all_user=False):
         if chemdata_id is not None:
             try:
                 return ChemData.objects.get(pk=chemdata_id, is_removed=False)
@@ -69,12 +70,43 @@ class ChemDataHandler(BaseHandler):
             except ValueError:
                 return rc.BAD_REQUEST
         else:
-            return ChemData.objects.filter(is_removed=False).all()
+            if all_user:
+                return ChemData.objects.filter(is_removed=False).extra(order_by=['-created']).all()
+            else:
+                return ChemData.objects.filter(is_removed=False, user=request.user).extra(order_by=['-created']).all()
+    
+    def create(self, request, chemdata_id=None):
+        try:
+            chemdata_id = request.data['chemdata_id']
+            parameters_json = request.data['parameters_json']
+        except KeyError:
+            return rc.BAD_REQUEST
+        try:
+            chemdata = ChemData.objects.get(pk=chemdata_id, is_removed=False)
+        except ChemData.DoesNotExist:
+                return rc.NOT_FOUND
+        except ValueError:
+            return rc.BAD_REQUEST
         
+        try:
+            parameters = json.loads(parameters_json)
+        except ValueError:
+            return rc.BAD_REQUEST
+        
+        # TODO: save the parameters
+        
+        status =  False
+        
+        if status:
+            messages.success(request, 'Emission data successfully saved!')
+            return True
+        else:
+            return rc.BAD_REQUEST
+    
 
 class TaskHandler(BaseHandler):
     model = Task
-    methods_allowed = ('GET',)
+    methods_allowed = ('GET')
     fields = ('id', 'name', 'description', 'created', 'modified', 'setting',
               'get_status', 'get_stage', 'get_progress_percent', 'get_rest_url',
               'get_url',
@@ -98,7 +130,8 @@ class TaskHandler(BaseHandler):
             else:
                 # only return task created by CURRENT user
                 return Task.objects.filter(user=request.user).extra(order_by=['-created']).all()
-
+    
+    
 class TaskControlHandler(BaseHandler):
     methods_allowed = ('POST',)
     

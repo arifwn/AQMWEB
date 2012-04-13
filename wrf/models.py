@@ -180,6 +180,10 @@ class PollutantParam(models.Model):
     value = models.CharField(max_length=50)
     conversion_factor = models.FloatField(default=1.0)
     worksheet = models.IntegerField(default=0)
+    row_start = models.IntegerField()
+    row_end = models.IntegerField()
+    data_w = models.IntegerField()
+    data_h = models.IntegerField()
     
     class Meta:
         verbose_name  = 'PollutantParam'
