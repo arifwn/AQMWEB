@@ -76,13 +76,27 @@
       return _results;
     };
     $('#chemdata-add-pollutant').bind('click', function(event) {
+      $('#area-modal').attr('data-command', 'add');
+      $('#area-modal').attr('data-command-param', '');
       return $('#area-modal').modal('show');
     });
     $('#chemdata-edit-pollutant').bind('click', function(event) {
-      return $('#area-modal').modal('show');
+      var edit_list;
+      edit_list = $('#chemdata-param-list').val();
+      console.log(edit_list);
+      if (edit_list !== null) {
+        if (edit_list.length > 0) {
+          console.log('editing', edit_list[0]);
+          $('#area-modal').attr('data-command', 'edit');
+          $('#area-modal').attr('data-command-param', edit_list[0]);
+          return $('#area-modal').modal('show');
+        }
+      }
     });
     $('#chemdata-remove-pollutant').bind('click', function(event) {
-      return console.log($('#chemdata-param-list'));
+      var removal_list;
+      removal_list = $('#chemdata-param-list').val();
+      return console.log(removal_list);
     });
     $('#chemdata-modal-cancel').bind('click', function(event) {
       return $('#area-modal').modal('hide');

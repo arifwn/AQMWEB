@@ -78,7 +78,7 @@ $(document).ready(function(){
         <div class="row">
             <div class="span12">
                 <div class="well">
-                    <div id="task-desc" class="collapse in">{{ task.description }}</div>
+                    <div id="task-desc" class="collapse in">{{ task.description|safe }}</div>
                     <div style="padding-top: 10px;"><button class="btn" data-toggle="collapse" data-target="#task-desc">Hide / Show Description</button></div>
                 </div>
             </div>

@@ -6,34 +6,37 @@
       <h1>New Emission Data (Step 1 of 2)</h1>
     </div>
     
-    <form id="wrf-new-chem-data-form" action="" method="post" enctype="multipart/form-data">
+    <form class="form-horizontal" id="wrf-new-chem-data-form" action="" method="post" enctype="multipart/form-data">
       {% csrf_token %}
       <fieldset>
-        <div class="clearfix {% if form.name.errors %} error {% endif %}">
-          <label for="id_name">Name:</label>
-          <div class="input">
-            {{ form.name|add_class:'span11' }} <span class="help-block">{{ form.name.errors }}</span>
-          </div>
+        <div class="control-group {% if form.name.errors %} error {% endif %}">
+            <label class="control-label" for="id_name">Name</label>
+            <div class="controls">
+                {{ form.name|add_class:'span9' }}
+                <p class="help-block">{{ form.name.errors }}</p>
+            </div>
         </div>
         
-        <div class="clearfix {% if form.description.errors %} error {% endif %}">
-          <label for="id_description">Description:</label>
-          <div class="input">
-            {{ form.description|add_class:'span11' }} <span class="help-block">{{ form.description.errors }}</span>
-          </div>
+        <div class="control-group {% if form.description.errors %} error {% endif %}">
+            <label class="control-label" for="id_description">Description</label>
+            <div class="controls">
+                {{ form.description|add_class:'span9' }}
+                <p class="help-block">{{ form.description.errors }}</p>
+            </div>
         </div>
         
-        <div class="clearfix {% if form.data.errors %} error {% endif %}">
-          <label for="id_data">Data File:</label>
-          <div class="input">
-            {{ form.data|add_class:'span11'  }} <span class="help-block">{{ form.data.errors }}</span>
-          </div>
+        <div class="control-group {% if form.data.errors %} error {% endif %}">
+            <label class="control-label" for="id_data">Data File</label>
+            <div class="controls">
+                {{ form.data|add_class:'span9' }}
+                <p class="help-block">{{ form.data.errors }}</p>
+            </div>
         </div>
         
       </fieldset>
-      <div class="actions">
+      <div class="form-actions">
         {{ form.parameters_json }}
-        <input type="submit" class="btn primary" value="Next">
+        <input type="submit" class="btn btn-primary" value="Next">
       </div>
     </form>
     

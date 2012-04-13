@@ -11,7 +11,7 @@ from aqm_utils.xmlrpc import Client
 from aqm_web.models import Server
 
 import wrf.commands
-from wrf.models import Task, TaskQueue
+from wrf.models import Task, TaskQueue, ChemData
 
 
 class ServerStatusHandler(BaseHandler):
@@ -47,6 +47,29 @@ class ServerHandler(BaseHandler):
                 return rc.BAD_REQUEST
         else:
             return Server.objects.filter(is_enabled=True).all()
+
+
+class ChemDataHandler(BaseHandler):
+    model = ChemData
+    methods_allowed = ('GET',)
+    fields = ('id', 'name', 'description', 'created', 'modified',
+              'data', 'worksheets', 'is_removed',
+              ('user', ('id', 'username', 'first_name', 'last_name', 'email',
+                        'get_full_name')),
+              ('parameters', ('worksheet', 'x', 'y', 'lat', 'lon', 'value',
+                              'conversion_factor', 'pollutant', 'id', 'created',
+                              'modified')))
+    
+    def read(self, request, chemdata_id=None):
+        if chemdata_id is not None:
+            try:
+                return ChemData.objects.get(pk=chemdata_id, is_removed=False)
+            except ChemData.DoesNotExist:
+                return rc.NOT_FOUND
+            except ValueError:
+                return rc.BAD_REQUEST
+        else:
+            return ChemData.objects.filter(is_removed=False).all()
         
 
 class TaskHandler(BaseHandler):

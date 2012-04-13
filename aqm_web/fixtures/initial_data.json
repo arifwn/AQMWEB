@@ -67,7 +67,7 @@
         "model": "wrf.setting",
         "fields": {
             "namelist_wrf": "&time_control \r\n run_days                              = 0,\r\n run_hours                             = 0,\r\n run_minutes                           = 0,\r\n run_seconds                           = 0,\r\n start_year                            = 2010, 2010, 2010,\r\n start_month                           = 10, 1, 1,\r\n start_day                             = 14, 14, 14,\r\n start_hour                            = 0, 0, 0,\r\n start_minute                          = 0, 0, 0,\r\n start_second                          = 0, 0, 0,\r\n end_year                              = 2010, 2010, 2010,\r\n end_month                             = 10, 1, 1,\r\n end_day                               = 14, 15, 15,\r\n end_hour                              = 6, 18, 18,\r\n end_minute                            = 0, 0, 0,\r\n end_second                            = 0, 0, 0,\r\n interval_seconds                      = 21600,\r\n input_from_file                       = .true., .true., .true.,\r\n history_interval                      = 60, 60, 60,\r\n frames_per_outfile                    = 1000, 1000, 1000,\r\n restart                               = .false.,\r\n restart_interval                      = 5000,\r\n io_form_history                       = 2,\r\n io_form_restart                       = 2,\r\n io_form_input                         = 2,\r\n io_form_boundary                      = 2,\r\n io_form_auxinput5                     = 0,\r\n io_form_auxinput6                     = 0,\r\n io_form_auxinput7                     = 0,\r\n io_form_auxinput8                     = 0,\r\n auxinput5_interval_m                  = 60, 60, 60,\r\n auxinput6_interval_m                  = 1440, 60, 60,\r\n auxinput7_interval_m                  = 1440, 60, 60,\r\n auxinput8_interval_m                  = 1440, 60, 60,\r\n auxinput1_inname                      = 'met_em.d<domain>.<date>',\r\n auxinput6_inname                      = 'wrfbiochemi_d01',\r\n auxinput7_inname                      = 'wrffirechemi_d<domain>',\r\n auxinput8_inname                      = 'wrfchemi_gocart_bg_d<domain>',\r\n debug_level                           = 0,\r\n/ \r\n \r\n&domains \r\n time_step                             = 15,\r\n time_step_fract_num                   = 0,\r\n time_step_fract_den                   = 1,\r\n max_dom                               = 1,\r\n e_we                                  = 31, 91, 61,\r\n e_sn                                  = 31, 91, 61,\r\n e_vert                                = 28, 28, 28,\r\n p_top_requested                       = 5000,\r\n num_metgrid_levels                    = 27,\r\n num_metgrid_soil_levels               = 4,\r\n dx                                    = 27000, 1000, 1000,\r\n dy                                    = 27000, 1000, 1000,\r\n grid_id                               = 1, 2, 3,\r\n parent_id                             = 0, 1, 2,\r\n i_parent_start                        = 1, 32, 30,\r\n j_parent_start                        = 1, 30, 30,\r\n parent_grid_ratio                     = 1, 5, 3,\r\n parent_time_step_ratio                = 1, 3, 3,\r\n feedback                              = 1,\r\n smooth_option                         = 0,\r\n/ \r\n \r\n&physics \r\n mp_physics                            = 2, 2, 2,\r\n ra_lw_physics                         = 1, 1, 1,\r\n ra_sw_physics                         = 1, 1, 1,\r\n radt                                  = 30, 30, 30,\r\n sf_sfclay_physics                     = 1, 1, 1,\r\n sf_surface_physics                    = 2, 2, 2,\r\n bl_pbl_physics                        = 1, 1, 1,\r\n bldt                                  = 0, 0, 0,\r\n cu_physics                            = 3, 3, 3,\r\n cudt                                  = 5, 5, 5,\r\n isfflx                                = 1,\r\n ifsnow                                = 0,\r\n icloud                                = 1,\r\n surface_input_source                  = 1,\r\n num_soil_layers                       = 4,\r\n sf_urban_physics                      = 0, 0, 0,\r\n maxiens                               = 1,\r\n maxens                                = 3,\r\n maxens2                               = 3,\r\n maxens3                               = 16,\r\n ensdim                                = 144,\r\n/ \r\n \r\n&dynamics \r\n w_damping                             = 0,\r\n diff_opt                              = 1,\r\n km_opt                                = 4,\r\n diff_6th_opt                          = 0, 0, 0,\r\n diff_6th_factor                       = 0.12, 0.12, 0.12,\r\n base_temp                             = 290.0,\r\n damp_opt                              = 0,\r\n zdamp                                 = 5000.0, 5000.0, 5000.0,\r\n dampcoef                              = 0.2, 0.2, 0.2,\r\n khdif                                 = 0, 0, 0,\r\n kvdif                                 = 0, 0, 0,\r\n non_hydrostatic                       = .true., .true., .true.,\r\n moist_adv_opt                         = 1, 1, 1,\r\n scalar_adv_opt                        = 1, 1, 1,\r\n/ \r\n \r\n&bdy_control \r\n spec_bdy_width                        = 5,\r\n spec_zone                             = 1,\r\n relax_zone                            = 4,\r\n specified                             = .true., .false., .false.,\r\n nested                                = .false., .true., .true.,\r\n/ \r\n \r\n&namelist_quilt \r\n nio_tasks_per_group                   = 0,\r\n nio_groups                            = 1,\r\n/ \r\n \r\n&chem \r\n kemit                                 = 1,\r\n chem_opt                              = 0, 0,\r\n bioemdt                               = 30, 30,\r\n photdt                                = 30, 30,\r\n chemdt                                = 0, 0,\r\n frames_per_emissfile                  = 12,\r\n emiss_inpt_opt                        = 1, 1,\r\n emiss_opt                             = 3, 3,\r\n chem_in_opt                           = 0, 0,\r\n phot_opt                              = 1, 1,\r\n gas_drydep_opt                        = 1, 1,\r\n aer_drydep_opt                        = 1, 1,\r\n bio_emiss_opt                         = 0, 0,\r\n dust_opt                              = 0,\r\n dmsemis_opt                           = 0,\r\n seas_opt                              = 0,\r\n gas_bc_opt                            = 1, 1,\r\n gas_ic_opt                            = 1, 1,\r\n aer_bc_opt                            = 1, 1,\r\n aer_ic_opt                            = 1, 1,\r\n gaschem_onoff                         = 1, 1,\r\n aerchem_onoff                         = 1, 1,\r\n wetscav_onoff                         = 0, 0,\r\n cldchem_onoff                         = 0, 0,\r\n vertmix_onoff                         = 1, 0,\r\n chem_conv_tr                          = 1, 0,\r\n biomass_burn_opt                      = 0, 0,\r\n plumerisefire_frq                     = 30, 0,\r\n have_bcs_chem                         = .false., .false., .false.,\r\n aer_ra_feedback                       = 0,\r\n/ \r\n ",
-            "description": "A Test Case...",
+            "description": "<p>A Test Case...</p>",
             "namelist_arwpost": "&datetime \r\n start_date                            = '2010-01-14_00:00:00',\r\n end_date                              = '2010-01-15_00:00:00',\r\n interval_seconds                      = 3600,\r\n tacc                                  = 0,\r\n debug_level                           = 0,\r\n/ \r\n \r\n&io \r\n input_root_name                       = './wrfout_d01_2010-01-14_00:00:00',\r\n output_root_name                      = './d03',\r\n plot                                  = 'all',\r\n mercator_defs                         = .true.,\r\n/ \r\n \r\n&interp \r\n interp_method                         = 0,\r\n interp_levels                         = 1000.0, 950.0, 900.0, 850.0, 800.0, 750.0, 700.0, 650.0, 600.0, 550.0, 500.0, 450.0, 400.0, 350.0, 300.0, 250.0, 200.0, 150.0, 100.0,\r\n/ \r\n ",
             "created": "2012-04-06T20:21:12.676",
             "modified": "2012-04-06T20:21:12.676",
@@ -88,7 +88,7 @@
             "modified": "2012-04-06T20:21:12.926",
             "setting": 1,
             "user": 1,
-            "description": "A Test Case..."
+            "description": "<p>A Test Case...</p>"
         }
     },
     {
@@ -100,7 +100,7 @@
             "modified": "2012-04-06T20:21:12.926",
             "setting": 1,
             "user": 1,
-            "description": "Another Test Case..."
+            "description": "<p>Another Test Case...</p>"
         }
     },
     {
@@ -112,7 +112,7 @@
             "modified": "2012-04-06T22:21:12.926",
             "setting": 1,
             "user": 1,
-            "description": "Another Test Case..."
+            "description": "<p>Another Test Case...</p>"
         }
     },
     {
@@ -124,7 +124,7 @@
             "modified": "2012-04-06T23:21:12.926",
             "setting": 1,
             "user": 1,
-            "description": "Another Test Case..."
+            "description": "<p>Another Test Case...</p>"
         }
     },
     {
@@ -136,7 +136,7 @@
             "modified": "2012-04-06T23:31:12.926",
             "setting": 1,
             "user": 1,
-            "description": "Another Test Case..."
+            "description": "<p>Another Test Case...</p>"
         }
     },
     {
@@ -148,7 +148,7 @@
             "modified": "2012-04-06T23:41:12.926",
             "setting": 1,
             "user": 1,
-            "description": "Another Test Case..."
+            "description": "<p>Another Test Case...</p>"
         }
     },
     {

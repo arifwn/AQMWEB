@@ -1,12 +1,19 @@
 
 from django import forms
+from tinymce.widgets import TinyMCE
 
 class NewTaskForm(forms.Form):
     task_name = forms.CharField(label='Name', max_length=200)
     task_description = forms.CharField(label='Description',
-                                       widget=forms.Textarea(attrs={
-                                        'rows':'3'
-                                        }))
+                                       widget=TinyMCE(mce_attrs={
+                                                        'theme': "advanced",
+                                                        'plugins': "inlinepopups",
+                                                        'theme_advanced_buttons1' : "bold,italic,underline,strikethrough,blockquote,bullist,numlist,link,unlink,image,cleanup",
+                                                        'theme_advanced_buttons2' : "",
+                                                        'theme_advanced_buttons3' : "",
+                                                        'theme_advanced_toolbar_location' : "top",
+                                                        'theme_advanced_toolbar_align' : "right"
+                                                        }))
     task_namelist_wrf = forms.CharField(label='WRF Namelist',
                                        widget=forms.Textarea(attrs={
                                         'rows':'10'
