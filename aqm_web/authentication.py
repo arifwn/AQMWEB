@@ -22,4 +22,15 @@ class CookieAuthentication(HttpBasicAuthentication):
             pass
         
         return super(CookieAuthentication, self).is_authenticated(request)
-        
+
+
+class CookieStaffAuthentication(CookieAuthentication):
+    ''' Only authenticate staff user '''
+    
+    def is_authenticated(self, request):
+        status = super(CookieStaffAuthentication, self).is_authenticated(request)
+        if status:
+            if request.user.is_staff:
+                return True
+        return False
+    

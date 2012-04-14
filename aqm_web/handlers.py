@@ -175,7 +175,8 @@ class TaskHandler(BaseHandler):
 class TaskControlHandler(BaseHandler):
     methods_allowed = ('POST',)
     
-    def create(self, request):
+    def create(self, request): 
+        ''' Perform various operation on a task '''
         try:
             command = request.data['command']
             task_id = int(request.data['task_id'])

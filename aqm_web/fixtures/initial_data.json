@@ -12,7 +12,7 @@
             "last_login": "2012-01-06 01:58:01",
             "groups": [],
             "user_permissions": [],
-            "password": "sha1$b335d$27f2ed3f8f661a0deb68d8c476ab8c32cba5a3ad",
+            "password": "pbkdf2_sha256$10000$0fFMkIfP53OQ$/PfXVguVSYBXaEoEjQvJxSmBW9EG8MfrK2eVoWt6jls=",
             "email": "arif@sainsmograf.com",
             "date_joined": "2011-12-14 22:01:12"
         }
@@ -30,7 +30,7 @@
             "last_login": "2012-04-10T03:40:21.547",
             "groups": [],
             "user_permissions": [],
-            "password": "pbkdf2_sha256$10000$PobBBR2pslUi$pUh5F0PmHFldZUXQk427YqS/gNdouRY8ugsl8km92gs=",
+            "password": "pbkdf2_sha256$10000$NmPkRS09DofJ$jo1vc3aTTjogJJGa+UkTwC7ulr8pLteKHS8F2cBqwog=",
             "email": "",
             "date_joined": "2012-04-10T03:40:21.547"
         }

@@ -1,53 +1,42 @@
 <!DOCTYPE html>
 <html>
-	<head>
-	<meta charset="utf-8">
-	<link href="{{ STATIC_URL }}aqm_web/css/main.css" rel="stylesheet">
-	<link href="{{ STATIC_URL }}aqm_web/css/prettify.css" rel="stylesheet">
-	<link href="{{ STATIC_URL }}aqm_web/css/jquery.ui.timepicker.css" rel="stylesheet">
-	<link href="{{ STATIC_URL }}aqm_web/css/ui-darkness/jquery-ui.custom.css" rel="stylesheet">
-	<script src="{{ STATIC_URL }}aqm_web/js/jquery.js"></script>
-	<script src="{{ STATIC_URL }}aqm_web/js/jquery-ui.custom.min.js"></script>
-	<script src="{{ STATIC_URL }}aqm_web/js/jquery.ui.timepicker.js"></script>
-
-	<script src="{{ STATIC_URL }}aqm_web/js/bootstrap-alert.js"></script>
-	<script src="{{ STATIC_URL }}aqm_web/js/bootstrap-button.js"></script>
-	<script src="{{ STATIC_URL }}aqm_web/js/bootstrap-collapse.js"></script>
-	<script src="{{ STATIC_URL }}aqm_web/js/bootstrap-dropdown.js"></script>
-	<script src="{{ STATIC_URL }}aqm_web/js/bootstrap-modal.js"></script>
-	<script src="{{ STATIC_URL }}aqm_web/js/bootstrap-tab.js"></script>
-	<script src="{{ STATIC_URL }}aqm_web/js/bootstrap-tooltip.js"></script>
-	<script src="{{ STATIC_URL }}aqm_web/js/bootstrap-transition.js"></script>
-
-	<script src="{{ STATIC_URL }}aqm_web/js/main.js"></script>
-	<script src="{{ STATIC_URL }}aqm_web/js/simplebar.js"></script>
-	<script src="{{ STATIC_URL }}aqm_web/js/spinner.js"></script>
-	<script src="{{ STATIC_URL }}aqm_web/js/prettify.js"></script>
-	<script src="{{ STATIC_URL }}aqm_web/js/lang-namelist.js"></script>
-	<script src="{{ STATIC_URL }}aqm_web/js/json2.js"></script>
-	<script src="{{ STATIC_URL }}tiny_mce/tiny_mce.js"></script>
-
-	<link rel="shortcut icon" href="images/favicon.ico">
-	{% block metadata %}
-	{% endblock %}
-	</head>
+    <head>
+        <meta charset="utf-8">
+        <link href="{{ STATIC_URL }}aqm_web/css/main.css" rel="stylesheet">
+        <link href="{{ STATIC_URL }}aqm_web/css/prettify.css" rel="stylesheet">
+        <link href="{{ STATIC_URL }}aqm_web/css/jquery.ui.timepicker.css" rel="stylesheet">
+        <link href="{{ STATIC_URL }}aqm_web/css/ui-darkness/jquery-ui.custom.css" rel="stylesheet">
+        <script src="{{ STATIC_URL }}aqm_web/js/jquery.js"></script>
+        <script src="{{ STATIC_URL }}aqm_web/js/jquery-ui.custom.min.js"></script>
+        <script src="{{ STATIC_URL }}aqm_web/js/jquery.ui.timepicker.js"></script>
+        
+        <script src="{{ STATIC_URL }}aqm_web/js/bootstrap-alert.js"></script>
+        <script src="{{ STATIC_URL }}aqm_web/js/bootstrap-button.js"></script>
+        <script src="{{ STATIC_URL }}aqm_web/js/bootstrap-collapse.js"></script>
+        <script src="{{ STATIC_URL }}aqm_web/js/bootstrap-dropdown.js"></script>
+        <script src="{{ STATIC_URL }}aqm_web/js/bootstrap-modal.js"></script>
+        <script src="{{ STATIC_URL }}aqm_web/js/bootstrap-tab.js"></script>
+        <script src="{{ STATIC_URL }}aqm_web/js/bootstrap-tooltip.js"></script>
+        <script src="{{ STATIC_URL }}aqm_web/js/bootstrap-transition.js"></script>
+        
+        <script src="{{ STATIC_URL }}aqm_web/js/main.js"></script>
+        <script src="{{ STATIC_URL }}aqm_web/js/simplebar.js"></script>
+        <script src="{{ STATIC_URL }}aqm_web/js/spinner.js"></script>
+        <script src="{{ STATIC_URL }}aqm_web/js/prettify.js"></script>
+        <script src="{{ STATIC_URL }}aqm_web/js/lang-namelist.js"></script>
+        <script src="{{ STATIC_URL }}aqm_web/js/json2.js"></script>
+        <script src="{{ STATIC_URL }}tiny_mce/tiny_mce.js"></script>
+        
+        <link rel="shortcut icon" href="images/favicon.ico">
+        {% block metadata %}
+        {% endblock %}
+    </head>
 {% load url from future %}
 {% load fb_versions %}
 {% load active_menu%}
 <body>
-	{% url 'index' as url_index %}
-	{% url 'wrf_new_task' as url_wrf_new_task %}
-	{% url 'wrf-task-list' as url_wrf_list_task %}
-	{% url 'wrf-task-detail' task.id as url_wrf_task_detail %}
-	{% url 'wrf_list_task_group' as url_wrf_list_task_group %}
-	{% url 'wrf_list_chem_data' as url_wrf_list_chem_data %}
-	{% url 'wrf_list_meteo_data' as url_wrf_list_meteo_data %}
-	{% url 'wrf_list_model_setting' as url_wrf_list_model_setting %}
-	{% url 'django.contrib.auth.views.logout_then_login' as url_logout %}
-	{% url 'django.contrib.auth.views.password_change' as url_change_password %}
-	{% url 'view-profile' user.username as url_view_profile %}
-
-	<div class="navbar navbar-fixed-top mainmenu">
+    {% url 'index' as url_index %}{% url 'wrf_new_task' as url_wrf_new_task %}{% url 'wrf-task-list' as url_wrf_list_task %}{% url 'wrf-task-detail' task.id as url_wrf_task_detail %}{% url 'wrf_list_task_group' as url_wrf_list_task_group %}{% url 'wrf_list_chem_data' as url_wrf_list_chem_data %}{% url 'wrf_list_meteo_data' as url_wrf_list_meteo_data %}{% url 'wrf_list_model_setting' as url_wrf_list_model_setting %}{% url 'django.contrib.auth.views.logout_then_login' as url_logout %}{% url 'django.contrib.auth.views.password_change' as url_change_password %}{% url 'view-profile' user.username as url_view_profile %}
+    <div class="navbar navbar-fixed-top mainmenu">
         <div class="navbar-inner">
             <div class="container">
                 <a class="brand" href="{{ url_index }}">AQM Web Interface</a>
@@ -89,7 +78,7 @@
                     <li><a href="/admin" target="_new">Administration</a></li>
                     {% endif %}
                 </ul>
-
+    
                 <ul class="nav pull-right">
                     <li class="dropdown">
                         {% if user.get_profile.avatar %}
@@ -106,13 +95,13 @@
                         </ul>
                     </li>
                 </ul>
-
+    
             </div>
         </div>
     </div>
     
-	<div class="container">
-		<div class="main-area">
+    <div class="container">
+        <div class="main-area">
             
             {% if messages %}
                 {% for message in messages %}
@@ -123,13 +112,13 @@
                 {% endfor %}
             {% endif %}
             
-			{% block all-elements %}
-			{% endblock %}
-		</div>
-		<div class="footer">
-		 	<p>Air Quality Models Web Interface</p>
-		</div>
-	</div>
+            {% block all-elements %}
+            {% endblock %}
+        </div>
+        <div class="footer">
+            <p>Air Quality Models Web Interface</p>
+        </div>
+    </div>
     <div class="modal hide fade" id="alert-modal">
         <div class="modal-header">
             <a class="close" data-dismiss="modal">×</a>
