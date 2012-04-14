@@ -107,8 +107,8 @@
                     </li>
                 </ul>
 
-	  	</div>
-      </div>
+            </div>
+        </div>
     </div>
     
 	<div class="container">
@@ -116,7 +116,7 @@
             
             {% if messages %}
                 {% for message in messages %}
-                <div class="alert alert-{% if message.tags %}{{ message.tags }}{% endif %}">
+                <div class="alert alert-{% if message.tags %}{{ message.tags }}{% endif %} fade in">
                     <a class="close" data-dismiss="alert">×</a>
                     {{ message }}
                 </div>

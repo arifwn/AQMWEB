@@ -29,8 +29,8 @@ class Pollutant
         @pollutant = param.pollutant.trim()
         @worksheet = parseInt param.worksheet
         @conversion_factor = parseFloat param.conversion_factor
-        @row_start = param.row_start.trim().toUpperCase()
-        @row_end = param.row_end.trim().toUpperCase()
+        @row_start = parseInt param.row_start
+        @row_end = parseInt param.row_end
         @data_w = parseInt param.data_w
         @data_h = parseInt param.data_h
         @value = param.value.trim().toUpperCase()
@@ -46,9 +46,9 @@ class Pollutant
             return false
         if isNaN @conversion_factor
             return false
-        if @row_start.length == 0
+        if isNaN @row_start
             return false
-        if @row_end.length == 0
+        if isNaN @row_end
             return false
         if isNaN @data_w
             return false
@@ -299,7 +299,7 @@ $(document).ready(->
         $.ajax {url: chemdata_url,
         dataType: 'json',
         type: 'POST',
-        data: {chemdata_id: chemdata_id, parameters_json: parameters_json},
+        data: {chemdata_id: chemdata_id, parameters_json: parameters_json, display_message: true},
         success: (data) ->
             $(event.target).button('reset')
             console.log data
@@ -321,6 +321,11 @@ $(document).ready(->
             
         }
     
+    $('#chemdata-conversion-factor-evaluate').bind 'click', (event) ->
+        # evaluate conversion factor arithmatic
+        event.preventDefault()
+        $('#id-conv-factor').val(eval($('#id-conv-factor').val()))
+        
     # -- Entry Point --
     
     # initialize modal

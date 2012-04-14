@@ -40,7 +40,7 @@ get_chemdata_html = (chemdata) ->
         </table>
         <ul class="controls">
             <li><a class="btn btn-success" href="#"><i class="icon-th-list icon-white"></i> Details</a></li>
-            <li><a class="btn" href="#"><i class="icon-edit"></i> Edit</a></li>
+            <li><a class="btn" href="#{ chemdata.edit_url }"><i class="icon-edit"></i> Edit</a></li>
             <li><a class="btn btn-danger" href="#"><i class="icon-remove icon-white"></i> Remove</a></li>
         </ul>
     </div>

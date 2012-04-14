@@ -33,8 +33,8 @@
       this.pollutant = param.pollutant.trim();
       this.worksheet = parseInt(param.worksheet);
       this.conversion_factor = parseFloat(param.conversion_factor);
-      this.row_start = param.row_start.trim().toUpperCase();
-      this.row_end = param.row_end.trim().toUpperCase();
+      this.row_start = parseInt(param.row_start);
+      this.row_end = parseInt(param.row_end);
       this.data_w = parseInt(param.data_w);
       this.data_h = parseInt(param.data_h);
       this.value = param.value.trim().toUpperCase();
@@ -54,10 +54,10 @@
       if (isNaN(this.conversion_factor)) {
         return false;
       }
-      if (this.row_start.length === 0) {
+      if (isNaN(this.row_start)) {
         return false;
       }
-      if (this.row_end.length === 0) {
+      if (isNaN(this.row_end)) {
         return false;
       }
       if (isNaN(this.data_w)) {
@@ -353,7 +353,8 @@
         type: 'POST',
         data: {
           chemdata_id: chemdata_id,
-          parameters_json: parameters_json
+          parameters_json: parameters_json,
+          display_message: true
         },
         success: function(data) {
           $(event.target).button('reset');
@@ -377,6 +378,10 @@
           }
         }
       });
+    });
+    $('#chemdata-conversion-factor-evaluate').bind('click', function(event) {
+      event.preventDefault();
+      return $('#id-conv-factor').val(eval($('#id-conv-factor').val()));
     });
     $('#area-modal').modal({
       backdrop: true,

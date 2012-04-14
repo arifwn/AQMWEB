@@ -210,7 +210,16 @@ class ChemData(models.Model):
     
     def __unicode__(self):
         return self.name
-       
+    
+    @models.permalink
+    def get_edit_url(self):
+        return ('wrf-edit-chem-data', [str(self.id)])
+    
+    @property
+    def edit_url(self):
+        ''' Alias for get_edit_url() '''
+        return self.get_edit_url()
+    
 
 class AltMeteoData(models.Model):
     name = models.CharField(max_length=200, db_index=True)

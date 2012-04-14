@@ -1,6 +1,7 @@
 ''' REST API handler '''
 
-from django.utils import simplejson as json
+import json
+
 from django.core.cache import cache
 from django.contrib import messages
 
@@ -12,7 +13,7 @@ from aqm_utils.xmlrpc import Client
 from aqm_web.models import Server
 
 import wrf.commands
-from wrf.models import Task, TaskQueue, ChemData
+from wrf.models import Task, TaskQueue, ChemData, PollutantParam
 
 
 class ServerStatusHandler(BaseHandler):
@@ -54,7 +55,7 @@ class ChemDataHandler(BaseHandler):
     model = ChemData
     methods_allowed = ('GET', 'POST')
     fields = ('id', 'name', 'description', 'created', 'modified',
-              'data', 'worksheets', 'is_removed', 
+              'data', 'worksheets', 'is_removed', 'edit_url',
               ('user', ('id', 'username', 'first_name', 'last_name', 'email',
                         'get_full_name')),
               ('parameters', ('worksheet', 'x', 'y', 'lat', 'lon', 'value',
@@ -79,6 +80,7 @@ class ChemDataHandler(BaseHandler):
         try:
             chemdata_id = request.data['chemdata_id']
             parameters_json = request.data['parameters_json']
+            display_message = request.data.get('display_message', 'false')
         except KeyError:
             return rc.BAD_REQUEST
         try:
@@ -90,18 +92,56 @@ class ChemDataHandler(BaseHandler):
         
         try:
             parameters = json.loads(parameters_json)
+            display_message = json.loads(display_message)
         except ValueError:
             return rc.BAD_REQUEST
         
-        # TODO: save the parameters
+        # TODO: save the parameters        
+        chemdata.parameters.clear()
+        for parameter in parameters:
+            param_id = parameter.get('id')
+            if param_id is None:
+                # create a new pollutant parameter
+                param_obj = PollutantParam(pollutant=parameter['pollutant'],
+                                           worksheet=parameter['worksheet'],
+                                           conversion_factor=parameter['conversion_factor'],
+                                           row_start=parameter['row_start'],
+                                           row_end=parameter['row_end'],
+                                           data_w=parameter['data_w'],
+                                           data_h=parameter['data_h'],
+                                           value=parameter['value'],
+                                           lat=parameter['lat'],
+                                           lon=parameter['lon'],
+                                           x=parameter['x'],
+                                           y=parameter['y'])
+                param_obj.save()
+            
+            else:
+                try:
+                    param_obj = PollutantParam.objects.get(id=param_id)
+                except PollutantParam.DoesNotExist:
+                    return rc.BAD_REQUEST
+                
+                param_obj.pollutant=parameter['pollutant']
+                param_obj.worksheet=parameter['worksheet']
+                param_obj.conversion_factor=parameter['conversion_factor']
+                param_obj.row_start=parameter['row_start']
+                param_obj.row_end=parameter['row_end']
+                param_obj.data_w=parameter['data_w']
+                param_obj.data_h=parameter['data_h']
+                param_obj.value=parameter['value']
+                param_obj.lat=parameter['lat']
+                param_obj.lon=parameter['lon']
+                param_obj.x=parameter['x']
+                param_obj.y=parameter['y']
+                param_obj.save()
+            
+            chemdata.parameters.add(param_obj)            
         
-        status =  False
-        
-        if status:
+        if display_message:
             messages.success(request, 'Emission data successfully saved!')
-            return True
-        else:
-            return rc.BAD_REQUEST
+        
+        return True
     
 
 class TaskHandler(BaseHandler):

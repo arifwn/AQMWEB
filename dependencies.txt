@@ -1,5 +1,6 @@
 Primary Dependencies
 --------------------
+Python 2.7.x
 Django 1.4
 psutil 0.4.1
 Twisted 11.0.0

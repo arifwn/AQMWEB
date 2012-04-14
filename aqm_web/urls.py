@@ -31,6 +31,7 @@ urlpatterns += patterns('aqm_web.views.wrf_view',
     
     url(r'^wrf/new-chem-data/$', 'new_chem_data', name='wrf_new_chem_data'),
     url(r'^wrf/new-chem-data-step2/(\d+)$', 'new_chem_data_step2', name='wrf_new_chem_data_step2'),
+    url(r'^wrf/edit-chem-data/(\d+)$', 'edit_chem_data', name='wrf-edit-chem-data'),
     url(r'^wrf/new/popup-chem-data$', 'popup_new_task_chem_data', name='wrf_popup_new_task_chem_data'),
     url(r'^wrf/list-chem-data/$', 'list_chem_data', name='wrf_list_chem_data'),
     

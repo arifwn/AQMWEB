@@ -149,7 +149,27 @@ def new_chem_data_step2(request, id):
     t = get_template('aqm_web/wrf/new-chem-data2.html')
     html = t.render(RequestContext(request, {
                                              'chemdata': chemdata,
-                                             'filename': os.path.basename(chemdata.data.name)
+                                             'filename': os.path.basename(chemdata.data.name),
+                                             'context': 'create'
+                                             }))
+    return HttpResponse(html)
+
+@login_required
+def edit_chem_data(request, id):
+    '''Edit ChemData'''
+    import os.path
+    from wrf.models import ChemData
+    
+    try:
+        chemdata = ChemData.objects.get(pk=id)
+    except ChemData.DoesNotExist:
+        raise Http404
+    
+    t = get_template('aqm_web/wrf/new-chem-data2.html')
+    html = t.render(RequestContext(request, {
+                                             'chemdata': chemdata,
+                                             'filename': os.path.basename(chemdata.data.name),
+                                             'context': 'edit'
                                              }))
     return HttpResponse(html)
 

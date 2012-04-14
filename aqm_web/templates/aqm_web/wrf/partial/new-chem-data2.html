@@ -26,7 +26,12 @@ $(document).ready(function () {
 <div class="row">
 	<div class="span16">
 		<div class="page-header">
+            {% if context == "create" %}
 			<h1>New Emission Data (Step 2 of 2)</h1>
+            {% endif %}
+            {% if context == "edit" %}
+			<h1>Edit Emission Data</h1>
+            {% endif %}
 		</div>
 		<div class="row">
 			<div class="span12 well">
@@ -84,7 +89,7 @@ $(document).ready(function () {
         <div class="control-group">
             <label class="control-label" for="id-conv-factor">Conversion Factor</label>
             <div class="controls">
-              <input id="id-conv-factor" class="span4" type="text" placeholder="e.g. 1.0">
+              <input id="id-conv-factor" class="span3" type="text" placeholder="e.g. 1.0"> <button id="chemdata-conversion-factor-evaluate" class="btn">=</button>
               <p class="help-block">Use conversion factor to convert unit to mol / km&sup2; / hour</p>
             </div>
         </div>
