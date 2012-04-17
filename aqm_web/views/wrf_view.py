@@ -16,6 +16,8 @@ from django.http import Http404
 from django.shortcuts import redirect
 from django.contrib import messages
 
+from aqm_utils.sanitizer import sanitize_html
+
 
 @login_required
 def new_task(request):
@@ -27,7 +29,7 @@ def new_task(request):
         task_form = NewTaskForm(request.POST)
         if task_form.is_valid():
             task_name = task_form.cleaned_data['task_name']
-            task_description = task_form.cleaned_data['task_description']
+            task_description = sanitize_html(task_form.cleaned_data['task_description'])
             task_namelist_wps = task_form.cleaned_data['task_namelist_wps']
             task_namelist_wrf = task_form.cleaned_data['task_namelist_wrf']
             task_namelist_arwpost = task_form.cleaned_data['task_namelist_arwpost']
@@ -103,14 +105,13 @@ def task_group_detail(request):
 def new_chem_data(request):
     '''view to create a new ChemData'''
     from aqm_web.forms import ChemDataForm
-    from aqm_web.misc import sanitize_html
     from wrf.models import ChemData
     
     if request.method == 'POST':
         form = ChemDataForm(request.POST, request.FILES)
         if form.is_valid(): 
             name = form.cleaned_data['name']
-            description = form.cleaned_data['description']
+            description = sanitize_html(form.cleaned_data['description'])
             parameters_json = form.cleaned_data['parameters_json']
             
             data_file = form.cleaned_data['data']
@@ -120,7 +121,7 @@ def new_chem_data(request):
             logger.debug('parameters_json: %s' % parameters_json)
             logger.debug('data_file: %s' % data_file)
             
-            chemdata = ChemData(name=name, description=sanitize_html(description), data=data_file, user=request.user)
+            chemdata = ChemData(name=name, description=description, data=data_file, user=request.user)
             chemdata.save()
             
             return redirect('wrf_new_chem_data_step2', chemdata.pk)

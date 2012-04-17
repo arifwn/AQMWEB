@@ -31,7 +31,15 @@ class ServerStatusHandler(BaseHandler):
             return rc.INTERNAL_ERROR
         
         return status
-
+    
+    def create(self, request, server_id):
+        return rc.FORBIDDEN
+    
+    def update(self, request, server_id):
+        return rc.FORBIDDEN
+    
+    def delete(self, request, server_id):
+        return rc.FORBIDDEN
 
 class ServerHandler(BaseHandler):
     model = Server
@@ -49,7 +57,15 @@ class ServerHandler(BaseHandler):
                 return rc.BAD_REQUEST
         else:
             return Server.objects.filter(is_enabled=True).all()
-
+    
+    def create(self, request, server_id=None):
+        return rc.FORBIDDEN
+    
+    def update(self, request, server_id=None):
+        return rc.FORBIDDEN
+    
+    def delete(self, request, server_id=None):
+        return rc.FORBIDDEN
 
 class ChemDataHandler(BaseHandler):
     model = ChemData
@@ -143,6 +159,12 @@ class ChemDataHandler(BaseHandler):
         
         return True
     
+    def update(self, request, chemdata_id=None, all_user=False):
+        return rc.FORBIDDEN
+    
+    def delete(self, request, chemdata_id=None, all_user=False):
+        return rc.FORBIDDEN
+    
 
 class TaskHandler(BaseHandler):
     model = Task
@@ -171,6 +193,15 @@ class TaskHandler(BaseHandler):
                 # only return task created by CURRENT user
                 return Task.objects.filter(user=request.user).extra(order_by=['-created']).all()
     
+    def create(self, request, task_id=None, all_user=False):
+        return rc.FORBIDDEN
+    
+    def update(self, request, task_id=None, all_user=False):
+        return rc.FORBIDDEN
+    
+    def delete(self, request, task_id=None, all_user=False):
+        return rc.FORBIDDEN
+    
     
 class TaskControlHandler(BaseHandler):
     methods_allowed = ('POST',)
@@ -196,9 +227,28 @@ class TaskControlHandler(BaseHandler):
         else:
             return rc.BAD_REQUEST
         
+    def read(self, request):
+        return rc.FORBIDDEN
+    
+    def update(self, request):
+        return rc.FORBIDDEN
+    
+    def delete(self, request):
+        return rc.FORBIDDEN
+    
+    
 class M2MCommandHandler(BaseHandler):
     ''' Handle communication from RPC Server '''
     methods_allowed = ('POST',)
+    
+    def read(self, request):
+        return rc.FORBIDDEN
+    
+    def update(self, request):
+        return rc.FORBIDDEN
+    
+    def delete(self, request):
+        return rc.FORBIDDEN
     
     def create(self, request):
         try:
@@ -207,14 +257,60 @@ class M2MCommandHandler(BaseHandler):
         except KeyError:
             return rc.BAD_REQUEST
         
+        data = request.data.get('data')
+        if data is not None:
+            try:
+                data = json.loads(data)
+            except ValueError:
+                data = None
+        
         if command == 'retrieve_job':
             # request new modelling job
-            data = {}
-            data['WRFnamelist'] = ""
-            data['WPSnamelist'] = ""
-            data['ARWpostnamelist'] = ""
-            data['grads_template'] = ""
-            
             # if no modelling job, return 404
             # return rc.NOT_FOUND
+            return self.retrieve_job(server_id)
+        
+        elif command == 'confirm_run':
+            # the server is about to run specified job.
+            # if the handle return True, it will continue
+            # if false, it will cancel the job
+            task_id = data.get('task_id')
+            if task_id is None:
+                return rc.BAD_REQUEST
             
+            return self.confirm_run(server_id, task_id)
+    
+    def confirm_run(self, server_id, task_id):
+        try:
+            task = Task.objects.get(pk=task_id)
+        except Task.DoesNotExist:
+            return rc.NOT_FOUND
+        except ValueError:
+            return rc.BAD_REQUEST
+        
+        if task.get_status == 'pending':
+            try:
+                queue = task.queue
+            except TaskQueue.DoesNotExist:
+                # No task queue, don't allow run
+                return False
+            if queue.server_id == server_id:
+                # This task is indeed scheduled to run on this server
+                queue.status = 'running'
+                queue.save()
+                return True
+            return False
+        else:
+            return False
+    
+    def retrieve_job(self, server_id):
+        ''' Return task id '''
+        queuelist = TaskQueue.objects.filter(server=None, status='pending')
+        if queuelist.count() == 0:
+            return rc.BAD_REQUEST
+        
+        queue = queuelist[0]
+        queue.server_id = server_id
+        queue.save()
+        return queue.task_id
+    

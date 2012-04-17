@@ -6,7 +6,7 @@ Created on Sep 18, 2011
 from django.conf.urls.defaults import *
 from piston.resource import Resource
 
-from aqm_web.handlers import ServerStatusHandler, TaskHandler, TaskControlHandler, ServerHandler, ChemDataHandler
+from aqm_web.handlers import ServerStatusHandler, TaskHandler, TaskControlHandler, ServerHandler, ChemDataHandler, M2MCommandHandler
 from aqm_web.authentication import CookieAuthentication
 
 urlpatterns = patterns('aqm_web.views.generic',
@@ -54,6 +54,7 @@ server_resource = Resource(handler=ServerHandler, **ad)
 task_resource = Resource(handler=TaskHandler, **ad)
 task_control_resource = Resource(handler=TaskControlHandler, **ad)
 chemdata_resource = Resource(handler=ChemDataHandler, **ad)
+m2m_resource = Resource(handler=M2MCommandHandler, **ad)
 
 urlpatterns += patterns('',
     url(r'^rest/server/status/(?P<server_id>[^/]+)/$', serverstatus_resource, name='rest-server-utilization'),
@@ -66,4 +67,5 @@ urlpatterns += patterns('',
     url(r'^rest/chemdata/$', chemdata_resource, name='rest-chemdata-list'),
     url(r'^rest/chemdata/all/$', chemdata_resource, kwargs={'chemdata_id': None, 'all_user': True}, name='rest-chemdata-list-all'),
     url(r'^rest/chemdata/detail/(?P<chemdata_id>[^/]+)/$', chemdata_resource, name='rest-chemdata-detail'),
+    url(r'^rest/m2m/$', m2m_resource, name='rest-m2m'),
 )
