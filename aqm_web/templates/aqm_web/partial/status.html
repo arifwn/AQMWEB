@@ -32,7 +32,7 @@ $(document).ready(function () {
                     <div id="server_{{ server.pk }}" class="server-status">
 						<div class="header">
 							<h2>{{ server.name }} <small>{{ server.address }}:{{ server.port }}</small></h2>
-							<span class="label">loading...</span>
+							<span class="label label-info">ID: {{ server.id }}</span> <span class="label status">loading...</span>
 						</div>
 						<div class="content">
 							<table>

@@ -23,15 +23,15 @@
         error: function(jqXHR, textStatus, errorThrown) {
           console.log(errorThrown, jqXHR);
           if (jqXHR.status === 0) {
-            $("#server_" + server.id + " > .header > .label").text("check your internet connection");
+            $("#server_" + server.id + " > .header > .label.status").text("check your internet connection");
           } else if (jqXHR.status === 404) {
-            $("#server_" + server.id + " > .header > .label").text("server does not exist");
+            $("#server_" + server.id + " > .header > .label.status").text("server does not exist");
           } else if (jqXHR.status === 500) {
-            $("#server_" + server.id + " > .header > .label").text("internal web server error");
+            $("#server_" + server.id + " > .header > .label.status").text("internal web server error");
           } else if (jqXHR.status === 503) {
-            $("#server_" + server.id + " > .header > .label").text("service disruption");
+            $("#server_" + server.id + " > .header > .label.status").text("service disruption");
           }
-          $("#server_" + server.id + " > .header > .label").removeClass("label-success").addClass("label-important");
+          $("#server_" + server.id + " > .header > .label.status").removeClass("label-success").addClass("label-important");
           simplebar.set("#cpu-usage-server-" + server.id, 0, "--");
           simplebar.set("#memory-usage-server-" + server.id, 0, "--");
           simplebar.set("#disk-usage-server-" + server.id, 0, "--");
@@ -58,8 +58,8 @@
     slot_percent = (server_stat.slot_used / server_stat.slot_total) * 100;
     slot_label = "" + server_stat.slot_used + " of " + server_stat.slot_total;
     simplebar.set("#slot-usage-server-" + server_stat.id, slot_percent, slot_label);
-    $("#server_" + server_stat.id + " > .header > .label").text("healthy");
-    return $("#server_" + server_stat.id + " > .header > .label").removeClass("label-important").addClass("label-success");
+    $("#server_" + server_stat.id + " > .header > .label.status").text("healthy");
+    return $("#server_" + server_stat.id + " > .header > .label.status").removeClass("label-important").addClass("label-success");
   };
 
 }).call(this);

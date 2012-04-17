@@ -11,7 +11,7 @@ from django import forms
 
 
 class ServerAdmin(admin.ModelAdmin):
-    list_display = ['name', 'user', 'address', 'port']
+    list_display = ['name', 'id', 'user', 'address', 'port']
 
         
 admin.site.register(Server, ServerAdmin)
