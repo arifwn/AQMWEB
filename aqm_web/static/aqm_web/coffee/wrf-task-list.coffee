@@ -35,29 +35,32 @@ window.render_task_list = (target, task_list) ->
 # reinstall button event handler
 window.reinit_event_handler = (task)->
     # run
-	$("#task-#{ task.id } .control-run").click (e) ->
-		button = this
-		task_command 'run', task, button
+    $("#task-#{ task.id } .control-run").click (e) ->
+        button = this
+        task_command 'run', task, button
         
     # rerun
-	$("#task-#{ task.id } .control-rerun").click (e) ->
-		button = this
-		task_command 'rerun', task, button
+    $("#task-#{ task.id } .control-rerun").click (e) ->
+        button = this
+        if window.confirm "Are you sure you want to run this task again? Previous result will be lost."
+            task_command 'rerun', task, button
         
     # retry
-	$("#task-#{ task.id } .control-retry").click (e) ->
-		button = this
-		task_command 'retry', task, button
+    $("#task-#{ task.id } .control-retry").click (e) ->
+        button = this
+        task_command 'retry', task, button
         
     # stop
-	$("#task-#{ task.id } .control-stop").click (e) ->
-		button = this
-		task_command 'stop', task, button
+    $("#task-#{ task.id } .control-stop").click (e) ->
+        button = this
+        if window.confirm "Are you sure you want to stop this task?"
+            task_command 'stop', task, button
         
     # cancel
-	$("#task-#{ task.id } .control-cancel").click (e) ->
-		button = this
-		task_command 'cancel', task, button
+    $("#task-#{ task.id } .control-cancel").click (e) ->
+        button = this
+        if window.confirm "Are you sure you want to cancel this task?"
+            task_command 'cancel', task, button
         
 
 # update displayed html with data from a given task
@@ -88,7 +91,7 @@ setup_task_auto_update = (task, interval) ->
     if task.get_status == "running"
         # if it currently running, update at full speed
         real_interval = interval
-    else if task.get_status == "running"
+    else if task.get_status == "pending"
         # if it pending, update at full speed
         real_interval = interval
     else

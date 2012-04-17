@@ -43,7 +43,9 @@
     $("#task-" + task.id + " .control-rerun").click(function(e) {
       var button;
       button = this;
-      return task_command('rerun', task, button);
+      if (window.confirm("Are you sure you want to run this task again? Previous result will be lost.")) {
+        return task_command('rerun', task, button);
+      }
     });
     $("#task-" + task.id + " .control-retry").click(function(e) {
       var button;
@@ -53,12 +55,16 @@
     $("#task-" + task.id + " .control-stop").click(function(e) {
       var button;
       button = this;
-      return task_command('stop', task, button);
+      if (window.confirm("Are you sure you want to stop this task?")) {
+        return task_command('stop', task, button);
+      }
     });
     return $("#task-" + task.id + " .control-cancel").click(function(e) {
       var button;
       button = this;
-      return task_command('cancel', task, button);
+      if (window.confirm("Are you sure you want to cancel this task?")) {
+        return task_command('cancel', task, button);
+      }
     });
   };
 
@@ -96,7 +102,7 @@
     real_interval = 0;
     if (task.get_status === "running") {
       real_interval = interval;
-    } else if (task.get_status === "running") {
+    } else if (task.get_status === "pending") {
       real_interval = interval;
     } else {
       real_interval = 10 * interval;
