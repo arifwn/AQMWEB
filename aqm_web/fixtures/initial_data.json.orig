@@ -127,5 +127,135 @@
             "user": 1,
             "description": "<p>A Test Case...</p>"
         }
+    },
+    {
+        "pk": 2,
+        "model": "wrf.task",
+        "fields": {
+            "name": "Test WRF 2",
+            "created": "2012-04-07T20:21:12.926",
+            "modified": "2012-04-06T20:21:12.926",
+            "setting": 1,
+            "user": 1,
+            "description": "<p>Another Test Case...</p>"
+        }
+    },
+    {
+        "pk": 3,
+        "model": "wrf.task",
+        "fields": {
+            "name": "Test WRF 3",
+            "created": "2012-04-07T22:21:12.926",
+            "modified": "2012-04-06T22:21:12.926",
+            "setting": 1,
+            "user": 1,
+            "description": "<p>Another Test Case...</p>"
+        }
+    },
+    {
+        "pk": 4,
+        "model": "wrf.task",
+        "fields": {
+            "name": "Test WRF 4",
+            "created": "2012-04-07T23:21:12.926",
+            "modified": "2012-04-06T23:21:12.926",
+            "setting": 1,
+            "user": 1,
+            "description": "<p>Another Test Case...</p>"
+        }
+    },
+    {
+        "pk": 5,
+        "model": "wrf.task",
+        "fields": {
+            "name": "Test WRF 5",
+            "created": "2012-04-07T23:31:12.926",
+            "modified": "2012-04-06T23:31:12.926",
+            "setting": 1,
+            "user": 1,
+            "description": "<p>Another Test Case...</p>"
+        }
+    },
+    {
+        "pk": 6,
+        "model": "wrf.task",
+        "fields": {
+            "name": "Test WRF 6",
+            "created": "2012-04-07T23:41:12.926",
+            "modified": "2012-04-06T23:41:12.926",
+            "setting": 1,
+            "user": 1,
+            "description": "<p>Another Test Case...</p>"
+        }
+    },
+    {
+        "pk": 1,
+        "model": "wrf.taskqueue",
+        "fields": {
+            "created": "2012-04-07T23:21:12.926",
+            "task": 1,
+            "server": null,
+            "envid": null,
+            "status": "pending",
+            "stage": "",
+            "is_error": false,
+            "error_log": ""
+        }
+    },
+    {
+        "pk": 2,
+        "model": "wrf.taskqueue",
+        "fields": {
+            "created": "2012-04-07T23:21:12.926",
+            "task": 2,
+            "server": 1,
+            "envid": 3,
+            "status": "running",
+            "stage": "WPS",
+            "is_error": false,
+            "error_log": ""
+        }
+    },
+    {
+        "pk": 3,
+        "model": "wrf.taskqueue",
+        "fields": {
+            "created": "2012-04-07T23:21:12.926",
+            "task": 3,
+            "server": 1,
+            "envid": 4,
+            "status": "finished",
+            "stage": "ARWpost",
+            "is_error": false,
+            "error_log": ""
+        }
+    },
+    {
+        "pk": 4,
+        "model": "wrf.taskqueue",
+        "fields": {
+            "created": "2012-04-07T23:21:12.926",
+            "task": 4,
+            "server": 1,
+            "envid": 5,
+            "status": "canceled",
+            "stage": "WRF",
+            "is_error": false,
+            "error_log": ""
+        }
+    },
+    {
+        "pk": 5,
+        "model": "wrf.taskqueue",
+        "fields": {
+            "created": "2012-04-07T23:31:12.926",
+            "task": 5,
+            "server": 1,
+            "envid": 6,
+            "status": "finished",
+            "stage": "ARWpost",
+            "is_error": true,
+            "error_log": "Dummy error log..."
+        }
     }
 ]

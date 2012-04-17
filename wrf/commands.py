@@ -18,7 +18,7 @@ def run_task(task_id):
         return {'success': False, 'message': 'Task does not exist.'}
     
     data = {}
-    data['id'] = task_id
+    data['task_id'] = task_id
     data['name'] = task.name
     data['WRFnamelist'] = task.setting.namelist_wrf
     data['WPSnamelist'] = task.setting.namelist_wps
@@ -67,7 +67,7 @@ def run_task(task_id):
             return status
         
         # TODO: uncomment this when ready to test!
-        # target_server_client.wrf.add_job(data)
+        target_server_client.wrf.add_job(data)
         
         # now what left is to wait for RPC server update TaskQueue item with
         # env_id from rpc server environment

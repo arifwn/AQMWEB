@@ -262,7 +262,7 @@ class M2MCommandHandler(BaseHandler):
             try:
                 data = json.loads(data)
             except ValueError:
-                data = None
+                data = {}
         
         if command == 'retrieve_job':
             # request new modelling job
@@ -279,6 +279,35 @@ class M2MCommandHandler(BaseHandler):
                 return rc.BAD_REQUEST
             
             return self.confirm_run(server_id, task_id)
+        
+        elif command == 'report_run_stage':
+            # the server is about to run specified job.
+            # if the handle return True, it will continue
+            # if false, it will cancel the job
+            task_id = data.get('task_id')
+            envid = data.get('envid')
+            stage = data.get('stage')
+            if (task_id is None) or (envid is None) or (stage is None):
+                return rc.BAD_REQUEST
+            
+            return self.report_run_stage(server_id, task_id, envid, stage)
+        
+        elif command == 'job_finished':
+            # the server finished the job
+            task_id = data.get('task_id')
+            if task_id is None:
+                return rc.BAD_REQUEST
+            
+            return self.job_finished(server_id, task_id)
+        
+        elif command == 'job_error':
+            # the server finished the job
+            task_id = data.get('task_id')
+            error_log = data.get('error_log')
+            if task_id is None or (error_log is None):
+                return rc.BAD_REQUEST
+            
+            return self.job_error(server_id, task_id, error_log)
     
     def confirm_run(self, server_id, task_id):
         try:
@@ -288,7 +317,7 @@ class M2MCommandHandler(BaseHandler):
         except ValueError:
             return rc.BAD_REQUEST
         
-        if task.get_status == 'pending':
+        if task.get_status() == 'pending':
             try:
                 queue = task.queue
             except TaskQueue.DoesNotExist:
@@ -297,6 +326,80 @@ class M2MCommandHandler(BaseHandler):
             if queue.server_id == server_id:
                 # This task is indeed scheduled to run on this server
                 queue.status = 'running'
+                queue.save()
+                return True
+            return False
+        else:
+            return False
+    
+    def report_run_stage(self, server_id, task_id, envid, stage):
+        try:
+            task = Task.objects.get(pk=task_id)
+        except Task.DoesNotExist:
+            return rc.NOT_FOUND
+        except ValueError:
+            return rc.BAD_REQUEST
+        
+        if task.get_status() == 'running':
+            try:
+                queue = task.queue
+            except TaskQueue.DoesNotExist:
+                # No task queue, don't allow run
+                return False
+            if queue.server_id == server_id:
+                # This task is indeed scheduled to run on this server
+                queue.stage = stage
+                queue.envid = envid
+                queue.save()
+                return True
+            return False
+        else:
+            return False
+    
+    def job_finished(self, server_id, task_id):
+        try:
+            task = Task.objects.get(pk=task_id)
+        except Task.DoesNotExist:
+            return rc.NOT_FOUND
+        except ValueError:
+            return rc.BAD_REQUEST
+        
+        if task.get_status() == 'running':
+            try:
+                queue = task.queue
+            except TaskQueue.DoesNotExist:
+                # No task queue, this command must be invalid
+                return False
+            if queue.server_id == server_id:
+                # This task is indeed scheduled to run on this server
+                queue.status = 'finished'
+                queue.is_error = False
+                queue.error_log = ''
+                queue.save()
+                return True
+            return False
+        else:
+            return False
+    
+    def job_error(self, server_id, task_id, error_log):
+        try:
+            task = Task.objects.get(pk=task_id)
+        except Task.DoesNotExist:
+            return rc.NOT_FOUND
+        except ValueError:
+            return rc.BAD_REQUEST
+        
+        if task.get_status() == 'running':
+            try:
+                queue = task.queue
+            except TaskQueue.DoesNotExist:
+                # No task queue, this command must be invalid
+                return False
+            if queue.server_id == server_id:
+                # This task is indeed scheduled to run on this server
+                queue.status = 'finished'
+                queue.is_error = True
+                queue.error_log = error_log
                 queue.save()
                 return True
             return False

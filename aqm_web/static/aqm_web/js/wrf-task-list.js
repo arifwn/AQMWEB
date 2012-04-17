@@ -97,7 +97,7 @@
     if (task.get_status === "running") {
       real_interval = interval;
     } else if (task.get_status === "running") {
-      real_interval = 3 * interval;
+      real_interval = interval;
     } else {
       real_interval = 10 * interval;
     }

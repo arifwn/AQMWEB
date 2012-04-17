@@ -89,8 +89,8 @@ setup_task_auto_update = (task, interval) ->
         # if it currently running, update at full speed
         real_interval = interval
     else if task.get_status == "running"
-        # if it pending, don't update as fast
-        real_interval = 3 * interval
+        # if it pending, update at full speed
+        real_interval = interval
     else
         # no need for speedy update
         real_interval = 10 * interval
