@@ -7,6 +7,10 @@ from django.shortcuts import render_to_response
 from django.contrib.auth.decorators import login_required
 from django.template import RequestContext
 from django.http import HttpResponse
+from django.http import Http404
+
+from aqm_utils.server import rpc_client
+
 
 @login_required
 def test_plot(request):
@@ -125,3 +129,24 @@ def lambert_conformal(request):
     response = HttpResponse(content_type='image/png')
     canvas.print_figure(response, dpi=100)
     return response
+
+@login_required
+def grads_wrf_plot(request, server_id, envid):
+    f = request.GET.get('f')
+    if f is None:
+        raise Http404
+    
+    c = rpc_client(server_id)
+    if c is None:
+        raise Http404
+    
+    binary_data = c.filesystem.read(envid, f)
+    if binary_data is None:
+        raise Http404
+    
+    response = HttpResponse(content_type='image/png')
+    response.write(binary_data.data)
+    return response
+    
+    
+    

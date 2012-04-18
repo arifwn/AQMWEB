@@ -6,7 +6,11 @@ Created on Sep 18, 2011
 from django.conf.urls.defaults import *
 from piston.resource import Resource
 
-from aqm_web.handlers import ServerStatusHandler, TaskHandler, TaskControlHandler, ServerHandler, ChemDataHandler, M2MCommandHandler
+from aqm_web.handlers import ServerStatusHandler, TaskHandler
+from aqm_web.handlers import TaskControlHandler, ServerHandler
+from aqm_web.handlers import ChemDataHandler, M2MCommandHandler
+from aqm_web.handlers import GradsWRFHandler
+
 from aqm_web.authentication import CookieAuthentication
 
 urlpatterns = patterns('aqm_web.views.generic',
@@ -43,6 +47,7 @@ urlpatterns += patterns('aqm_web.views.plot',
     url(r'^plot/mercator$', 'mercator', name='map-preview-mercator'),
     url(r'^plot/lambert-conformal$', 'lambert_conformal'),
     url(r'^plot/test$', 'test_plot'),
+    url(r'^plot/grads/wrf/(\d+)/(\d+)/$', 'grads_wrf_plot', name='grads-wrf-plot'),
 )
 
 # REST API
@@ -55,6 +60,7 @@ task_resource = Resource(handler=TaskHandler, **ad)
 task_control_resource = Resource(handler=TaskControlHandler, **ad)
 chemdata_resource = Resource(handler=ChemDataHandler, **ad)
 m2m_resource = Resource(handler=M2MCommandHandler, **ad)
+wrfgrads_resource = Resource(handler=GradsWRFHandler, **ad)
 
 urlpatterns += patterns('',
     url(r'^rest/server/status/(?P<server_id>[^/]+)/$', serverstatus_resource, name='rest-server-utilization'),
@@ -68,4 +74,6 @@ urlpatterns += patterns('',
     url(r'^rest/chemdata/all/$', chemdata_resource, kwargs={'chemdata_id': None, 'all_user': True}, name='rest-chemdata-list-all'),
     url(r'^rest/chemdata/detail/(?P<chemdata_id>[^/]+)/$', chemdata_resource, name='rest-chemdata-detail'),
     url(r'^rest/m2m/$', m2m_resource, name='rest-m2m'),
+    url(r'^rest/grads/wrf/$', wrfgrads_resource, name='rest-wrf-grads-static'),
+    url(r'^rest/grads/wrf/(?P<server_id>[^/]+)/(?P<envid>[^/]+)/(?P<domain>[^/]+)/$', wrfgrads_resource, name='rest-wrf-grads'),
 )

@@ -1,9 +1,12 @@
 ''' REST API handler '''
 
 import json
+import urllib
+import os
 
 from django.core.cache import cache
 from django.contrib import messages
+from django.core.urlresolvers import reverse
 
 from piston.handler import BaseHandler
 from piston.utils import rc, throttle
@@ -42,6 +45,7 @@ class ServerStatusHandler(BaseHandler):
         return rc.FORBIDDEN
 
 class ServerHandler(BaseHandler):
+    ''' Get RPC server list and details. '''
     model = Server
     methods_allowed = ('GET',)
     fields = ('id', 'name', 'address', 'port', 'is_enabled',
@@ -68,6 +72,7 @@ class ServerHandler(BaseHandler):
         return rc.FORBIDDEN
 
 class ChemDataHandler(BaseHandler):
+    ''' Get and update ChemData. '''
     model = ChemData
     methods_allowed = ('GET', 'POST')
     fields = ('id', 'name', 'description', 'created', 'modified',
@@ -167,6 +172,7 @@ class ChemDataHandler(BaseHandler):
     
 
 class TaskHandler(BaseHandler):
+    ''' Get Task list and details. '''
     model = Task
     methods_allowed = ('GET')
     fields = ('id', 'name', 'description', 'created', 'modified', 'setting',
@@ -416,4 +422,50 @@ class M2MCommandHandler(BaseHandler):
         queue.server_id = server_id
         queue.save()
         return queue.task_id
+
+
+class GradsWRFHandler(BaseHandler):
+    ''' Get list of grads plot. '''
+    methods_allowed = ('GET',)
+    
+    def read(self, request, server_id=None, envid=None, domain=None):
+        if server_id is None:
+            server_id = request.GET.get('server_id')
+        if envid is None:
+            envid = request.GET.get('envid')
+        if domain is None:
+            domain = request.GET.get('domain')
+        
+        if not all((server_id, envid, domain)):
+            return rc.BAD_REQUEST
+        
+        c = aqm_utils.server.rpc_client(server_id=server_id)
+        plot_rel_list = c.wrf.get_plot(int(envid), int(domain))
+        plot_list = []
+        
+        for p in plot_rel_list:
+            args = urllib.urlencode({'f': p})
+            url = '%s?%s' % (reverse('grads-wrf-plot', None, [server_id, envid]), args)
+            filename = os.path.basename(p)
+            fname, ext = os.path.splitext(filename)
+            c = fname.split('_')
+            description = fname
+            
+            if len(c) == 3:
+                time_el = c[2].split(':')
+                if len(time_el) == 4:
+                    description = '%s-%s-%s %s:00' %(time_el[2], time_el[1], time_el[0], time_el[3])
+                
+            plot_list.append({'url': url, 'description': description})
+        
+        return plot_list
+    
+    def create(self, request, *args, **kwargs):
+        return rc.FORBIDDEN
+    
+    def update(self, request, *args, **kwargs):
+        return rc.FORBIDDEN
+    
+    def delete(self, request, *args, **kwargs):
+        return rc.FORBIDDEN
     

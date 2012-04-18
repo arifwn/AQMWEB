@@ -544,6 +544,193 @@ h5 {
     }
 }
 
+.bottom-space {
+    padding-bottom: 5px;
+}
+
+
+// Stream Gallery
+
+.stream-gallery {
+	position: relative;
+	width: 940px;
+	height: 630px;
+    
+    .statusbar {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 940px;
+        height: 30px;
+        background: #404040;
+        .border-radius(3px);
+        
+        .back {
+            float: left;
+            
+            a {
+                display: block;
+                margin: 5px 5px;
+                padding: 0 0 3px 6px;
+                width: 20px;
+                font-size: 20px;
+                font-weight: bold;
+                text-decoration: none;
+                background-color: #FFF;
+                .border-radius(3px);
+                
+                &:hover {
+                    text-decoration: none;
+                    background: whiteSmoke;
+                }
+            }
+        }
+        
+        h2 {
+            margin: 0 10px;
+            padding: 0;
+            font-size: 15px;
+            line-height: 30px;
+            color: #FFF;
+            
+            small {
+                font-size: 12px;
+                margin: 0 5px;
+            }
+        }
+    }
+    
+    .viewport {
+        position: absolute;
+        left: 0;
+        top: 30px;
+        width: 800px;
+        height: 618px;
+        overflow: hidden;
+        background: #FFF;
+        
+        .viewlist {
+            position: absolute;
+            top: 0;
+            left: 0;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            width: 999999px;
+            
+            li {
+                margin: 0;
+                padding: 0;
+                float: left;
+                
+                img {
+                    margin: 0;
+                    padding: 0;
+                    width: 800px;
+                }
+            }
+        }
+        
+        .playcontrol {
+            display: none;
+            position: absolute;
+            top: 500px;
+            left: 0;
+            right: 0;
+            height: 100px;
+
+            .controllist {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+
+                li {
+                    margin: 0;
+                    padding: 0 5px;
+                    float:left;
+                    
+                    a {
+                        display: block;
+                        width: 255px;
+                        height: 100px;
+                        line-height: 90px;
+                        text-align: center;
+                        text-transform: uppercase;
+                        font-size: 70px;
+                        font-weight: bold;
+                        color: rgba(0, 0, 0, 0.15);
+                        background: rgba(0, 0, 0, 0.05);
+                        text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+                        
+                        &:hover {
+                            color: rgba(0, 0, 0, 0.4);
+                            text-decoration: none;
+                            background: rgba(0, 0, 0, 0.2);
+                        }
+                    }
+                }
+            }
+            
+        }
+        
+        &:hover {
+            .playcontrol {
+                display: block;
+            }
+        }
+    }
+    
+    .navigation {
+        position: absolute;
+        left: 800px;
+        top: 35px;
+        width: 132px;
+        padding: 4px;
+        background: #E5E5E5;
+        .border-radius(4px);
+        .box-shadow(inset 0 0 6px rgba(0, 0, 0, 0.5));
+        
+        .navlist {
+            padding: 0;
+            margin: 0;
+            height: 590px;
+            list-style: none;
+            overflow: hidden;
+            overflow-y: scroll;
+            
+            li {
+                position: relative;
+                margin: 0;
+                padding: 1px 0;
+                
+                a {
+                    width: 110px;
+                    display: block;
+                    padding: 5px;
+                    margin: 0;
+                    color: #555;
+                    text-shadow: 0 -1px rgba(255, 255, 255, 0.2);
+                    .border-radius(4px);
+                    
+                    &:hover {
+                        color: #1C5AC4;
+                        text-decoration: none;
+                    }
+                    
+                    &.active {
+                        background: #5080D8;
+                        color: #FFF;
+                        text-shadow: 0 -1px rgba(0, 0, 0, 0.2);
+                        -webkit-box-shadow: inset 0 1px 0 rgba(0, 0, 0, 0.3);
+                        -moz-box-shadow: inset 0 1px 0 rgba(0, 0, 0, 0.3);
+                        box-shadow: inset 0 1px 0 rgba(0, 0, 0, 0.3);
+                    }
+                }
+            }
+        }
+    }
+}
+
 // Custom Scrollbar
 .custom-scroll-bar::-webkit-scrollbar {
   width: 10px;

@@ -20,7 +20,10 @@ def rpc_client(server_id, cached=True):
         
     if server_addr is None:
         # read server info from db
-        srv = Server.objects.get(pk=server_id)
+        try:
+            srv = Server.objects.get(pk=server_id)
+        except Server.DoesNotExist:
+            return None
             
         server_addr = 'https://%s:%d' % (srv.address, srv.port)
         cache.set(server_addr_key, server_addr, 30)

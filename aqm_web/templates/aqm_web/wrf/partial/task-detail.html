@@ -2,8 +2,11 @@
 {% load fb_versions %}
 <script>
 $(document).ready(function(){
+    result_browser_ready = false;
+    
 	prettyPrint();
-    $('a[data-toggle="tab"]').on('shown', function (e) {
+    
+    $('a[href="#task-domain-map"][data-toggle="tab"]').on('shown', function (e) {
         var target_parent = $(e.target).attr('href');
         var target = $(e.target).attr('href') + ' img';
         var map_url = $(target).attr('data-map-url');
@@ -23,6 +26,46 @@ $(document).ready(function(){
             
             
         }
+    });
+    
+    $('a[href="#task-results"][data-toggle="tab"]').on('shown', function (e) {
+        if(!result_browser_ready){
+            $.ajax({url: "{% url 'rest-wrf-grads' task.queue.server_id task.queue.envid "1" %}",
+                    dataType: 'json',
+                    type: 'GET',
+                    success: function(data){
+                        if(data.length == 0) {
+                            aqm.alert('Error', 'No plot available!');
+                        }
+                        render_result_browser('#result-browser', data)
+                        $('#result-browser').stream_gallery();
+                        result_browser_ready = true;
+                    },
+                    error: function(jqXHR, textStatus, errorThrown){
+                        aqm.alert('Error', 'Error accessing plot list!');
+                    }
+            });
+        }
+    });
+    
+    $($('.display-result')[0]).addClass('active');
+    
+    $('.display-result').click(function(e){
+        var domain = $(this).attr('data-domain');
+        $.ajax({url: "{% url 'rest-wrf-grads-static' %}?server_id={{ task.queue.server_id }}&envid={{ task.queue.envid }}&domain="+domain,
+                dataType: 'json',
+                type: 'GET',
+                success: function(data){
+                    if(data.length == 0) {
+                        aqm.alert('Error', 'No plot available!');
+                    }
+                    render_result_browser('#result-browser', data)
+                    stream_gallery.reset('result-browser');
+                },
+                error: function(jqXHR, textStatus, errorThrown){
+                    aqm.alert('Error', 'Error accessing plot list!');
+                }
+        });
     });
 });
 </script>
@@ -89,6 +132,7 @@ $(document).ready(function(){
                 <div class="tabbable">
                     <ul class="nav nav-tabs">
                         <li class="active"><a href="#task-summary" data-toggle="tab">Summary</a></li>
+                        <li><a href="#task-results" data-toggle="tab">Results</a></li>
                         <li><a href="#task-domain-map" data-toggle="tab">Map</a></li>
                         <li><a href="#task-wps" data-toggle="tab">WPS</a></li>
                         <li><a href="#task-wrf" data-toggle="tab">WRF</a></li>
@@ -194,11 +238,61 @@ $(document).ready(function(){
                             </section>
                             {% endif %}
                         </div>
+                        <div class="tab-pane fade" id="task-results">
+                            <div class="btn-group bottom-space" data-toggle="buttons-radio">
+                                {% for dom in task.setting.get_domain_list %}
+                                <button data-domain="{{ dom }}" class="btn btn-success display-result">Domain {{ dom }}</button>
+                                {% endfor %}
+                            </div>
+                            
+    <div id="result-browser" class="stream-gallery" data-stream-galery-enable-hotkey="enabled">
+        <div class="statusbar">
+            <h2>GrADS Plot [Domain 1] <small class="description"></small></h2>
+        </div>
+        <div class="viewport">
+            <ul class="viewlist">
+                {% comment %}
+                <li data-item-description="01-01-2009 00:00" data-stream-gallery-num="1">
+                    <img class="view-item" src="/plot/grads/wrf/1/5/?f=ARWpost/render_01/t_1_2010:10:14:0.png" />
+                </li>
+                <li data-item-description="01-01-2009 01:00" data-stream-gallery-num="2">
+                    <img class="view-item" src="/plot/grads/wrf/1/5/?f=ARWpost/render_01/t_2_2010:10:14:1.png" />
+                </li>
+                <li data-item-description="01-01-2009 02:00" data-stream-gallery-num="3">
+                    <img class="view-item" src="/plot/grads/wrf/1/5/?f=ARWpost/render_01/t_3_2010:10:14:2.png" />
+                </li>
+                <li data-item-description="01-01-2009 03:00" data-stream-gallery-num="4">
+                    <img class="view-item" src="/plot/grads/wrf/1/5/?f=ARWpost/render_01/t_4_2010:10:14:3.png" />
+                </li>
+                <li data-item-description="01-01-2009 04:00" data-stream-gallery-num="5">
+                    <img class="view-item" src="/plot/grads/wrf/1/5/?f=ARWpost/render_01/t_5_2010:10:14:4.png" />
+                </li>
+                <li data-item-description="01-01-2009 05:00" data-stream-gallery-num="6">
+                    <img class="view-item" src="/plot/grads/wrf/1/5/?f=ARWpost/render_01/t_6_2010:10:14:5.png" />
+                </li>
+                {% endcomment %}
+            </ul>
+            <div class="playcontrol">
+                <ul class="controllist">
+                    <li><a href="#" class="prev">&laquo;</a></li>
+                    <li><a href="#" class="play">Play</a></li>
+                    <li><a href="#" class="pause" style="display: none;">Pause</a></li>
+                    <li><a href="#" class="next">&raquo;</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="navigation">
+            <ul class="navlist custom-scroll-bar">
+                <li>Loading...</li>
+            </ul>
+        </div>
+    </div>
+                            
+                        </div>
                         <div class="tab-pane fade" id="task-domain-map">
                             <div class="span1 offset6">
                                 <img src="{{ STATIC_URL }}aqm_web/img/spinner.gif" alt="Loading..." data-map-url="{{ task.setting.preview_map }}">
                             </div>
-                            
                         </div>
                         <div class="tab-pane fade" id="task-wps">
                             <pre class="prettyprint linenums pre-scrollable lang-namelist">{{ task.setting.namelist_wps|escape }}</pre>

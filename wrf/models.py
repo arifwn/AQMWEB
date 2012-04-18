@@ -53,6 +53,9 @@ class Setting(models.Model):
         ''' Get the number of domain from WPS namelist '''
         return self.get_wps_namelist_data('share', 'max_dom', 0)
     
+    def get_domain_list(self):
+        return range(1, self.get_max_dom() + 1)
+    
     @property
     def max_dom(self):
         ''' Alias for get_max_dom() '''
