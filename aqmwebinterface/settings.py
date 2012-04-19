@@ -138,6 +138,7 @@ INSTALLED_APPS = (
     'aqm_web',
     'user_profile',
     'wrf',
+    'aermod',
     'grappelli',
     # Uncomment the next line to enable the admin:
      'django.contrib.admin',

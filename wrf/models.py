@@ -18,7 +18,7 @@ from wrf.namelist.misc import parse_date_string
 class Setting(models.Model):
     '''setting model'''
     name = models.CharField(max_length=200, db_index=True)
-    user = models.ForeignKey(User, db_index=True)
+    user = models.ForeignKey(User, db_index=True, related_name='wrf_setting')
     description = models.TextField()
     created = models.DateTimeField(auto_now_add=True, editable=False)
     modified = models.DateTimeField(auto_now=True, editable=False)
@@ -140,7 +140,7 @@ class Setting(models.Model):
     
 class BaseSetting(models.Model):
     name = models.CharField(max_length=200, db_index=True)
-    user = models.ForeignKey(User, db_index=True)
+    user = models.ForeignKey(User, db_index=True, related_name='wrf_basesetting')
     description = models.TextField()
     created = models.DateTimeField(auto_now_add=True, editable=False)
     modified = models.DateTimeField(auto_now=True, editable=False)
@@ -201,7 +201,7 @@ class ChemData(models.Model):
     description = models.TextField()
     created = models.DateTimeField(auto_now_add=True, editable=False)
     modified = models.DateTimeField(auto_now=True, editable=False)
-    user = models.ForeignKey(User, db_index=True)
+    user = models.ForeignKey(User, db_index=True, related_name='wrf_chemdata')
     data = models.FileField(upload_to='wrf/chem_data/%Y/%m/', max_length=200)
     worksheets = models.TextField(blank=True)
     parameters = models.ManyToManyField(PollutantParam, blank=True, null=True)
@@ -229,7 +229,7 @@ class AltMeteoData(models.Model):
     description = models.TextField()
     created = models.DateTimeField(auto_now_add=True, editable=False)
     modified = models.DateTimeField(auto_now=True, editable=False)
-    user = models.ForeignKey(User, db_index=True)
+    user = models.ForeignKey(User, db_index=True, related_name='wrf_altmeteodata')
     data = models.FileField(upload_to='wrf/alt_meteo_data/%Y/%m/', max_length=200)
     DATA_TYPE_CHOICE = (
         ('netcdf', 'NetCDF'),
@@ -253,7 +253,7 @@ class Task(models.Model):
     description = models.TextField()
     created = models.DateTimeField(auto_now_add=True, editable=False)
     modified = models.DateTimeField(auto_now=True, editable=False)
-    user = models.ForeignKey(User, db_index=True)
+    user = models.ForeignKey(User, db_index=True, related_name='wrf_task')
     setting = models.ForeignKey(Setting);
     
     stage_list = ['Model Preparation', 'WPS', 'WRF/Real', 'WRF/Emission',
@@ -320,7 +320,7 @@ class TaskGroup(models.Model):
     description = models.TextField()
     created = models.DateTimeField(auto_now_add=True, editable=False)
     modified = models.DateTimeField(auto_now=True, editable=False)
-    user = models.ForeignKey(User, db_index=True)
+    user = models.ForeignKey(User, db_index=True, related_name='wrf_taskgroup')
     tasks = models.ManyToManyField(Task, related_name='groups', blank=True, null=True)
     
     is_running = models.BooleanField(default=False)
@@ -340,7 +340,7 @@ class TaskQueue(models.Model):
     task = models.OneToOneField(Task, related_name='queue')
     
     # Which RPC Server assigned this task
-    server = models.ForeignKey('aqm_web.Server',blank=True, null=True)
+    server = models.ForeignKey('aqm_web.Server',blank=True, null=True, related_name='wrf_taskqueue')
     envid = models.IntegerField(blank=True, null=True)
     
     STATUS_TYPE = [('pending', 'Pending'),
