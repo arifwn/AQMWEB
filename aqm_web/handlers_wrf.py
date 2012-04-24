@@ -243,6 +243,22 @@ class TaskControlHandler(BaseHandler):
     def delete(self, request):
         return rc.FORBIDDEN
     
+
+class TaskLogHandler(BaseHandler):
+    methods_allowed = ('GET',)
+    
+    def read(self, request, task_id=None):
+        pass
+    
+    def create(self, request, *args, **kwargs):
+        return rc.FORBIDDEN
+    
+    def update(self, request, *args, **kwargs):
+        return rc.FORBIDDEN
+    
+    def delete(self, request, *args, **kwargs):
+        return rc.FORBIDDEN
+    
     
 class M2MCommandHandler(BaseHandler):
     ''' Handle communication from RPC Server '''

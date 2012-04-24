@@ -6,10 +6,7 @@ Created on Sep 18, 2011
 from django.conf.urls.defaults import *
 from piston.resource import Resource
 
-from aqm_web.handlers import ServerStatusHandler, TaskHandler
-from aqm_web.handlers import TaskControlHandler, ServerHandler
-from aqm_web.handlers import ChemDataHandler, M2MCommandHandler
-from aqm_web.handlers import GradsWRFHandler
+from aqm_web import handlers_wrf
 
 from aqm_web.authentication import CookieAuthentication
 
@@ -54,13 +51,13 @@ urlpatterns += patterns('aqm_web.views.plot',
 auth = CookieAuthentication(realm="AQM Web Interface")
 ad = { 'authentication': auth }
 
-serverstatus_resource = Resource(handler=ServerStatusHandler, **ad)
-server_resource = Resource(handler=ServerHandler, **ad)
-task_resource = Resource(handler=TaskHandler, **ad)
-task_control_resource = Resource(handler=TaskControlHandler, **ad)
-chemdata_resource = Resource(handler=ChemDataHandler, **ad)
-m2m_resource = Resource(handler=M2MCommandHandler, **ad)
-wrfgrads_resource = Resource(handler=GradsWRFHandler, **ad)
+serverstatus_resource = Resource(handler=handlers_wrf.ServerStatusHandler, **ad)
+server_resource = Resource(handler=handlers_wrf.ServerHandler, **ad)
+task_resource = Resource(handler=handlers_wrf.TaskHandler, **ad)
+task_control_resource = Resource(handler=handlers_wrf.TaskControlHandler, **ad)
+chemdata_resource = Resource(handler=handlers_wrf.ChemDataHandler, **ad)
+m2m_resource = Resource(handler=handlers_wrf.M2MCommandHandler, **ad)
+wrfgrads_resource = Resource(handler=handlers_wrf.GradsWRFHandler, **ad)
 
 urlpatterns += patterns('',
     url(r'^rest/server/status/(?P<server_id>[^/]+)/$', serverstatus_resource, name='rest-server-utilization'),
