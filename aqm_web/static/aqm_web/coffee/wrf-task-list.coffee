@@ -206,6 +206,16 @@ get_task_html = (task) ->
         <div><span class="label label-important">canceled</span></div>
         """
     
+    error_html = ''
+    if task.queue.is_error
+        pretty_error = prettyPrintOne(task.queue.error_log, 'namelist', true);
+        error_html = """
+        <div>
+            <h3>Error Message</h3>
+            <pre class="prettyprint linenums pre-scrollable lang-namelist">#{ pretty_error }</pre>
+        </div>
+        """
+    
     html = """
     <div class="header">
         <h2><a href="#{ task.get_url }">#{ task.name }</a></h2>
@@ -230,6 +240,7 @@ get_task_html = (task) ->
                 </tr>
             </tbody>
         </table>
+        #{ error_html }
         <ul class="controls">
             #{ controls_html }
         </ul>

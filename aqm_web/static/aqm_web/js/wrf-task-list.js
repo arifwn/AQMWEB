@@ -122,7 +122,7 @@
   };
 
   get_task_html = function(task) {
-    var controls_html, html, progress_html;
+    var controls_html, error_html, html, pretty_error, progress_html;
     controls_html = "";
     progress_html = "";
     if (task.get_status === "draft") {
@@ -144,7 +144,12 @@
       controls_html = "<li><button class=\"btn btn-info control-retry\" data-loading-text=\"Resume from last stage\" autocomplete=\"off\"><i class=\"icon-refresh icon-white\"></i> Resume from last stage</button></li>\n<li><button class=\"btn btn-info control-rerun\" data-loading-text=\"Run Again\" autocomplete=\"off\"><i class=\"icon-repeat icon-white\"></i> Run Again</button></li>\n<li><a class=\"btn\" href=\"" + task.get_url + "\"><i class=\"icon-th-list\"></i> Details</a></li>\n<li><a class=\"btn\" href=\"#\"><i class=\"icon-edit\"></i> Edit</a></li>\n<li><a class=\"btn btn-danger\" href=\"#\"><i class=\"icon-remove icon-white\"></i> Delete</a></li>";
       progress_html = "<div class=\"counter important\">" + task.get_progress_percent + "%</div>\n<div class=\"stage\">" + task.get_stage + "</div>\n<div><span class=\"label label-important\">canceled</span></div>";
     }
-    return html = "<div class=\"header\">\n    <h2><a href=\"" + task.get_url + "\">" + task.name + "</a></h2>\n</div>\n<div class=\"content\">\n    <div class=\"well\">\n    " + task.description + "\n    </div>\n    <table class=\"table table-striped table-bordered table-condensed\">\n        <thead>\n            <tr>\n                <th>User</th>\n                <th>Domain</th>\n                <th>Period</th>\n            </tr>\n        </thead>\n        <tbody>\n            <tr>\n                <td><a href=\"/accounts/profile/" + task.user.username + "\"><img class=\"avatar\" src=\"/accounts/avatar/t32x32/" + task.user.username + "\" width=\"32\" height=\"32\" style=\"height: 32px;\" /></a> <a href=\"/accounts/profile/" + task.user.username + "\">" + task.user.get_full_name + " (" + task.user.username + ")</a></td>\n                <td>" + task.setting.max_dom + "</td>\n                <td>" + task.setting.start_date + " &mdash; " + task.setting.end_date + "</td>\n            </tr>\n        </tbody>\n    </table>\n    <ul class=\"controls\">\n        " + controls_html + "\n    </ul>\n</div>\n\n<div class=\"task-progress\">\n    " + progress_html + "\n</div>";
+    error_html = '';
+    if (task.queue.is_error) {
+      pretty_error = prettyPrintOne(task.queue.error_log, 'namelist', true);
+      error_html = "<div>\n    <h3>Error Message</h3>\n    <pre class=\"prettyprint linenums pre-scrollable lang-namelist\">" + pretty_error + "</pre>\n</div>";
+    }
+    return html = "<div class=\"header\">\n    <h2><a href=\"" + task.get_url + "\">" + task.name + "</a></h2>\n</div>\n<div class=\"content\">\n    <div class=\"well\">\n    " + task.description + "\n    </div>\n    <table class=\"table table-striped table-bordered table-condensed\">\n        <thead>\n            <tr>\n                <th>User</th>\n                <th>Domain</th>\n                <th>Period</th>\n            </tr>\n        </thead>\n        <tbody>\n            <tr>\n                <td><a href=\"/accounts/profile/" + task.user.username + "\"><img class=\"avatar\" src=\"/accounts/avatar/t32x32/" + task.user.username + "\" width=\"32\" height=\"32\" style=\"height: 32px;\" /></a> <a href=\"/accounts/profile/" + task.user.username + "\">" + task.user.get_full_name + " (" + task.user.username + ")</a></td>\n                <td>" + task.setting.max_dom + "</td>\n                <td>" + task.setting.start_date + " &mdash; " + task.setting.end_date + "</td>\n            </tr>\n        </tbody>\n    </table>\n    " + error_html + "\n    <ul class=\"controls\">\n        " + controls_html + "\n    </ul>\n</div>\n\n<div class=\"task-progress\">\n    " + progress_html + "\n</div>";
   };
 
   window.filter_display = function(task_list, filter) {

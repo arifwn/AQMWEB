@@ -180,7 +180,8 @@ class TaskHandler(BaseHandler):
               'get_url',
               ('user', ('id', 'username', 'first_name', 'last_name', 'email', 'get_full_name')),
               ('setting', ('max_dom', 'start_date', 'end_date',
-                           'dx', 'dy', 'lat', 'lon', 'preview_map')))
+                           'dx', 'dy', 'lat', 'lon', 'preview_map')),
+              ('queue', ('is_error', 'error_log')))
     
     def read(self, request, task_id=None, all_user=False):
         
