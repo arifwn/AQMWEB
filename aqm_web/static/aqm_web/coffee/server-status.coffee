@@ -1,8 +1,25 @@
 
+max_cpu_data = 100
+cpu_data = (0 for num in [1..100])
+
+$(document).ready(() ->
+    $(".sparkline-chart .inner-graph").sparkline(cpu_data, { width: '80%' })
+)
+
+update_cpu_graph = (id, cpu) ->
+    cpu_data.push cpu
+    if (cpu_data.length > max_cpu_data)
+        cpu_data.splice(0,1)
+    $("#cpu-usage-server-#{ id } .inner-graph").sparkline(cpu_data, { width: '85%' })
+    $("#cpu-usage-server-#{ id } .inner-text").text("#{ cpu }%")
+
+set_cpu_label = (id, label) ->
+    $("#cpu-usage-server-#{ id } .inner-text").text("#{ label }")
+
 # setup automatic update of every server in the given list
 window.setup_server_list_auto_update = (server_list, interval) ->
     setup_server_auto_update server, interval for server in server_list
-    
+
 # setup automatic update of a given server
 setup_server_auto_update = (server, interval) ->
     updater = (server) ->
@@ -22,7 +39,10 @@ setup_server_auto_update = (server, interval) ->
                 $("#server_#{ server.id } > .header > .label.status").text("service disruption")
             
             $("#server_#{ server.id } > .header > .label.status").removeClass("label-success").addClass("label-important")
-            simplebar.set("#cpu-usage-server-#{ server.id }", 0, "--")
+            #simplebar.set("#cpu-usage-server-#{ server.id }", 0, "--")
+            update_cpu_graph server.id, 0
+            set_cpu_label server.id, "--"
+            
             simplebar.set("#memory-usage-server-#{ server.id }", 0, "--")
             simplebar.set("#disk-usage-server-#{ server.id }", 0, "--")
             simplebar.set("#slot-usage-server-#{ server.id }", 0, "--")
@@ -36,8 +56,9 @@ setup_server_auto_update = (server, interval) ->
 
 # update server details screen
 update_server = (server_stat) ->
+    update_cpu_graph server_stat.id, server_stat.cpu
     #console.log "#cpu-usage-server-#{ server_stat.id }", server_stat
-    simplebar.set("#cpu-usage-server-#{ server_stat.id }", server_stat.cpu, "#{ server_stat.cpu }%")
+    #simplebar.set("#cpu-usage-server-#{ server_stat.id }", server_stat.cpu, "#{ server_stat.cpu }%")
     
     memory_used = Math.round(server_stat.memory_used / (1024 * 1024))
     memory_total = Math.round(server_stat.memory_total / (1024 * 1024))

@@ -40,8 +40,11 @@ $(document).ready(function () {
 									<tr>
 										<th>Current CPU Usage</th>
 										<td>
-											<div id="cpu-usage-server-{{ server.pk }}" class="color-green medium" data-simplebar="simplebar" data-simplebar-percentage="0" 
-											data-simplebar-text="loading..."></div>
+											{#<div id="cpu-usage-server-{{ server.pk }}" class="color-green medium" data-simplebar="simplebar" data-simplebar-percentage="0" data-simplebar-text="loading..."></div> #}
+                                            <div id="cpu-usage-server-{{ server.pk }}" class="sparkline-chart">
+                                                <div class="inner-graph"></div>
+                                                <div class="inner-text">loading...</div>
+                                            </div>
 										</td>
 									</tr>
 									<tr>
