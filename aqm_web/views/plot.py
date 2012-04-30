@@ -77,7 +77,7 @@ def mercator(request):
     
     fig = Figure()
     canvas = FigureCanvas(fig)
-    m.ax = fig.add_axes([0, 0, 1, 1])
+    m.ax = fig.add_axes([0.01,0.01,0.98,0.98])
     
 #    m.drawcoastlines()
 #    m.drawmapboundary(fill_color='aqua') 
@@ -124,6 +124,83 @@ def lambert_conformal(request):
     m.drawmeridians(np.arange(-180.,181.,60.), color='black')
     
     x, y = m(lon, lat)
+    m.plot(x, y, 'ro')
+    
+    response = HttpResponse(content_type='image/png')
+    canvas.print_figure(response, dpi=100)
+    return response
+
+@login_required
+def wrf_domain_map(request, setting_id):
+    from wrf.models import Setting
+    
+    try:
+        setting = Setting.objects.get(id=setting_id)
+    except Setting.DoesNotExist:
+        raise Http404
+    
+    import matplotlib
+    from mpl_toolkits.basemap import Basemap
+    import numpy as np
+    from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
+    from matplotlib.figure import Figure
+    from matplotlib.patches import Polygon
+    
+    from aqm_utils.geo import process_domain_data
+    
+    dx = setting.dx
+    dy = setting.dy
+    
+    ref_lat = setting.get_wps_namelist_data('geogrid', 'ref_lat', 0)
+    ref_lon = setting.get_wps_namelist_data('geogrid', 'ref_lon', 0)
+    domains = setting.get_all_domain()
+    domains = process_domain_data(domains, ref_lat, ref_lon, dx, dy)
+    
+    upper_lat = ref_lat + 20
+    upper_lon = ref_lon + 27
+    lower_lat = ref_lat - 20
+    lower_lon = ref_lon - 27
+    
+    try:
+        domain = domains[0]
+        upper_lat = domain['upper_lat'] + 2
+        upper_lon = domain['upper_lon'] + 2
+        lower_lat = domain['lower_lat'] - 2
+        lower_lon = domain['lower_lon'] - 2
+    except:
+        pass
+    
+    true_lat = setting.get_wps_namelist_data('geogrid', 'truelat1', 0)
+    
+    m = Basemap(projection='merc',llcrnrlat=lower_lat,urcrnrlat=upper_lat,
+                llcrnrlon=lower_lon,urcrnrlon=upper_lon,lat_ts=true_lat,
+                resolution='l')
+    
+    fig = Figure()
+    canvas = FigureCanvas(fig)
+    m.ax = fig.add_axes([0.01,0.01,0.98,0.98])
+    
+    color_list = ['b', 'g', 'r', 'c', 'm', 'y', 'b', 'g', 'r', 'c', 'm', 'y',
+                  'b', 'g', 'r', 'c', 'm', 'y', 'b', 'g', 'r', 'c', 'm', 'y']
+    
+    for domain in domains:
+        print repr(domain)
+        x1, y1 = m(domain['lower_lon'], domain['lower_lat'])
+        x2, y2 = m(domain['lower_lon'], domain['upper_lat'])
+        x3, y3 = m(domain['upper_lon'], domain['upper_lat'])
+        x4, y4 = m(domain['upper_lon'], domain['lower_lat'])
+        p = Polygon([(x1,y1),(x2,y2),(x3,y3),(x4,y4)],facecolor=color_list[domain['domain_id']],edgecolor='white',alpha=0.333,linewidth=1)
+        m.ax.add_patch(p)
+    
+    #m.drawlsmask(land_color='gray',ocean_color='white',lakes=True)
+    #m.drawparallels(np.arange(-90.,91.,30.), color='black')
+    #m.drawmeridians(np.arange(-180.,181.,60.), color='black')
+    
+    m.drawcoastlines()
+    m.drawcountries()
+    m.drawstates()
+    
+    x, y = m(ref_lon, ref_lat)
     m.plot(x, y, 'ro')
     
     response = HttpResponse(content_type='image/png')

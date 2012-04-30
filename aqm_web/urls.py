@@ -45,6 +45,7 @@ urlpatterns += patterns('aqm_web.views.plot',
     url(r'^plot/lambert-conformal$', 'lambert_conformal'),
     url(r'^plot/test$', 'test_plot'),
     url(r'^plot/grads/wrf/(\d+)/(\d+)/$', 'grads_wrf_plot', name='grads-wrf-plot'),
+    url(r'^plot/wrf/domain/(\d+)/$', 'wrf_domain_map', name='map-domain-preview'),
 )
 
 # REST API

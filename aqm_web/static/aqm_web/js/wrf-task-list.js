@@ -145,8 +145,8 @@
       progress_html = "<div class=\"counter important\">" + task.get_progress_percent + "%</div>\n<div class=\"stage\">" + task.get_stage + "</div>\n<div><span class=\"label label-important\">canceled</span></div>";
     }
     error_html = '';
-    if (task.queue.is_error) {
-      pretty_error = prettyPrintOne(task.queue.error_log, 'namelist', true);
+    if (task.get_status === 'error') {
+      pretty_error = prettyPrintOne(task.error_message, 'namelist', true);
       error_html = "<div>\n    <h3>Error Message</h3>\n    <pre class=\"prettyprint linenums pre-scrollable lang-namelist\">" + pretty_error + "</pre>\n</div>";
     }
     return html = "<div class=\"header\">\n    <h2><a href=\"" + task.get_url + "\">" + task.name + "</a></h2>\n</div>\n<div class=\"content\">\n    <div class=\"well\">\n    " + task.description + "\n    </div>\n    <table class=\"table table-striped table-bordered table-condensed\">\n        <thead>\n            <tr>\n                <th>User</th>\n                <th>Domain</th>\n                <th>Period</th>\n            </tr>\n        </thead>\n        <tbody>\n            <tr>\n                <td><a href=\"/accounts/profile/" + task.user.username + "\"><img class=\"avatar\" src=\"/accounts/avatar/t32x32/" + task.user.username + "\" width=\"32\" height=\"32\" style=\"height: 32px;\" /></a> <a href=\"/accounts/profile/" + task.user.username + "\">" + task.user.get_full_name + " (" + task.user.username + ")</a></td>\n                <td>" + task.setting.max_dom + "</td>\n                <td>" + task.setting.start_date + " &mdash; " + task.setting.end_date + "</td>\n            </tr>\n        </tbody>\n    </table>\n    " + error_html + "\n    <ul class=\"controls\">\n        " + controls_html + "\n    </ul>\n</div>\n\n<div class=\"task-progress\">\n    " + progress_html + "\n</div>";

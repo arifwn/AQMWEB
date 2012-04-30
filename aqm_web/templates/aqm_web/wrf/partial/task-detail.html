@@ -28,6 +28,7 @@ $(document).ready(function(){
         }
     });
     
+    {% if task.queue %}
     $('a[href="#task-results"][data-toggle="tab"]').on('shown', function (e) {
         if(!result_browser_ready){
             $.ajax({url: "{% url 'rest-wrf-grads' task.queue.server_id task.queue.envid "1" %}",
@@ -47,6 +48,7 @@ $(document).ready(function(){
             });
         }
     });
+    {% endif %}
 	
 	$('a[href="#task-wrf"][data-toggle="tab"]').on('shown', function (e) {
 		update_log_wrf({{ task.id }});
@@ -136,7 +138,9 @@ $(document).ready(function(){
                 <div class="tabbable">
                     <ul class="nav nav-tabs">
                         <li class="active"><a href="#task-summary" data-toggle="tab">Summary</a></li>
+                        {% if task.queue %}
                         <li><a href="#task-results" data-toggle="tab">Results</a></li>
+                        {% endif %}
                         <li><a href="#task-domain-map" data-toggle="tab">Map</a></li>
                         <li><a href="#task-wps" data-toggle="tab">WPS</a></li>
                         <li><a href="#task-wrf" data-toggle="tab">WRF</a></li>
@@ -305,7 +309,7 @@ $(document).ready(function(){
                         </div>
                         <div class="tab-pane fade" id="task-domain-map">
                             <div class="span1 offset6">
-                                <img src="{{ STATIC_URL }}aqm_web/img/spinner.gif" alt="Loading..." data-map-url="{{ task.setting.preview_map }}">
+                                <img src="{{ STATIC_URL }}aqm_web/img/spinner.gif" alt="Loading..." data-map-url="{{ task.setting.domain_map }}">
                             </div>
                         </div>
                         <div class="tab-pane fade" id="task-wps">

@@ -177,11 +177,10 @@ class TaskHandler(BaseHandler):
     methods_allowed = ('GET')
     fields = ('id', 'name', 'description', 'created', 'modified', 'setting',
               'get_status', 'get_stage', 'get_progress_percent', 'get_rest_url',
-              'get_url',
+              'get_url', 'error_message',
               ('user', ('id', 'username', 'first_name', 'last_name', 'email', 'get_full_name')),
-              ('setting', ('max_dom', 'start_date', 'end_date',
-                           'dx', 'dy', 'lat', 'lon', 'preview_map')),
-              ('queue', ('is_error', 'error_log')))
+              ('setting', ('max_dom', 'start_date', 'end_date', 'dx', 'dy',
+                           'lat', 'lon', 'preview_map', 'domain_map')))
     
     def read(self, request, task_id=None, all_user=False):
         

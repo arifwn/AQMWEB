@@ -56,6 +56,22 @@ class Setting(models.Model):
     def get_domain_list(self):
         return range(1, self.get_max_dom() + 1)
     
+    def get_all_domain(self):
+        domain_num = self.get_max_dom()
+        domain_list = []
+        
+        for i in range(domain_num):
+            domain = {}
+            domain['domain_id'] = i
+            domain['parent_id'] = self.get_wps_namelist_data('geogrid', 'parent_id', i) - 1
+            domain['parent_grid_ratio'] = self.get_wps_namelist_data('geogrid', 'parent_grid_ratio', i)
+            domain['i_parent_start'] = self.get_wps_namelist_data('geogrid', 'i_parent_start', i)
+            domain['j_parent_start'] = self.get_wps_namelist_data('geogrid', 'j_parent_start', i)
+            domain['e_we'] = self.get_wps_namelist_data('geogrid', 'e_we', i)
+            domain['e_sn'] = self.get_wps_namelist_data('geogrid', 'e_sn', i)
+            domain_list.append(domain)
+        return domain_list
+    
     @property
     def max_dom(self):
         ''' Alias for get_max_dom() '''
@@ -136,6 +152,14 @@ class Setting(models.Model):
     def preview_map(self):
         ''' Alias for get_preview_map() '''
         return self.get_preview_map()
+        
+    def get_domain_map(self, projection='mercator'):
+        map_url = reverse('map-domain-preview', args=[self.id])
+        return map_url
+        
+    @property
+    def domain_map(self):
+        return self.get_domain_map()
     
     
 class BaseSetting(models.Model):
@@ -284,6 +308,16 @@ class Task(models.Model):
             return self.queue.status
         except TaskQueue.DoesNotExist:
             return 'draft'
+    
+    @property
+    def error_message(self):
+        return self.get_error_message()
+    
+    def get_error_message(self):
+        try:
+            return self.queue.error_log
+        except TaskQueue.DoesNotExist:
+            return ''
     
     def get_stage(self):
         ''' Get current task stage. '''

@@ -207,8 +207,8 @@ get_task_html = (task) ->
         """
     
     error_html = ''
-    if task.queue.is_error
-        pretty_error = prettyPrintOne(task.queue.error_log, 'namelist', true);
+    if task.get_status == 'error'
+        pretty_error = prettyPrintOne(task.error_message, 'namelist', true);
         error_html = """
         <div>
             <h3>Error Message</h3>
