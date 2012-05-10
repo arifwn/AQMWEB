@@ -155,6 +155,9 @@ SSL_CERT_CERT = './cert/cert.pem'
 SSL_CERT_KEY = './cert/key.pem'
 SSL_CERT_CACERT = './cert/cacert.pem'
 
+WEBSERVER_SSL_CERT_CERT = './cert/cert.pem'
+WEBSERVER_SSL_CERT_KEY = './cert/key.pem'
+
 INTERNAL_IPS = ('127.0.0.1',)
 DEBUG_TOOLBAR_CONFIG = {
                         'INTERCEPT_REDIRECTS': False,

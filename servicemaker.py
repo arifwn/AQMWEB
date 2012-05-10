@@ -28,8 +28,8 @@ from aqmwebinterface import wsgi as django_wsgi
 DEBUG = getattr(settings, 'DEBUG', True)
 DEFAULT_ADDR = getattr(settings, 'RUNSERVER_DEFAULT_ADDR', '')
 DEFAULT_PORT = getattr(settings, 'RUNSERVER_DEFAULT_PORT', '8000')
-SSL_KEY = getattr(settings, 'SSL_CERT_KEY')
-SSL_CERT = getattr(settings, 'SSL_CERT_CERT')
+SSL_KEY = getattr(settings, 'WEBSERVER_SSL_CERT_KEY')
+SSL_CERT = getattr(settings, 'WEBSERVER_SSL_CERT_CERT')
 TPSIZE_MIN = getattr(settings, 'THREADPOOL_MIN_SIZE', 10)
 TPSIZE_MAX = getattr(settings, 'THREADPOOL_MAX_SIZE', 50)
 
