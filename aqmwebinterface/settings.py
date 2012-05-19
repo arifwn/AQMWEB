@@ -155,8 +155,22 @@ SSL_CERT_CERT = './cert/cert.pem'
 SSL_CERT_KEY = './cert/key.pem'
 SSL_CERT_CACERT = './cert/cacert.pem'
 
-WEBSERVER_SSL_CERT_CERT = './cert/cert.pem'
-WEBSERVER_SSL_CERT_KEY = './cert/key.pem'
+TWISTED_REDIRECT_TO_HTTPS = True
+
+# Dev Server Configuration, used when DEBUG = True
+TWISTED_DEBUG_HTTP_PORT = 8001 # for http request
+TWISTED_DEBUG_HTTPS_PORT = 8000 # for https request
+
+# Twisted Server Configuration, used when DEBUG = False
+TWISTED_HTTP_PORT = 80 # for http request
+TWISTED_HTTPS_PORT = 443 # for https request
+TWISTED_LISTEN_ADDR = '127.0.0.1' # set to empty string to listen on all interface
+TWISTED_SERVE_STATIC = True # serve static contents too
+
+# SSL Configuration
+TWISTED_ENABLE_SSL = True
+TWISTED_SSL_CERT = './cert/cert.pem' # path to your certificate file
+TWISTED_SSL_KEY = './cert/key.pem' # path to your certificate key
 
 INTERNAL_IPS = ('127.0.0.1',)
 DEBUG_TOOLBAR_CONFIG = {
