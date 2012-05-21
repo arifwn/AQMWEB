@@ -18,12 +18,8 @@ class NewTaskForm(forms.Form):
                                        widget=forms.Textarea(attrs={
                                         'rows':'10'
                                         }))
-    wrf2aermod_setting = forms.CharField(label='Meteorological Data Extractor Setting',
-                                       widget=forms.Textarea(attrs={
-                                        'rows':'10'
-                                        }))
     
-    aermet_setting = forms.CharField(label='AERMET Setting',
+    meteorology_setting = forms.CharField(label='Meteorology Setting',
                                        widget=forms.Textarea(attrs={
                                         'rows':'10'
                                         }))
@@ -33,16 +29,26 @@ class NewTaskForm(forms.Form):
                                         'rows':'10'
                                         }))
     
-    aermod2grads_setting = forms.CharField(label='AERMOD Result Processor Setting',
+    plot_setting = forms.CharField(label='Plotter Setting',
                                            widget=forms.Textarea(attrs={
                                             'rows':'10'
                                             }))
     
-    grads_template = forms.CharField(label='GrADS Setting',
-                                       widget=forms.Textarea(attrs={
-                                        'rows':'10'
-                                        }))
-    
     wrf_task_id = forms.IntegerField(label='WRF Task')
     
-    
+    def clean(self):
+        cleaned_data = super(NewTaskForm, self).clean()
+        
+        # validate wrf task id
+        from wrf.models import Task as WRFTask
+        wrf_task_id = cleaned_data.get('wrf_task_id')
+        try:
+            wrf_task = WRFTask.objects.get(id=wrf_task_id)
+            cleaned_data['wrf_task'] = wrf_task
+        except WRFTask.DoesNotExist:
+            msg = 'Cannot find specified WRF Task.'
+            self._errors["wrf_task_id"] = self.error_class([msg])
+            
+            del cleaned_data['wrf_task_id']
+        
+        return cleaned_data

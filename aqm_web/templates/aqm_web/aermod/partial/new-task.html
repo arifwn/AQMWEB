@@ -1,0 +1,105 @@
+{% load url from future %}
+{% load add_class %}
+
+<div class="row">
+    <div class="span12">
+        <div class="page-header">
+            <h1>New AERMOD Task</h1>
+        </div>
+        
+        <form action="{% url "aermod-new-task" %}" method="post" id="aermod-new-task-form" class="form-horizontal">
+            {% csrf_token %}
+            
+            {% if form.errors %}
+            <div class="alert alert-error">
+                <p>There are some errors in your submitted data. Please try again.</p>
+            </div>
+            {% endif %}
+            
+            {% if form.non_field_errors %}
+            <div class="alert alert-error">
+                <p>{{ form.non_field_errors }}</p>
+            </div>
+            {% endif %}
+            
+    		<fieldset>
+                <div class="control-group {% if form.task_name.errors %} error {% endif %}">
+                    <label class="control-label" for="id_task_name">{{ form.task_name.label }}</label>
+                    <div class="controls">
+                        {{ form.task_name|add_class:"span9"}}
+                        <p class="help-block">{{ form.task_name.errors }}</p>
+                    </div>
+                </div>
+                
+                <div class="control-group {% if form.task_description.errors %} error {% endif %}">
+                    <label class="control-label" for="id_task_description">{{ form.task_description.label }}</label>
+                    <div class="controls">
+                        {{ form.task_description|add_class:"span9"}}
+                        <p class="help-block">{{ form.task_description.errors }}</p>
+                    </div>
+                </div>
+            </fieldset>
+            
+            <fieldset>
+                <legend>Meteorology Setting</legend>
+                
+                <div class="control-group {% if form.wrf_task_id.errors %} error {% endif %}">
+                    <label class="control-label" for="id_wrf_task_id">{{ form.wrf_task_id.label }}</label>
+                    <div class="controls">
+                        {{ form.wrf_task_id|add_class:"span9"}}
+                        <p class="help-block">{{ form.wrf_task_id.errors }}</p>
+                    </div>
+                </div>
+                
+                <div class="control-group {% if form.meteorology_setting.errors %} error {% endif %}">
+                    <label class="control-label" for="id_meteorology_setting">{{ form.meteorology_setting.label }}</label>
+                    <div class="controls">
+                        {{ form.meteorology_setting|add_class:"span9"}}
+                        <p class="help-block">{{ form.meteorology_setting.errors }}</p
+                    </div>
+                </div>
+            </fieldset>
+            
+            <fieldset>
+                <legend>Hillheight Setting</legend>
+                
+                <div class="control-group {% if form.hillheight_setting.errors %} error {% endif %}">
+                    <label class="control-label" for="id_hillheight_setting">{{ form.hillheight_setting.label }}</label>
+                    <div class="controls">
+                        {{ form.hillheight_setting|add_class:"span9" }}
+                        <p class="help-block">{{ form.hillheight_setting.errors }}</p>
+                    </div>
+                </div>
+            </fieldset>
+            
+            <fieldset>
+                <legend>AERMOD Setting</legend>
+                
+                <div class="control-group {% if form.aermod_setting.errors %} error {% endif %}">
+                    <label class="control-label" for="id_aermod_setting">{{ form.aermod_setting.label }}</label>
+                    <div class="controls">
+                        {{ form.aermod_setting|add_class:"span9"}}
+                        <p class="help-block">{{ form.aermod_setting.errors }}</p>
+                    </div>
+                </div>
+            </fieldset>
+            
+            <fieldset>
+                <legend>Plotter Setting</legend>
+                
+                <div class="control-group {% if form.plot_setting.errors %} error {% endif %}">
+                    <label class="control-label" for="id_plot_setting">{{ form.plot_setting.label }}</label>
+                    <div class="controls">
+                        {{ form.plot_setting|add_class:"span9"}}
+                        <p class="help-block">{{ form.plot_setting.errors }}</p>
+                    </div>
+                </div>
+            </fieldset>
+            
+            <div class="form-actions">
+                <input type="submit" class="btn btn-primary btn-large" value="Save">
+            </div>
+        </form>
+        
+    </div>
+</div>

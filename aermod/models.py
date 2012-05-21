@@ -20,11 +20,9 @@ class Setting(models.Model):
     wrf_task = models.ForeignKey('wrf.Task', related_name='aermod_setting')
     
     hillheight_setting = models.TextField(blank=True)
-    wrf2aermod_setting = models.TextField(blank=True)
-    aermet_setting = models.TextField(blank=True)
+    meteorology_setting = models.TextField(blank=True)
     aermod_setting = models.TextField(blank=True)
-    aermod2grads_setting = models.TextField(blank=True)
-    grads_template = models.TextField(blank=True)
+    plot_setting = models.TextField(blank=True)
     is_removed = models.BooleanField(default=False, db_index=True)
     
     def __unicode__(self):

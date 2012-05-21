@@ -7,12 +7,12 @@
 		<h1>New WRF/Chem Task</h1>
 	</div>
 
-	<form action="{% url "wrf_new_task" %}" method="post" id="wrf-new-task-form" class="form-horizontal">
+	<form action="{% url "wrf-new-task" %}" method="post" id="wrf-new-task-form" class="form-horizontal">
         {% csrf_token %}
         
         {% if form.errors %}
         <div class="alert alert-error">
-            <p>There are some errors in your password information. Please try again.</p>
+            <p>There are some errors in your submitted data. Please try again.</p>
         </div>
         {% endif %}
         
@@ -376,7 +376,7 @@
 				$('#area-modal .preview-image').hide().load(function(){
 					$(this).fadeIn();
 					spinner_func.spinner_stop('#map-loading-spinner');
-				}).attr('src', "{% url 'aqm_web.views.plot.mercator' %}?upper_lat="+upper_lat+"&upper_lon="+upper_lon+"&lower_lat="+lower_lat+"&lower_lon="+lower_lon+"&true_lat="+true_lat+"&ref_lat="+latitude+"&ref_lon="+longitude)
+				}).attr('src', "{% url 'map-preview-mercator' %}?upper_lat="+upper_lat+"&upper_lon="+upper_lon+"&lower_lat="+lower_lat+"&lower_lon="+lower_lon+"&true_lat="+true_lat+"&ref_lat="+latitude+"&ref_lon="+longitude)
 				
 				$('#area-modal').modal('show');
 			}
@@ -391,7 +391,7 @@
 			var h = 250;
 			var left = (screen.width/2)-(w/2);
 			var top = (screen.height/2)-(h/2);
-			testwindow = window.open("{% url 'wrf_popup_new_task_chem_data' %}", "mywindow", "location=1,status=1,scrollbars=1,width="+w+",height="+h+",top="+top+",left="+left);
+			testwindow = window.open("{% url 'wrf-popup-new-task-chem-data' %}", "mywindow", "location=1,status=1,scrollbars=1,width="+w+",height="+h+",top="+top+",left="+left);
 		});
 
 		$('#ntf-start-date').datepicker({ dateFormat: 'dd-mm-yy' });

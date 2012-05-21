@@ -22,22 +22,28 @@ urlpatterns = patterns('aqm_web.views.generic',
 )
 
 urlpatterns += patterns('aqm_web.views.wrf_view',
-    url(r'^wrf/new/$', 'new_task', name='wrf_new_task'),
+    url(r'^wrf/new/$', 'new_task', name='wrf-new-task'),
     url(r'^wrf/task/(\d+)/$', 'view_task', name='wrf-task-detail'),
     url(r'^wrf/task/$', 'list_task', name='wrf-task-list'),
     
-    url(r'^wrf/new-group/$', 'new_task_group', name='wrf_new_task_group'),
-    url(r'^wrf/task-group-details/$', 'task_group_detail', name='wrf_task_group_detail'),
-    url(r'^wrf/list-task-group/$', 'list_task_group', name='wrf_list_task_group'),
+    url(r'^wrf/new-group/$', 'new_task_group', name='wrf-new-task-group'),
+    url(r'^wrf/task-group-details/$', 'task_group_detail', name='wrf-task-group-detail'),
+    url(r'^wrf/list-task-group/$', 'list_task_group', name='wrf-list-task-group'),
     
-    url(r'^wrf/new-chem-data/$', 'new_chem_data', name='wrf_new_chem_data'),
-    url(r'^wrf/new-chem-data-step2/(\d+)$', 'new_chem_data_step2', name='wrf_new_chem_data_step2'),
+    url(r'^wrf/new-chem-data/$', 'new_chem_data', name='wrf-new-chem-data'),
+    url(r'^wrf/new-chem-data-step2/(\d+)$', 'new_chem_data_step2', name='wrf-new-chem-data-step2'),
     url(r'^wrf/edit-chem-data/(\d+)$', 'edit_chem_data', name='wrf-edit-chem-data'),
-    url(r'^wrf/new/popup-chem-data$', 'popup_new_task_chem_data', name='wrf_popup_new_task_chem_data'),
-    url(r'^wrf/list-chem-data/$', 'list_chem_data', name='wrf_list_chem_data'),
+    url(r'^wrf/new/popup-chem-data$', 'popup_new_task_chem_data', name='wrf-popup-new-task-chem-data'),
+    url(r'^wrf/list-chem-data/$', 'list_chem_data', name='wrf-list-chem-data'),
     
-    url(r'^wrf/list-meteo-data/$', 'list_meteo_data', name='wrf_list_meteo_data'),
-    url(r'^wrf/list-model-setting/$', 'list_model_setting', name='wrf_list_model_setting'),
+    url(r'^wrf/list-meteo-data/$', 'list_meteo_data', name='wrf-list-meteo-data'),
+    url(r'^wrf/list-model-setting/$', 'list_model_setting', name='wrf-list-model-setting'),
+)
+
+urlpatterns += patterns('aqm_web.views.aermod_view',
+    url(r'^aermod/new/$', 'new_task', name='aermod-new-task'),
+    url(r'^aermod/task/(\d+)/$', 'view_task', name='aermod-task-detail'),
+    url(r'^aermod/task/$', 'list_task', name='aermod-task-list'),
 )
 
 urlpatterns += patterns('aqm_web.views.plot',

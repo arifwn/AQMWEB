@@ -5,7 +5,7 @@
 $(document).ready(function () {
 	
 	chemdata_url = "{% url 'rest-chemdata-detail' chemdata.id %}";
-	chemdata_list_url = "{% url 'wrf_list_chem_data' %}";
+	chemdata_list_url = "{% url 'wrf-list-chem-data' %}";
 	chemdata = undefined;
 	
     $.ajax({url: chemdata_url,

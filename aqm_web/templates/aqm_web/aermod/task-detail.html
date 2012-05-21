@@ -1,0 +1,11 @@
+{% extends "aqm_web/base-with-menu.html" %}
+
+{% block metadata %}
+	<title>AERMOD Task: {{ task.name }} | Air Quality Models Web Interface</title>
+{% endblock %}
+
+{% block all-elements %}
+
+	{% include "aqm_web/aermod/partial/task-detail.html" %}
+
+{% endblock %}

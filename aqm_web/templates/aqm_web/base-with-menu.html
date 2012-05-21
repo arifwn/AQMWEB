@@ -35,8 +35,22 @@
 {% load url from future %}
 {% load fb_versions %}
 {% load active_menu%}
+
+{% url 'index' as url_index %}
+{% url 'wrf-new-task' as url_wrf_new_task %}
+{% url 'wrf-task-list' as url_wrf_list_task %}
+{% url 'wrf-task-detail' task.id as url_wrf_task_detail %}
+{% url 'wrf-list-task-group' as url_wrf_list_task_group %}
+{% url 'wrf-list-chem-data' as url_wrf_list_chem_data %}
+{% url 'wrf-list-meteo-data' as url_wrf_list_meteo_data %}
+{% url 'wrf-list-model-setting' as url_wrf_list_model_setting %}
+{% url 'aermod-new-task' as url_aermod_new_task %}
+{% url 'aermod-task-list' as url_aermod_list_task %}
+{% url 'aermod-task-detail' task.id as url_aermod_task_detail %}
+{% url 'django.contrib.auth.views.logout_then_login' as url_logout %}
+{% url 'django.contrib.auth.views.password_change' as url_change_password %}
+{% url 'view-profile' user.username as url_view_profile %}
 <body>
-    {% url 'index' as url_index %}{% url 'wrf_new_task' as url_wrf_new_task %}{% url 'wrf-task-list' as url_wrf_list_task %}{% url 'wrf-task-detail' task.id as url_wrf_task_detail %}{% url 'wrf_list_task_group' as url_wrf_list_task_group %}{% url 'wrf_list_chem_data' as url_wrf_list_chem_data %}{% url 'wrf_list_meteo_data' as url_wrf_list_meteo_data %}{% url 'wrf_list_model_setting' as url_wrf_list_model_setting %}{% url 'django.contrib.auth.views.logout_then_login' as url_logout %}{% url 'django.contrib.auth.views.password_change' as url_change_password %}{% url 'view-profile' user.username as url_view_profile %}
     <div class="navbar navbar-fixed-top mainmenu">
         <div class="navbar-inner">
             <div class="container">
@@ -56,11 +70,11 @@
                             <li class="{% active request url_wrf_list_model_setting %}"><a href="{{ url_wrf_list_model_setting }}">Model Settings</a></li>
                         </ul>
                     </li>
-                    <li class="dropdown">
+                    <li class="dropdown {% active request url_aermod_new_task url_aermod_list_task url_aermod_task_detail %}">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Aermod <b class="caret"></b></a>
                         <ul class="dropdown-menu">
-                            <li><a href="#">New Task</a></li>
-                            <li><a href="#">Task List</a></li>
+                            <li class="{% active request url_aermod_new_task %}"><a href="{{ url_aermod_new_task }}">New Task</a></li>
+                            <li class={% active request url_aermod_list_task %}><a href="{{ url_aermod_list_task }}">Task List</a></li>
                             <li class="divider"></li>
                             <li><a href="#">Model Settings</a></li>
                         </ul>
