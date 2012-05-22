@@ -4,7 +4,8 @@
 <script>
 $(document).ready(function () {
     var chemdata_list = [];
-    chem_list_url = "{% url 'rest-chemdata-list' %}";
+    chem_list_url = "{% url 'rest-wrf-chemdata-list' %}";
+    chem_list_all_url = "{% url 'rest-wrf-chemdata-list-all' %}";
     
     $.ajax({url: chem_list_url,
             dataType: 'json',
@@ -24,7 +25,7 @@ $(document).ready(function () {
 	$('#display-all-user').click(function(e){
 		
 		if($(this).is (':checked')){
-			$.ajax({url: "{% url 'rest-chemdata-list-all' %}",
+			$.ajax({url: chem_list_all_url,
 					dataType: 'json',
 					type: 'GET',
 					success: function(data){
@@ -39,7 +40,7 @@ $(document).ready(function () {
 			});
 		}
 		else {
-			$.ajax({url: "{% url 'rest-chemdata-list' %}",
+			$.ajax({url: chem_list_url,
 					dataType: 'json',
 					type: 'GET',
 					success: function(data){

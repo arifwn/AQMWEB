@@ -29,13 +29,22 @@ def new_task(request):
             plot_setting = task_form.cleaned_data['plot_setting']
             wrf_task = task_form.cleaned_data['wrf_task']
             
-            aermod_setting = Setting(name=task_name, user=request.user,
-                                      description=task_description,
-                                      hillheight_setting=hillheight_setting,
-                                      meteorology_setting=meteorology_setting,
-                                      aermod_setting=aermod_setting,
-                                      plot_setting=plot_setting,
-                                      wrf_task=wrf_task)
+            aermod_setting = Setting(user=request.user,
+                                     hillheight_setting=hillheight_setting,
+                                     meteorology_setting=meteorology_setting,
+                                     aermod_setting=aermod_setting,
+                                     plot_setting=plot_setting)
+            aermod_setting.save()
+            
+            aermod_task = Task(name=task_name,
+                               user=request.user,
+                               description=task_description,
+                               setting=aermod_setting)
+            aermod_task.save()
+            
+            messages.success(request, 'Task created successfully!')
+            
+            return(redirect('aermod-task-list'))
     else:
         task_form = NewTaskForm()
         

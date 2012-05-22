@@ -11,13 +11,9 @@ from django.core.urlresolvers import reverse
 
 class Setting(models.Model):
     '''setting model'''
-    name = models.CharField(max_length=200, db_index=True)
     user = models.ForeignKey(User, db_index=True, related_name='aermod_setting')
-    description = models.TextField()
     created = models.DateTimeField(auto_now_add=True, editable=False)
     modified = models.DateTimeField(auto_now=True, editable=False)
-    
-    wrf_task = models.ForeignKey('wrf.Task', related_name='aermod_setting')
     
     hillheight_setting = models.TextField(blank=True)
     meteorology_setting = models.TextField(blank=True)
@@ -26,7 +22,7 @@ class Setting(models.Model):
     is_removed = models.BooleanField(default=False, db_index=True)
     
     def __unicode__(self):
-        return self.name
+        return str(self.id)
     
     class Meta:
         verbose_name  = 'Setting'
@@ -39,7 +35,7 @@ class Task(models.Model):
     created = models.DateTimeField(auto_now_add=True, editable=False)
     modified = models.DateTimeField(auto_now=True, editable=False)
     user = models.ForeignKey(User, db_index=True, related_name='aermod_task')
-    setting = models.ForeignKey(Setting);
+    setting = models.ForeignKey(Setting, related_name='task');
     
     stage_list = ['Meteorological Data Extraction', 'Terrain Data Generation',
                   'AERMET', 'AERMOD', 'Processing AERMOD Results']
@@ -58,7 +54,7 @@ class Task(models.Model):
     
     @models.permalink
     def get_rest_url(self):
-        return ('rest-task-aermod', [str(self.id)])
+        return ('rest-aermod-task', [str(self.id)])
     
     def get_status(self):
         ''' Get current task status: draft, running, finished, pending, error '''

@@ -6,7 +6,9 @@ Created on Sep 18, 2011
 from django.conf.urls.defaults import *
 from piston.resource import Resource
 
-from aqm_web import handlers_wrf
+from aqm_web.rest_handler import aermod_handler
+from aqm_web.rest_handler import misc_handler
+from aqm_web.rest_handler import wrf_handler
 
 from aqm_web.authentication import CookieAuthentication
 
@@ -58,26 +60,40 @@ urlpatterns += patterns('aqm_web.views.plot',
 auth = CookieAuthentication(realm="AQM Web Interface")
 ad = { 'authentication': auth }
 
-serverstatus_resource = Resource(handler=handlers_wrf.ServerStatusHandler, **ad)
-server_resource = Resource(handler=handlers_wrf.ServerHandler, **ad)
-task_resource = Resource(handler=handlers_wrf.TaskHandler, **ad)
-task_control_resource = Resource(handler=handlers_wrf.TaskControlHandler, **ad)
-chemdata_resource = Resource(handler=handlers_wrf.ChemDataHandler, **ad)
-m2m_resource = Resource(handler=handlers_wrf.M2MCommandHandler, **ad)
-wrfgrads_resource = Resource(handler=handlers_wrf.GradsWRFHandler, **ad)
+serverstatus_resource = Resource(handler=misc_handler.ServerStatusHandler, **ad)
+server_resource = Resource(handler=misc_handler.ServerHandler, **ad)
 
 urlpatterns += patterns('',
     url(r'^rest/server/status/(?P<server_id>[^/]+)/$', serverstatus_resource, name='rest-server-utilization'),
     url(r'^rest/server/detail/$', server_resource, name='rest-server-detail-list'),
     url(r'^rest/server/detail/(?P<server_id>[^/]+)/$', server_resource, name='rest-server-detail'),
-    url(r'^rest/task/$', task_resource, name='rest-task-list'),
-    url(r'^rest/task/all/$', task_resource, kwargs={'task_id': None, 'all_user': True}, name='rest-task-list-all'), 
-    url(r'^rest/task/detail/(?P<task_id>[^/]+)/$', task_resource, name='rest-task'),
-    url(r'^rest/task/control/$', task_control_resource, name='rest-task-control-list'),
-    url(r'^rest/chemdata/$', chemdata_resource, name='rest-chemdata-list'),
-    url(r'^rest/chemdata/all/$', chemdata_resource, kwargs={'chemdata_id': None, 'all_user': True}, name='rest-chemdata-list-all'),
-    url(r'^rest/chemdata/detail/(?P<chemdata_id>[^/]+)/$', chemdata_resource, name='rest-chemdata-detail'),
-    url(r'^rest/m2m/$', m2m_resource, name='rest-m2m'),
-    url(r'^rest/grads/wrf/$', wrfgrads_resource, name='rest-wrf-grads-static'),
-    url(r'^rest/grads/wrf/(?P<server_id>[^/]+)/(?P<envid>[^/]+)/(?P<domain>[^/]+)/$', wrfgrads_resource, name='rest-wrf-grads'),
+)
+
+wrf_task_resource = Resource(handler=wrf_handler.TaskHandler, **ad)
+wrf_task_control_resource = Resource(handler=wrf_handler.TaskControlHandler, **ad)
+wrf_chemdata_resource = Resource(handler=wrf_handler.ChemDataHandler, **ad)
+wrf_grads_resource = Resource(handler=wrf_handler.GradsWRFHandler, **ad)
+wrf_m2m_resource = Resource(handler=wrf_handler.M2MCommandHandler, **ad)
+
+urlpatterns += patterns('',
+    url(r'^rest/wrf/task/$', wrf_task_resource, name='rest-wrf-task-list'),
+    url(r'^rest/wrf/task/all/$', wrf_task_resource, kwargs={'task_id': None, 'all_user': True}, name='rest-wrf-task-list-all'), 
+    url(r'^rest/wrf/task/detail/(?P<task_id>[^/]+)/$', wrf_task_resource, name='rest-wrf-task'),
+    url(r'^rest/wrf/task/control/$', wrf_task_control_resource, name='rest-wrf-task-control-list'),
+    url(r'^rest/wrf/chemdata/$', wrf_chemdata_resource, name='rest-wrf-chemdata-list'),
+    url(r'^rest/wrf/chemdata/all/$', wrf_chemdata_resource, kwargs={'chemdata_id': None, 'all_user': True}, name='rest-wrf-chemdata-list-all'),
+    url(r'^rest/wrf/chemdata/detail/(?P<chemdata_id>[^/]+)/$', wrf_chemdata_resource, name='rest-wrf-chemdata-detail'),
+    url(r'^rest/wrf/grads$', wrf_grads_resource, name='rest-wrf-grads-static'),
+    url(r'^rest/wrf/grads/(?P<server_id>[^/]+)/(?P<envid>[^/]+)/(?P<domain>[^/]+)/$', wrf_grads_resource, name='rest-wrf-grads'),
+    url(r'^rest/wrf/m2m/$', wrf_m2m_resource, name='rest-wrf-m2m'),
+)
+
+aermod_task_resource = Resource(handler=aermod_handler.TaskHandler, **ad)
+aermod_task_control_resource = Resource(handler=aermod_handler.TaskControlHandler, **ad)
+
+urlpatterns += patterns('',
+    url(r'^rest/aermod/task/$', aermod_task_resource, name='rest-aermod-task-list'),
+    url(r'^rest/aermod/task/all/$', aermod_task_resource, kwargs={'task_id': None, 'all_user': True}, name='rest-aermod-task-list-all'), 
+    url(r'^rest/aermod/task/detail/(?P<task_id>[^/]+)/$', aermod_task_resource, name='rest-aermod-task'),
+    url(r'^rest/aermod/task/control/$', aermod_task_control_resource, name='rest-aermod-task-control-list'),
 )

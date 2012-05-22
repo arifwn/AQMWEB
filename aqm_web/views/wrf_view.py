@@ -36,8 +36,7 @@ def new_task(request):
             
             # TODO: handle ChemData setting
             
-            wrf_setting = Setting(name=task_name, user=request.user,
-                                  description=task_description,
+            wrf_setting = Setting(user=request.user,
                                   namelist_wps=task_namelist_wps,
                                   namelist_wrf=task_namelist_wrf,
                                   namelist_arwpost=task_namelist_arwpost)
@@ -51,7 +50,7 @@ def new_task(request):
             
             messages.success(request, 'Task created successfully!')
             
-            return(redirect('wrf_list_task'))
+            return(redirect('wrf-task-list'))
     else:
         task_form = NewTaskForm()
         
@@ -124,7 +123,7 @@ def new_chem_data(request):
             chemdata = ChemData(name=name, description=description, data=data_file, user=request.user)
             chemdata.save()
             
-            return redirect('wrf_new_chem_data_step2', chemdata.pk)
+            return redirect('wrf-new-chem-data-step2', chemdata.pk)
         else:
             logger.debug('not valid')
     else:

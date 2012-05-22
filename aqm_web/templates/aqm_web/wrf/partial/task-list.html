@@ -1,9 +1,11 @@
 {% load url from future %}
+
 <script>
 $(document).ready(function () {
     var task_list = [];
-    task_command_url = "{% url 'rest-task-control-list' %}";
-    task_list_url = "{% url 'rest-task-list' %}";
+    task_command_url = "{% url 'rest-wrf-task-control-list' %}";
+    task_list_url = "{% url 'rest-wrf-task-list' %}";
+    task_list_all_url = "{% url 'rest-wrf-task-list-all' %}";
     static_url = "{{ STATIC_URL }}";
     
     $.ajax({url: task_list_url,
@@ -25,7 +27,7 @@ $(document).ready(function () {
 		reset_task_list('.task-list');
 		
 		if($(this).is (':checked')){
-			$.ajax({url: "{% url 'rest-task-list-all' %}",
+			$.ajax({url: task_list_all_url,
 					dataType: 'json',
 					type: 'GET',
 					success: function(data){
@@ -41,7 +43,7 @@ $(document).ready(function () {
 			});
 		}
 		else {
-			$.ajax({url: "{% url 'rest-task-list' %}",
+			$.ajax({url: task_list_url,
 					dataType: 'json',
 					type: 'GET',
 					success: function(data){

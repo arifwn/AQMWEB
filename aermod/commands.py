@@ -25,11 +25,9 @@ def run_task(task_id):
     data['task_id'] = task_id
     data['name'] = task.name
     data['hillheight_setting'] = task.setting.hillheight_setting
-    data['wrf2aermod_setting'] = task.setting.wrf2aermod_setting
-    data['aermet_setting'] = task.setting.aermet_setting
+    data['meteorology_setting'] = task.setting.meteorology_setting
     data['aermod_setting'] = task.setting.aermod_setting
-    data['aermod2grads_setting'] = task.setting.aermod2grads_setting
-    data['grads_template'] = task.setting.grads_template
+    data['plot_setting'] = task.setting.aermod2grads_setting
     data['wrf_envid'] = task.setting.wrf_task.queue.envid
     
     target_server = task.setting.wrf_task.queue.server
@@ -92,11 +90,9 @@ def rerun_task(task_id):
     data['task_id'] = task_id
     data['name'] = task.name
     data['hillheight_setting'] = task.setting.hillheight_setting
-    data['wrf2aermod_setting'] = task.setting.wrf2aermod_setting
-    data['aermet_setting'] = task.setting.aermet_setting
+    data['meteorology_setting'] = task.setting.meteorology_setting
     data['aermod_setting'] = task.setting.aermod_setting
-    data['aermod2grads_setting'] = task.setting.aermod2grads_setting
-    data['grads_template'] = task.setting.grads_template
+    data['plot_setting'] = task.setting.aermod2grads_setting
     data['wrf_envid'] = task.setting.wrf_task.queue.envid
     
     target_server = task.setting.wrf_task.queue.server

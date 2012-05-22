@@ -17,9 +17,7 @@ from wrf.namelist.misc import parse_date_string
 
 class Setting(models.Model):
     '''setting model'''
-    name = models.CharField(max_length=200, db_index=True)
     user = models.ForeignKey(User, db_index=True, related_name='wrf_setting')
-    description = models.TextField()
     created = models.DateTimeField(auto_now_add=True, editable=False)
     modified = models.DateTimeField(auto_now=True, editable=False)
     namelist_wrf = models.TextField(blank=True)
@@ -278,7 +276,7 @@ class Task(models.Model):
     created = models.DateTimeField(auto_now_add=True, editable=False)
     modified = models.DateTimeField(auto_now=True, editable=False)
     user = models.ForeignKey(User, db_index=True, related_name='wrf_task')
-    setting = models.ForeignKey(Setting);
+    setting = models.ForeignKey(Setting, related_name='task');
     
     stage_list = ['Model Preparation', 'WPS', 'WRF/Real', 'WRF/Emission',
                   'WRF', 'ARWpost']
@@ -297,7 +295,7 @@ class Task(models.Model):
     
     @models.permalink
     def get_rest_url(self):
-        return ('rest-task', [str(self.id)])
+        return ('rest-wrf-task', [str(self.id)])
     
     def get_status(self):
         ''' Get current task status: draft, running, finished, pending, error '''
