@@ -108,15 +108,161 @@ setup_task_auto_update = (task, interval) ->
 append_task = (target, task) ->
     task_html = get_task_html task
     html = """
-    <li id="task-#{ task.id }">
+    <li id="task-#{ task.kind }-#{ task.id }">
         #{ task_html }
     </li>
     """
     $(target).append html
     window.reinit_event_handler task
 
+
 # construct a html snippet from a given task
 get_task_html = (task) ->
+    switch task.kind
+        when "aermod"
+            return get_aermod_task_html task
+        when "wrf"
+            return get_wrf_task_html task
+
+# construct a html snippet from a given wrf task
+get_wrf_task_html = (task) ->
+    controls_html = ""
+    progress_html = ""
+    
+    if task.get_status == "draft"
+        controls_html = """
+        <li><button class="btn btn-info control-run" data-loading-text="Run" autocomplete="off"><i class="icon-play icon-white"></i> Run</button></li>
+        <li><a class="btn" href="#{ task.get_url }"><i class="icon-th-list"></i> Details</a></li>
+        <li><a class="btn" href="#"><i class="icon-edit"></i> Edit</a></li>
+        <li><a class="btn btn-danger" href="#"><i class="icon-remove icon-white"></i> Delete</a></li>
+        """
+        
+        progress_html = """
+        <div class="counter">#{ task.get_progress_percent }%</div>
+        <div class="stage">#{ task.get_stage }</div>
+        <div><span class="label">draft</span></div>
+        """
+        
+    else if task.get_status == "pending"
+        controls_html = """
+        <li><button class="btn btn-danger control-cancel" data-loading-text="Cancel" autocomplete="off"><i class="icon-remove-sign icon-white"></i> Cancel</button></li>
+		<li><a class="btn" href="#{ task.get_url }"><i class="icon-th-list"></i> Details</a></li>
+        """
+        
+        progress_html = """
+        <div class="counter warning">#{ task.get_progress_percent }%</div>
+        <div class="stage">#{ task.get_stage }</div>
+        <div><span class="label label-warning">pending</span></div>
+        """
+        
+    else if task.get_status == "running"
+        controls_html = """
+        <li><button class="btn btn-danger control-stop" data-loading-text="Stop" autocomplete="off"><i class="icon-stop icon-white"></i> Stop</button></li>
+		<li><a class="btn" href="#{ task.get_url }"><i class="icon-th-list"></i> Details</a></li>
+        """
+        
+        progress_html = """
+        <div class="counter info">#{ task.get_progress_percent }%</div>
+        <div class="stage">#{ task.get_stage }</div>
+        <div><span class="label label-info">running</span></div>
+        <div class="progress progress-striped active">
+            <div class="bar" style="width: 30%;"></div>
+        </div>
+        """
+        
+    else if task.get_status == "finished"
+        controls_html = """
+        <li><a class="btn btn-success" href="#">Results</a></li>
+        <li><button class="btn btn-info control-rerun" data-loading-text="Run Again" autocomplete="off"><i class="icon-repeat icon-white"></i> Run Again</button></li>
+        <li><a class="btn" href="#{ task.get_url }"><i class="icon-th-list"></i> Details</a></li>
+        <li><a class="btn" href="#"><i class="icon-edit"></i> Edit</a></li>
+        <li><a class="btn btn-danger" href="#"><i class="icon-remove icon-white"></i> Delete</a></li>
+        """
+        
+        progress_html = """
+        <div class="counter success">#{ task.get_progress_percent }%</div>
+        <div class="stage">#{ task.get_stage }</div>
+        <div><span class="label label-success">finished</span></div>
+        """
+        
+    else if task.get_status == "error"
+        controls_html = """
+        <li><button class="btn btn-info control-retry" data-loading-text="Retry last stage" autocomplete="off"><i class="icon-refresh icon-white"></i> Retry last stage</button></li>
+        <li><button class="btn btn-info control-rerun" data-loading-text="Run Again" autocomplete="off"><i class="icon-repeat icon-white"></i> Run Again</button></li>
+        <li><a class="btn" href="#{ task.get_url }"><i class="icon-th-list"></i> Details</a></li>
+        <li><a class="btn" href="#"><i class="icon-edit"></i> Edit</a></li>
+        <li><a class="btn btn-danger" href="#"><i class="icon-remove icon-white"></i> Delete</a></li>
+        """
+        
+        progress_html = """
+        <div class="counter important">#{ task.get_progress_percent }%</div>
+        <div class="stage">#{ task.get_stage }</div>
+        <div><span class="label label-important">error</span></div>
+        """
+        
+    else if task.get_status == "canceled"
+        controls_html = """
+        <li><button class="btn btn-info control-retry" data-loading-text="Resume from last stage" autocomplete="off"><i class="icon-refresh icon-white"></i> Resume from last stage</button></li>
+        <li><button class="btn btn-info control-rerun" data-loading-text="Run Again" autocomplete="off"><i class="icon-repeat icon-white"></i> Run Again</button></li>
+        <li><a class="btn" href="#{ task.get_url }"><i class="icon-th-list"></i> Details</a></li>
+        <li><a class="btn" href="#"><i class="icon-edit"></i> Edit</a></li>
+        <li><a class="btn btn-danger" href="#"><i class="icon-remove icon-white"></i> Delete</a></li>
+        """
+        
+        progress_html = """
+        <div class="counter important">#{ task.get_progress_percent }%</div>
+        <div class="stage">#{ task.get_stage }</div>
+        <div><span class="label label-important">canceled</span></div>
+        """
+    
+    error_html = ''
+    if task.get_status == 'error'
+        pretty_error = prettyPrintOne(task.error_message, 'namelist', true);
+        error_html = """
+        <div>
+            <h3>Error Message</h3>
+            <pre class="prettyprint linenums pre-scrollable lang-namelist">#{ pretty_error }</pre>
+        </div>
+        """
+    
+    html = """
+    <div class="header">
+        <h2><a href="#{ task.get_url }">#{ task.name }</a></h2>
+    </div>
+    <div class="content">
+        <div class="well">
+        #{ task.description }
+        </div>
+        <table class="table table-striped table-bordered table-condensed">
+            <thead>
+                <tr>
+                    <th>User</th>
+                    <th>Domain</th>
+                    <th>Period</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="/accounts/profile/#{ task.user.username }"><img class="avatar" src="/accounts/avatar/t32x32/#{ task.user.username }" width="32" height="32" style="height: 32px;" /></a> <a href="/accounts/profile/#{ task.user.username }">#{ task.user.get_full_name } (#{ task.user.username })</a></td>
+                    <td>#{ task.setting.max_dom }</td>
+                    <td>#{ task.setting.start_date } &mdash; #{ task.setting.end_date }</td>
+                </tr>
+            </tbody>
+        </table>
+        #{ error_html }
+        <ul class="controls">
+            #{ controls_html }
+        </ul>
+    </div>
+    
+    <div class="task-progress">
+        #{ progress_html }
+    </div>
+    """
+
+
+# construct a html snippet from a given aermod task
+get_aermod_task_html = (task) ->
     controls_html = ""
     progress_html = ""
     

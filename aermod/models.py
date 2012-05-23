@@ -47,6 +47,13 @@ class Task(models.Model):
         verbose_name  = 'Task'
         verbose_name_plural  = 'Tasks'
     
+    def get_kind(self):
+        '''Return the kind of model this task represent.'''
+        return 'aermod'
+    
+    @property
+    def kind(self):
+        return self.get_kind()
     
     @models.permalink
     def get_url(self):
