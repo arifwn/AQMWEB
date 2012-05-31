@@ -214,7 +214,7 @@ FILEBROWSER_ADMIN_VERSIONS = ['thumbnail', 't128x128', 't32x32']
 CACHES = {
     'default': {
         'BACKEND': 'redis_cache.cache.RedisCache',
-        'LOCATION': '127.0.0.1:6379',
+        'LOCATION': '/tmp/redis.sock',
         'OPTIONS': {
             'DB': 1,
             'PARSER_CLASS': 'redis.connection.HiredisParser'
