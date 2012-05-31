@@ -16,6 +16,7 @@ urlpatterns = patterns('',
     url(r'^admin/filebrowser/', include(filebrowser.sites.site.urls)),
     url(r'^grappelli/', include('grappelli.urls')),
     url(r'^tinymce/', include('tinymce.urls')),
+    url(r'^redis/status/', include('redis_cache.stats.urls', namespace='redis_cache')),
     
     # Uncomment the admin/doc line below to enable admin documentation:
 #     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),

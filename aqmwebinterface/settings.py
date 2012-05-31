@@ -148,7 +148,8 @@ INSTALLED_APPS = (
     'filebrowser',
 #    'south',
     'debug_toolbar',
-    'django_extensions'
+    'django_extensions',
+    'redis_cache.stats'
 )
 
 SSL_CERT_CERT = './cert/cert.pem'
@@ -212,8 +213,13 @@ FILEBROWSER_ADMIN_VERSIONS = ['thumbnail', 't128x128', 't32x32']
 
 CACHES = {
     'default': {
-        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache'
-    }
+        'BACKEND': 'redis_cache.cache.RedisCache',
+        'LOCATION': '127.0.0.1:6379',
+        'OPTIONS': {
+            'DB': 1,
+            'PARSER_CLASS': 'redis.connection.HiredisParser'
+        },
+    },
 }
 
 # A sample logging configuration. The only tangible logging
