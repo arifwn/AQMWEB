@@ -11,7 +11,7 @@ from django import forms
 from tinymce.widgets import TinyMCE
 
 class SettingAdmin(admin.ModelAdmin):
-    list_display = ['user', 'created', 'modified', 'is_removed']
+    list_display = ['id', 'user', 'created', 'modified', 'is_removed']
     
     def get_form(self, request, obj=None, **kwargs):
         form = super(SettingAdmin, self).get_form(request, obj, **kwargs)

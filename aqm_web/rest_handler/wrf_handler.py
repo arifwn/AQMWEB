@@ -389,6 +389,8 @@ class GradsWRFHandler(BaseHandler):
     methods_allowed = ('GET',)
     
     def read(self, request, server_id=None, envid=None, domain=None):
+        from aqm_utils import server as rpcserver
+        
         if server_id is None:
             server_id = request.GET.get('server_id')
         if envid is None:
@@ -399,7 +401,7 @@ class GradsWRFHandler(BaseHandler):
         if not all((server_id, envid, domain)):
             return rc.BAD_REQUEST
         
-        c = aqm_utils.server.rpc_client(server_id=server_id)
+        c = rpcserver.rpc_client(server_id=server_id)
         plot_rel_list = c.wrf.get_plot(int(envid), int(domain))
         plot_list = []
         

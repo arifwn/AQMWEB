@@ -35,31 +35,31 @@
   };
 
   window.reinit_event_handler = function(task) {
-    $("#task-" + task.id + " .control-run").click(function(e) {
+    $("#task-wrf-" + task.id + " .control-run").click(function(e) {
       var button;
       button = this;
       return task_command('run', task, button);
     });
-    $("#task-" + task.id + " .control-rerun").click(function(e) {
+    $("#task-wrf-" + task.id + " .control-rerun").click(function(e) {
       var button;
       button = this;
       if (window.confirm("Are you sure you want to run this task again? Previous result will be lost.")) {
         return task_command('rerun', task, button);
       }
     });
-    $("#task-" + task.id + " .control-retry").click(function(e) {
+    $("#task-wrf-" + task.id + " .control-retry").click(function(e) {
       var button;
       button = this;
       return task_command('retry', task, button);
     });
-    $("#task-" + task.id + " .control-stop").click(function(e) {
+    $("#task-wrf-" + task.id + " .control-stop").click(function(e) {
       var button;
       button = this;
       if (window.confirm("Are you sure you want to stop this task?")) {
         return task_command('stop', task, button);
       }
     });
-    return $("#task-" + task.id + " .control-cancel").click(function(e) {
+    return $("#task-wrf-" + task.id + " .control-cancel").click(function(e) {
       var button;
       button = this;
       if (window.confirm("Are you sure you want to cancel this task?")) {
@@ -71,8 +71,8 @@
   window.update_task = function(task) {
     var task_html;
     task_html = get_task_html(task);
-    $("#task-" + task.id).empty();
-    $("#task-" + task.id).append(task_html);
+    $("#task-wrf-" + task.id).empty();
+    $("#task-wrf-" + task.id).append(task_html);
     return window.reinit_event_handler(task);
   };
 
@@ -201,12 +201,12 @@
     }, 300);
     filter_display = function(task) {
       if (filter === "all") {
-        return $("#task-" + task.id).removeClass("hidden");
+        return $("#task-wrf-" + task.id).removeClass("hidden");
       } else {
         if (task.get_status === filter) {
-          return $("#task-" + task.id).removeClass("hidden");
+          return $("#task-wrf-" + task.id).removeClass("hidden");
         } else {
-          return $("#task-" + task.id).addClass("hidden");
+          return $("#task-wrf-" + task.id).addClass("hidden");
         }
       }
     };

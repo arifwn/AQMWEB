@@ -28,7 +28,7 @@ class Setting(models.Model):
     is_removed = models.BooleanField(default=False, db_index=True)
     
     def __unicode__(self):
-        return self.name
+        return 'setting-%d' % self.id
     
     class Meta:
         verbose_name  = 'Setting'

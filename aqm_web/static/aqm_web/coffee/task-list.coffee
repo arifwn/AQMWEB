@@ -35,29 +35,29 @@ window.render_task_list = (target, task_list) ->
 # reinstall button event handler
 window.reinit_event_handler = (task)->
     # run
-    $("#task-#{ task.id } .control-run").click (e) ->
+    $("#task-wrf-#{ task.id } .control-run").click (e) ->
         button = this
         task_command 'run', task, button
         
     # rerun
-    $("#task-#{ task.id } .control-rerun").click (e) ->
+    $("#task-wrf-#{ task.id } .control-rerun").click (e) ->
         button = this
         if window.confirm "Are you sure you want to run this task again? Previous result will be lost."
             task_command 'rerun', task, button
         
     # retry
-    $("#task-#{ task.id } .control-retry").click (e) ->
+    $("#task-wrf-#{ task.id } .control-retry").click (e) ->
         button = this
         task_command 'retry', task, button
         
     # stop
-    $("#task-#{ task.id } .control-stop").click (e) ->
+    $("#task-wrf-#{ task.id } .control-stop").click (e) ->
         button = this
         if window.confirm "Are you sure you want to stop this task?"
             task_command 'stop', task, button
         
     # cancel
-    $("#task-#{ task.id } .control-cancel").click (e) ->
+    $("#task-wrf-#{ task.id } .control-cancel").click (e) ->
         button = this
         if window.confirm "Are you sure you want to cancel this task?"
             task_command 'cancel', task, button
@@ -67,8 +67,8 @@ window.reinit_event_handler = (task)->
 window.update_task = (task) ->
     # console.log "updating task-#{ task.id }", task
     task_html = get_task_html task
-    $("#task-#{ task.id }").empty()
-    $("#task-#{ task.id }").append task_html
+    $("#task-wrf-#{ task.id }").empty()
+    $("#task-wrf-#{ task.id }").append task_html
     window.reinit_event_handler task
 
 # setup automatic update of every task in the given list
@@ -407,12 +407,12 @@ window.filter_display = (task_list, filter) ->
     
     filter_display = (task) ->
         if filter == "all"
-            $("#task-#{ task.id }").removeClass "hidden"
+            $("#task-wrf-#{ task.id }").removeClass "hidden"
         else
             if task.get_status == filter
-                $("#task-#{ task.id }").removeClass "hidden"
+                $("#task-wrf-#{ task.id }").removeClass "hidden"
             else
-                $("#task-#{ task.id }").addClass "hidden"
+                $("#task-wrf-#{ task.id }").addClass "hidden"
     
     filter_display task for task in window.task_list_data
 

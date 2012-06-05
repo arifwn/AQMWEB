@@ -3,6 +3,10 @@ from django import forms
 from tinymce.widgets import TinyMCE
 
 class NewTaskForm(forms.Form):
+    '''
+    This is temporary form for debugging purpose.
+    Namespace and grads template retrieved from client should not be trusted.
+    '''
     task_name = forms.CharField(label='Name', max_length=200)
     task_description = forms.CharField(label='Description',
                                        widget=TinyMCE(mce_attrs={
@@ -24,6 +28,11 @@ class NewTaskForm(forms.Form):
                                         }))
     
     task_namelist_arwpost = forms.CharField(label='ARWpost Namelist',
+                                       widget=forms.Textarea(attrs={
+                                        'rows':'10'
+                                        }))
+    
+    task_grads_template = forms.CharField(label='GrADS Template',
                                        widget=forms.Textarea(attrs={
                                         'rows':'10'
                                         }))

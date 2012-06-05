@@ -33,13 +33,15 @@ def new_task(request):
             task_namelist_wps = task_form.cleaned_data['task_namelist_wps']
             task_namelist_wrf = task_form.cleaned_data['task_namelist_wrf']
             task_namelist_arwpost = task_form.cleaned_data['task_namelist_arwpost']
+            task_grads_template = task_form.cleaned_data['task_grads_template']
             
             # TODO: handle ChemData setting
             
             wrf_setting = Setting(user=request.user,
                                   namelist_wps=task_namelist_wps,
                                   namelist_wrf=task_namelist_wrf,
-                                  namelist_arwpost=task_namelist_arwpost)
+                                  namelist_arwpost=task_namelist_arwpost,
+                                  grads_template=task_grads_template)
             
             wrf_setting.save()
             
