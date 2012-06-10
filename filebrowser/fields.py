@@ -25,9 +25,9 @@ class FileBrowseWidget(Input):
     class Media:
         js = (os.path.join(URL_FILEBROWSER_MEDIA, 'js/AddFileBrowser.js'), )
     
-    def __init__(self, attrs=None):
+    def __init__(self, attrs={}):
         super(FileBrowseWidget, self).__init__(attrs)
-        self.site = attrs.get('site', None)
+        self.site = attrs.get('filebrowser_site', None)
         self.directory = attrs.get('directory', '')
         self.extensions = attrs.get('extensions', '')
         self.format = attrs.get('format', '')
@@ -67,7 +67,7 @@ class FileBrowseFormField(forms.CharField):
     
     def __init__(self, max_length=None, min_length=None, site=None, directory=None, extensions=None, format=None, *args, **kwargs):
         self.max_length, self.min_length = max_length, min_length
-        self.site = site
+        self.site = kwargs.pop('filebrowser_site', site)
         self.directory = directory
         self.extensions = extensions
         if format:
@@ -90,7 +90,7 @@ class FileBrowseField(CharField):
     __metaclass__ = models.SubfieldBase
     
     def __init__(self, *args, **kwargs):
-        self.site = kwargs.pop('site', site)
+        self.site = kwargs.pop('filebrowser_site', site)
         self.directory = kwargs.pop('directory', '')
         self.extensions = kwargs.pop('extensions', '')
         self.format = kwargs.pop('format', '')
@@ -101,7 +101,7 @@ class FileBrowseField(CharField):
             return value
         return FileObject(value, site=self.site)
     
-    def get_db_prep_value(self, value, connection, prepared=False):
+    def get_prep_value(self, value):
         if not value:
             return value
         return value.path
@@ -114,14 +114,14 @@ class FileBrowseField(CharField):
     
     def formfield(self, **kwargs):
         attrs = {}
-        attrs["site"] = self.site
+        attrs["filebrowser_site"] = self.site
         attrs["directory"] = self.directory
         attrs["extensions"] = self.extensions
         attrs["format"] = self.format
         defaults = {
             'form_class': FileBrowseFormField,
             'widget': FileBrowseWidget(attrs=attrs),
-            'site': self.site,
+            'filebrowser_site': self.site,
             'directory': self.directory,
             'extensions': self.extensions,
             'format': self.format

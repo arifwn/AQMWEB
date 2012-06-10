@@ -17,7 +17,9 @@ except ImportError:
     DEFAULT_PATH_TINYMCE = os.path.join(settings.STATIC_ROOT, 'admin/tinymce/jscripts/tiny_mce/')
 
 # PATH AND URL SETTINGS
-# Main Media Settings
+# Main Media Settings 
+# WARNING: FILEBROWSER_MEDIA_ROOT and FILEBROWSER_MEDIA_URL will be removed in the next major release of Filebrowser.
+# Read the documentation on FileBrowser's storages (http://readthedocs.org/docs/django-filebrowser/en/latest/file_storages.html)
 MEDIA_ROOT = getattr(settings, "FILEBROWSER_MEDIA_ROOT", settings.MEDIA_ROOT)
 MEDIA_URL = getattr(settings, "FILEBROWSER_MEDIA_URL", settings.MEDIA_URL)
 # Main FileBrowser Directory. This has to be a directory within MEDIA_ROOT.
@@ -64,11 +66,10 @@ VERSIONS = getattr(settings, "FILEBROWSER_VERSIONS", {
     'big': {'verbose_name': 'Big (6 col)', 'width': 460, 'height': '', 'opts': ''},
     'large': {'verbose_name': 'Large (8 col)', 'width': 680, 'height': '', 'opts': ''},
 })
-
 # Quality of saved versions
 VERSION_QUALITY = getattr(settings, 'FILEBROWSER_VERSION_QUALITY', 90)
 # Versions available within the Admin-Interface.
-ADMIN_VERSIONS = getattr(settings, 'FILEBROWSER_ADMIN_VERSIONS', ['thumbnail',])
+ADMIN_VERSIONS = getattr(settings, 'FILEBROWSER_ADMIN_VERSIONS', ['thumbnail', 'small', 'medium', 'big', 'large'])
 # Which Version should be used as Admin-thumbnail.
 ADMIN_THUMBNAIL = getattr(settings, 'FILEBROWSER_ADMIN_THUMBNAIL', 'admin_thumbnail')
 
@@ -94,6 +95,9 @@ for exts in EXTENSIONS.values():
 EXCLUDE = getattr(settings, 'FILEBROWSER_EXCLUDE', (r'_(%(exts)s)_.*_q\d{1,3}\.(%(exts)s)' % {'exts': ('|'.join(EXTENSION_LIST))},))
 # Max. Upload Size in Bytes.
 MAX_UPLOAD_SIZE = getattr(settings, "FILEBROWSER_MAX_UPLOAD_SIZE", 10485760)
+# Normalize filename and remove all non-alphanumeric characters
+# except for underscores, spaces & dashes.
+NORMALIZE_FILENAME = getattr(settings, "FILEBROWSER_NORMALIZE_FILENAME", False)
 # Convert Filename (replace spaces and convert to lowercase)
 CONVERT_FILENAME = getattr(settings, "FILEBROWSER_CONVERT_FILENAME", True)
 # Max. Entries per Page

@@ -52,16 +52,16 @@
                           'csrf_xname': 'X-CSRFToken',
                           'folder': '{{ query.dir|escapejs }}', },
 
-                sizeLimit: {{ settings_var.MAX_UPLOAD_SIZE }},
+                sizeLimit: {{ settings_var.MAX_UPLOAD_SIZE|unlocalize }},
                 minSizeLimit: 0,
                 debug: false,
                 // messages
                 messages: {
-                    typeError: '{% trans "{file} has invalid extension. Only {extensions} are allowed." %}',
-                    sizeError: '{% trans "{file} is too large, maximum file size is {sizeLimit}." %}',
-                    minSizeError: '{% trans "{file} is too small, minimum file size is {minSizeLimit}." %}',
-                    emptyError: '{% trans "{file} is empty, please select files again without it." %}',
-                    onLeave: '{% trans "The files are being uploaded, if you leave now the upload will be cancelled." %}'
+                    typeError: "{% trans "{file} has invalid extension. Only {extensions} are allowed." %}",
+                    sizeError: "{% trans "{file} is too large, maximum file size is {sizeLimit}." %}",
+                    minSizeError: "{% trans "{file} is too small, minimum file size is {minSizeLimit}." %}",
+                    emptyError: "{% trans "{file} is empty, please select files again without it." %}",
+                    onLeave: "{% trans "The files are being uploaded, if you leave now the upload will be cancelled." %}"
                 },
 
                 getItem: function(id) {
@@ -125,10 +125,15 @@
                     <div class="column span-4"><label class="required">{% trans "Max. Filesize" %}:</label></div>
                     <div class="column span-12 last"><p>{{ settings_var.MAX_UPLOAD_SIZE|filesizeformat }}</p></div><br clear="all" />
                 </div>
-                {% if settings_var.CONVERT_FILENAME %}
+                {% if settings_var.NORMALIZE_FILENAME or settings_var.CONVERT_FILENAME %}
                     <div class="row">
                         <div class="column span-16 last"><p>
-                            {% trans "The Name will be converted to lowercase. Spaces will be replaced with underscores." %}
+                            {% if settings_var.NORMALIZE_FILENAME %}
+                                {% trans "The Name will be normalized by converting or stripping all non-standard characters." %} <br />
+                            {% endif %}
+                            {% if settings_var.CONVERT_FILENAME %}
+                                {% trans "The Name will be converted to lowercase. Spaces will be replaced with underscores." %}
+                            {% endif %}
                         </p></div><br clear="all" />
                     </div>
                 {% endif %}

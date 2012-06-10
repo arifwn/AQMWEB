@@ -1,7 +1,7 @@
 # coding: utf-8
 
 # imports
-import os
+import os, unicodedata, re
 from time import gmtime, strftime, localtime, mktime, time
 from tempfile import NamedTemporaryFile
 
@@ -67,7 +67,7 @@ def get_version_path(value, version_prefix, site=None):
     
     if site.storage.isfile(value):
         path, filename = os.path.split(value)
-        relative_path = path_strip(path, site.directory)
+        relative_path = path_strip(os.path.join(path,''), site.directory)
         filename, ext = os.path.splitext(filename)
         version_filename = filename + "_" + version_prefix + ext
         if VERSIONS_BASEDIR:
@@ -129,13 +129,15 @@ def url_join(*args):
     
     if args[0].startswith("http://"):
         url = "http://"
+    elif args[0].startswith("https://"):
+        url = "https://"
     else:
         url = "/"
     for arg in args:
         arg = arg.replace("\\", "/")
         arg_split = arg.split("/")
         for elem in arg_split:
-            if elem != "" and elem != "http:":
+            if elem != "" and elem != "http:" and elem != "https:":
                 url = url + elem + "/"
     # remove trailing slash for filenames
     if os.path.splitext(args[-1])[1]:
@@ -233,6 +235,8 @@ def get_settings_var(directory=DIRECTORY):
     settings_var['ADMIN_THUMBNAIL'] = ADMIN_THUMBNAIL
     # FileBrowser Options
     settings_var['MAX_UPLOAD_SIZE'] = MAX_UPLOAD_SIZE
+    # Normalize Filenames
+    settings_var['NORMALIZE_FILENAME'] = NORMALIZE_FILENAME
     # Convert Filenames
     settings_var['CONVERT_FILENAME'] = CONVERT_FILENAME
     # Traverse directories when searching
@@ -284,7 +288,9 @@ def version_generator(value, version_prefix, force=None, site=None):
         except ImportError:
             import ImageFile
     ImageFile.MAXBLOCK = IMAGE_MAXBLOCK # default is 64k
-    
+    if not site:
+        from filebrowser.sites import site as default_site
+        site = default_site
     tmpfile = File(NamedTemporaryFile())
     try:
         f = site.storage.open(value)
@@ -296,9 +302,9 @@ def version_generator(value, version_prefix, force=None, site=None):
         if not version:
             version = im
         if 'methods' in VERSIONS[version_prefix].keys():
-            for f in VERSIONS[version_prefix]['methods']:
-                if callable(f):
-                    version = f(version)
+            for m in VERSIONS[version_prefix]['methods']:
+                if callable(m):
+                    version = m(version)
         try:
             version.save(tmpfile, format=Image.EXTENSION[ext], quality=VERSION_QUALITY, optimize=(os.path.splitext(version_path)[1].lower() != '.gif'))
         except IOError:
@@ -312,7 +318,10 @@ def version_generator(value, version_prefix, force=None, site=None):
         return None
     finally:
         tmpfile.close()
-        f.close()
+        try:
+            f.close()
+        except:
+            pass
 
 def scale_and_crop(im, width, height, opts):
     """
@@ -357,10 +366,21 @@ def convert_filename(value):
     """
     Convert Filename.
     """
-    
+
+    if NORMALIZE_FILENAME:
+        chunks = value.split(os.extsep)
+        normalized = []
+        for v in chunks:
+            v = unicodedata.normalize('NFKD', unicode(v)).encode('ascii', 'ignore')
+            v = re.sub('[^\w\s-]', '', v).strip()
+            normalized.append(v)
+
+        if len(normalized) > 1:
+            value = '.'.join(normalized)
+        else:
+            value = normalized[0]
+
     if CONVERT_FILENAME:
-        return value.replace(" ", "_").lower()
-    else:
-        return value
+        value = value.replace(" ", "_").lower()
 
-
+    return value
