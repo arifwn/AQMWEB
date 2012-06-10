@@ -1,12 +1,31 @@
 {% extends "aqm_web/base-with-menu.html" %}
 {% load url from future %}
+{% load fb_versions %}
 
 {% block metadata %}
-<title>Edit Avatar | Air Quality Models Web Interface</title>
+    <title>Edit Avatar | Air Quality Models Web Interface</title>
 {% endblock %}
 
 {% block all-elements %}
 
-	{% include "user_profile/partial/edit-avatar.html" %}
+<div class="row">
+  <div class="span12">
+    <h1>Edit Avatar</h1>
+    <form action="" enctype="multipart/form-data" method="post">
+      {% csrf_token %}
+      <fieldset>
+        <div class="clearfix {% if form.avatar.errors %} error {% endif %}">
+          <label for="id_first_name">Select Photo:</label>
+          <div class="input">
+            {{ form.avatar }} <span class="help-block">{{ form.avatar.errors }}</span>
+          </div>
+        </div>
+      </fieldset>
+      <div class="actions">
+        <input type="submit" value="Update Avatar" class="btn btn-primary" />
+      </div>
+    </form>
+  </div>
+</div>
 
 {% endblock %}
