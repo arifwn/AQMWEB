@@ -20,12 +20,13 @@ class ChemDataHandler(BaseHandler):
     model = ChemData
     methods_allowed = ('GET', 'POST')
     fields = ('id', 'name', 'description', 'created', 'modified',
-              'data', 'worksheets', 'is_removed', 'edit_url',
+              'data', 'timezone', 'worksheets', 'is_removed', 'edit_url',
               ('user', ('id', 'username', 'first_name', 'last_name', 'email',
                         'get_full_name')),
               ('parameters', ('worksheet', 'x', 'y', 'lat', 'lon', 'value',
                               'conversion_factor', 'pollutant', 'id', 'created',
-                              'modified', 'row_start', 'row_end', 'data_w', 'data_h')))
+                              'modified', 'row_start', 'row_end', 'data_w', 'data_h',
+                              'hourly_fluctuation', 'get_hourly_fluctuation')))
     
     def read(self, request, chemdata_id=None, all_user=False):
         if chemdata_id is not None:
@@ -78,7 +79,8 @@ class ChemDataHandler(BaseHandler):
                                            lat=parameter['lat'],
                                            lon=parameter['lon'],
                                            x=parameter['x'],
-                                           y=parameter['y'])
+                                           y=parameter['y'],
+                                           hourly_fluctuation=parameter['hourly_fluctuation'])
                 param_obj.save()
             
             else:
@@ -99,6 +101,7 @@ class ChemDataHandler(BaseHandler):
                 param_obj.lon=parameter['lon']
                 param_obj.x=parameter['x']
                 param_obj.y=parameter['y']
+                param_obj.hourly_fluctuation=parameter['hourly_fluctuation']
                 param_obj.save()
             
             chemdata.parameters.add(param_obj)            

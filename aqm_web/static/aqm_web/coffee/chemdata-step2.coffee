@@ -23,6 +23,7 @@ class Pollutant
             lon: 'C'
             x: 'D'
             y: 'E'
+            hourly_fluctuation: '[1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]'
         
         param = $.extend default_param, config
         
@@ -38,6 +39,7 @@ class Pollutant
         @lon = param.lon.trim().toUpperCase()
         @x = param.x.trim().toUpperCase()
         @y = param.y.trim().toUpperCase()
+        @hourly_fluctuation = param.hourly_fluctuation.trim()
     
     validate: () ->
         if @pollutant.length == 0
@@ -63,6 +65,13 @@ class Pollutant
         if @x.length == 0
             return false
         if @y.length == 0
+            return false
+        
+        try
+            hourly_factors = JSON.parse(@hourly_fluctuation)
+        catch SyntaxError
+            
+        if hourly_factors.length != 24
             return false
         
         return true
@@ -174,6 +183,7 @@ edit_pollutant = (pollutant_id) ->
     $('#id-lon-col').val(pollutant.lon)
     $('#id-x-col').val(pollutant.x)
     $('#id-y-col').val(pollutant.y)
+    $('#id-hourly-fluctuation').val(pollutant.hourly_fluctuation)
     
     # metadata for save command; 'save' will need to know whether this is edit or add
     $('#area-modal').attr 'data-command', 'edit'
@@ -199,6 +209,7 @@ add_pollutant = () ->
     $('#id-lon-col').val("")
     $('#id-x-col').val("")
     $('#id-y-col').val("")
+    $('#id-hourly-fluctuation').val("")
     
     # metadata for save command; 'save' will need to know whether this is edit or add
     $('#area-modal').attr 'data-command', 'add'
@@ -224,6 +235,7 @@ save_pollutant = () ->
         lon : $('#id-lon-col').val()
         x : $('#id-x-col').val()
         y : $('#id-y-col').val()
+        hourly_fluctuation: $('#id-hourly-fluctuation').val()
     
     plt = new Pollutant param
     
@@ -252,6 +264,7 @@ save_pollutant = () ->
                 original_data.lon = plt.lon
                 original_data.x = plt.x
                 original_data.y = plt.y
+                original_data.hourly_fluctuation = plt.hourly_fluctuation
                 reset_pollutant_listbox()
                 return true
             else
@@ -275,7 +288,7 @@ $(document).ready(->
         removal_list = $('#chemdata-param-list').val()
         remove_pollutants removal_list
         reset_pollutant_listbox()
-        console.log removal_list
+        # console.log removal_list
     
     $('#chemdata-modal-cancel').bind 'click', (event) ->
         # close modal
@@ -291,7 +304,7 @@ $(document).ready(->
     $('#chemdata-save').bind 'click', (event) ->
         $(event.target).button('loading')
         
-        console.log JSON.stringify window.aqm.chemdata.pollutant_list
+        # console.log JSON.stringify window.aqm.chemdata.pollutant_list
         
         chemdata_id = window.aqm.chemdata.chemdata.id
         parameters_json = JSON.stringify window.aqm.chemdata.pollutant_list
@@ -302,7 +315,7 @@ $(document).ready(->
         data: {chemdata_id: chemdata_id, parameters_json: parameters_json, display_message: true},
         success: (data) ->
             $(event.target).button('reset')
-            console.log data
+            # console.log data
             if data
                 window.location.replace window.chemdata_list_url
         ,
@@ -325,6 +338,11 @@ $(document).ready(->
         # evaluate conversion factor arithmatic
         event.preventDefault()
         $('#id-conv-factor').val(eval($('#id-conv-factor').val()))
+    
+    $('#chemdata-default-hourly-fluctuation').bind 'click', (event) ->
+        # fill default value
+        event.preventDefault()
+        $('#id-hourly-fluctuation').val('[1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]')
         
     # -- Entry Point --
     

@@ -1,11 +1,239 @@
 {% extends "aqm_web/base-with-menu.html" %}
+{% load url from future %}
+{% load webdesign %}
 
 {% block metadata %}
-	<title>Test Group | Air Quality Models Web Interface</title>
+    <title>Test Group | Air Quality Models Web Interface</title>
+    <script src="{{ STATIC_URL }}aqm_web/js/toolbox.js"></script>
 {% endblock %}
 
 {% block all-elements %}
 
-	{% include "aqm_web/wrf/partial/task-group-detail.html" %}
+<div class="row">
+<div class="span12">
+	<div class="page-header">
+		<h1>Test Group</h1>
+	</div>
+	
+	<div class="row">
+        <div class="span12">
+            <div class="well">
+                {% lorem 1 p random %}
+                <div><a href="#" class="btn">Edit Description</a></div>
+            </div>
+        </div>
+	</div>
+	
+	<div id="toolbox" class="toolbox">
+		<div class="row">
+			<div class="span5" style="position: relative;">
+				<div class="" style="position: absolute; bottom: 0;">
+					<a class="btn btn-primary" href="{% url 'wrf-new-task' %}">New Task</a>
+					<a class="btn btn-success" href="#">Run All Task</a>
+					<a class="btn btn-danger" href="#">Cancel All Task</a>
+				</div>
+				<div style="height: 33px;">&nbsp;</div>
+			</div>
+			<div class="span7">
+				<ul class="nav nav-pills" style="margin: 0;">
+					<li class="active"><a href="#">All</a></li>
+					<li><a href="#">Draft</a></li>
+					<li><a href="#">Pending</a></li>
+					<li><a href="#">Running</a></li>
+					<li><a href="#">Finished</a></li>
+					<li><a href="#">Error</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	
+	<div class="row">
+		<div class="span16">
+			<ul class="task-list">
+				<li>
+					<div class="header">
+						<h2>{% lorem 7 w random %}</h2>
+					</div>
+					<div class="content">
+						{% lorem 1 p random %}
+						<table>
+							<thead>
+								<tr>
+									<th>User</th>
+									<th>Domain</th>
+									<th>Period</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td><a href="#">Test User</a></td>
+									<td>3</td>
+									<td>{% now "jS F Y H:i" %} &mdash; {% now "jS F Y H:i" %}</td>
+								</tr>
+							</tbody>
+						</table>
+						<ul class="controls">
+							<li><a class="btn success" href="#">Results</a></li>
+							<li><a class="btn info" href="#">Run Again</a></li>
+							<li><a class="btn" href="#">Details</a></li>
+							<li><a class="btn" href="#">Edit</a></li>
+							<li><a class="btn danger" href="#">Delete</a></li>
+						</ul>
+					</div>
+					<div class="progress">
+						<div class="counter success">100%</div>
+						<div class="stage"></div>
+						<div><span class="label success">finished</span></div>
+					</div>
+				</li>
+				
+				
+				<li>
+					<div class="header">
+						<h2>{% lorem 7 w random %}</h2>
+					</div>
+					<div class="content">
+						{% lorem 1 p random %}
+						<table>
+							<thead>
+								<tr>
+									<th>User</th>
+									<th>Domain</th>
+									<th>Period</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td><a href="#">Test User</a></td>
+									<td>3</td>
+									<td>{% now "jS F Y H:i" %} &mdash; {% now "jS F Y H:i" %}</td>
+								</tr>
+							</tbody>
+						</table>
+						<ul class="controls">
+							<li><a class="btn danger" href="#">Cancel</a></li>
+							<li><a class="btn" href="#">Details</a></li>
+						</ul>
+					</div>
+					<div class="progress">
+						<div class="counter warning">0%</div>
+						<div class="stage"></div>
+						<div><span class="label warning">pending</span></div>
+					</div>
+				</li>
+				
+				<li>
+					<div class="header">
+						<h2>{% lorem 7 w random %}</h2>
+					</div>
+					<div class="content">
+						{% lorem 1 p random %}
+						<table>
+							<thead>
+								<tr>
+									<th>User</th>
+									<th>Domain</th>
+									<th>Period</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td><a href="#">Test User</a></td>
+									<td>3</td>
+									<td>{% now "jS F Y H:i" %} &mdash; {% now "jS F Y H:i" %}</td>
+								</tr>
+							</tbody>
+						</table>
+						<ul class="controls">
+							<li><a class="btn danger" href="#">Stop</a></li>
+							<li><a class="btn" href="#">Details</a></li>
+						</ul>
+					</div>
+					<div class="progress">
+						<div class="counter notice">30%</div>
+						<div class="stage">WPS/geogrid</div>
+						<div><span class="label notice">running</span></div>
+						<div class="icon" data-spinner="spinner"></div>
+					</div>
+				</li>
+				
+				<li>
+					<div class="header">
+						<h2>{% lorem 7 w random %}</h2>
+					</div>
+					<div class="content">
+						{% lorem 1 p random %}
+						<table>
+							<thead>
+								<tr>
+									<th>User</th>
+									<th>Domain</th>
+									<th>Period</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td><a href="#">Test User</a></td>
+									<td>3</td>
+									<td>{% now "jS F Y H:i" %} &mdash; {% now "jS F Y H:i" %}</td>
+								</tr>
+							</tbody>
+						</table>
+						<ul class="controls">
+							<li><a class="btn info" href="#">Retry last stage</a></li>
+							<li><a class="btn info" href="#">Run</a></li>
+							<li><a class="btn" href="#">Details</a></li>
+							<li><a class="btn" href="#">Edit</a></li>
+							<li><a class="btn danger" href="#">Delete</a></li>
+						</ul>
+					</div>
+					<div class="progress">
+						<div class="counter important">50%</div>
+						<div class="stage">WRF/real</div>
+						<div><span class="label important">error</span></div>
+					</div>
+				</li>
+				
+				<li>
+					<div class="header">
+						<h2>{% lorem 7 w random %}</h2>
+					</div>
+					<div class="content">
+						{% lorem 1 p random %}
+						<table>
+							<thead>
+								<tr>
+									<th>User</th>
+									<th>Domain</th>
+									<th>Period</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td><a href="#">Test User</a></td>
+									<td>3</td>
+									<td>{% now "jS F Y H:i" %} &mdash; {% now "jS F Y H:i" %}</td>
+								</tr>
+							</tbody>
+						</table>
+						<ul class="controls">
+							<li><a class="btn info" href="#">Run</a></li>
+							<li><a class="btn" href="#">Details</a></li>
+							<li><a class="btn" href="#">Edit</a></li>
+							<li><a class="btn danger" href="#">Delete</a></li>
+						</ul>
+					</div>
+					<div class="progress">
+						<div class="counter">0%</div>
+						<div class="stage"></div>
+						<div><span class="label">draft</span></div>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</div>
+	
+</div>
+</div>
 
 {% endblock %}

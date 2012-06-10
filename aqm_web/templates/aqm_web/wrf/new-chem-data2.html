@@ -1,12 +1,188 @@
 {% extends "aqm_web/base-with-menu.html" %}
+{% load url from future %}
+{% load add_class %}
 
 {% block metadata %}
-	<title>New Emission Data (Step 2 of 2) | Air Quality Models Web Interface</title>
-  <script src="{{ STATIC_URL }}aqm_web/js/chemdata-step2.js"></script>
+    <title>New Emission Data (Step 2 of 2) | Air Quality Models Web Interface</title>
+    <script src="{{ STATIC_URL }}aqm_web/js/chemdata-step2.js"></script>
 {% endblock %}
 
 {% block all-elements %}
 
-	{% include "aqm_web/wrf/partial/new-chem-data2.html" %}
+<script>
+$(document).ready(function () {
+	
+	chemdata_url = "{% url 'rest-wrf-chemdata-detail' chemdata.id %}";
+	chemdata_list_url = "{% url 'wrf-list-chem-data' %}";
+	chemdata = undefined;
+	
+    $.ajax({url: chemdata_url,
+            dataType: 'json',
+            type: 'GET',
+            success: function(data){
+                chemdata = data;
+                process_chemdata(chemdata);
+            },
+            error: function(jqXHR, textStatus, errorThrown){
+				window.aqm.alert("Connectivity Error", "Cannot connect to remote server: " + textStatus + " " + errorThrown);
+            }
+    });
+	
+});
+</script>
+
+<div class="row">
+	<div class="span16">
+		<div class="page-header">
+            {% if context == "create" %}
+			<h1>New Emission Data (Step 2 of 2)</h1>
+            {% endif %}
+            {% if context == "edit" %}
+			<h1>Edit Emission Data</h1>
+            {% endif %}
+		</div>
+		<div class="row">
+			<div class="span12 well">
+				<h3>{{ chemdata.name }}</h3>
+				<p>
+					<b>Description:</b>
+				</p>
+				{{ chemdata.description|safe }}
+				<p>
+					<b>File:</b> <a href="{{ chemdata.data.url }}">{{ filename }}</a>
+				</p>
+                <p><b>Timezone:</b> {{chemdata.timezone}}</p>
+			</div>
+		</div>
+		<div class="model-editor">
+            <div class="many-to-many-widget">
+                <p>
+                    <button id="chemdata-add-pollutant" class="btn btn-primary"><i class="icon-plus icon-white"></i> Add...</button>
+                    <button id="chemdata-edit-pollutant" class="btn"><i class="icon-edit"></i> Edit...</button>
+                    <button id="chemdata-remove-pollutant" class="btn btn-danger"><i class="icon-remove icon-white"></i> Remove</button>
+                </p>
+				<div class="model-list">
+					<select class="span5" size="5" multiple="multiple" id="chemdata-param-list" data-worksheets="{{ chemdata.worksheets }}"></select>
+				</div>
+			</div>
+		</div>
+		<div>
+			<p><button id="chemdata-save" class="btn btn-primary" data-loading-text="Saving..."><i class="icon-upload icon-white"></i> Save</button></p>
+		</div>
+	</div>
+</div>
+
+
+<div id="area-modal" class="modal hide fade in">
+  <div class="modal-header">
+    <a class="close" data-dismiss="modal">×</a>
+    <h3>Edit Pollutant</h3>
+  </div>
+  <div class="modal-body">
+    <form class="form-horizontal">
+      
+        <div class="control-group">
+            <label class="control-label" for="id-pollutant-list">Pollutant</label>
+            <div class="controls">
+                <select id="id-pollutant-list" class="span4"></select>
+            </div>
+        </div>
+      
+        <div class="control-group">
+            <label class="control-label" for="id-worksheet-list">Worksheet</label>
+            <div class="controls">
+                <select id="id-worksheet-list" class="span4"></select>
+            </div>
+        </div>
+      
+        <div class="control-group">
+            <label class="control-label" for="id-conv-factor">Conversion Factor</label>
+            <div class="controls">
+              <input id="id-conv-factor" class="span3" type="text" placeholder="e.g. 1.0"> <button id="chemdata-conversion-factor-evaluate" class="btn">=</button>
+              <p class="help-block">Use conversion factor to convert unit to mol / km&sup2; / hour</p>
+            </div>
+        </div>
+		
+        <div class="control-group">
+            <label class="control-label" for="id-hourly-fluctuation">Hourly Fluctuation Factor</label>
+            <div class="controls">
+              <input id="id-hourly-fluctuation" class="span3" type="text" placeholder=""> <button id="chemdata-default-hourly-fluctuation" class="btn">default</button>
+              <p class="help-block"></p>
+            </div>
+        </div>
+        
+        <div class="control-group">
+            <label class="control-label" for="id-data-row-start">Data Rows</label>
+            <div class="controls">
+              <div class="inline">
+                <input id="id-data-row-start" class="span2" type="text" placeholder="e.g. 2">
+                to
+                <input id="id-data-row-end" class="span2" type="text" placeholder="e.g. 102">
+                <p class="help-block">First and last row that contains data</p>
+              </div>
+            </div>
+        </div>
+		
+        <div class="control-group">
+            <label class="control-label" for="id-data-dim-w">Data Dimension</label>
+            <div class="controls">
+				<div class="inline">
+					<div class="input-prepend">
+						<span class="add-on">Width</span><input id="id-data-dim-w" class="input-small" type="text" placeholder="e.g. 100">
+					</div>
+					<div class="input-prepend">
+						<span class="add-on">Height</span><input id="id-data-dim-h" class="input-small" type="text" placeholder="e.g. 100">
+					</div>
+					<p class="help-block">Dimension of the data</p>
+				</div>
+            </div>
+        </div>
+		
+        <div class="control-group">
+            <label class="control-label" for="id-emission-col">Data Columns</label>
+            <div class="controls">
+                <div class="input-prepend">
+                    <span class="add-on">Emission</span><input id="id-emission-col" class="span2" type="text"  placeholder="e.g. A">
+                </div>
+            </div>
+        </div>
+      
+      <div class="control-group">
+        <label class="control-label" for="id-lat-col"></label>
+        <div class="controls">
+          <div class="inline">
+            <div class="input-prepend">
+                <span class="add-on">Lat</span><input id="id-lat-col" class="span2" type="text"placeholder="e.g. B">
+            </div>
+            <div class="input-prepend">
+                <span class="add-on">Lon</span><input id="id-lon-col" class="span2" type="text"placeholder="e.g. C">
+            </div>
+            
+          </div>
+        </div>
+      </div>
+      
+      <div class="control-group">
+        <label class="control-label" for="id-x-col"></label>
+        <div class="controls">
+          <div class="inline">
+            <div class="input-prepend">
+                <span class="add-on">X</span><input id="id-x-col" class="span2" type="text" placeholder="e.g. D">
+            </div>
+            <div class="input-prepend">
+                <span class="add-on">Y</span><input id="id-y-col" class="span2" type="text" placeholder="e.g. E">
+            </div>
+            
+          </div>
+        </div>
+      </div>
+      
+    </form>
+  </div>
+  <div class="modal-footer">
+    <input type="button" id="chemdata-modal-ok" class="btn btn-primary" value="OK">
+    <input type="button" id="chemdata-modal-cancel" class="btn" value="Cancel">
+  </div>
+</div>
 
 {% endblock %}

@@ -9,6 +9,90 @@
 
 {% block all-elements %}
 
-	{% include "aqm_web/wrf/partial/chem-data-list.html" %}
+<script>
+$(document).ready(function () {
+    var chemdata_list = [];
+    chem_list_url = "{% url 'rest-wrf-chemdata-list' %}";
+    chem_list_all_url = "{% url 'rest-wrf-chemdata-list-all' %}";
+    
+    $.ajax({url: chem_list_url,
+            dataType: 'json',
+            type: 'GET',
+            success: function(data){
+                $('.chemdata-list').empty();
+                chemdata_list = data;
+                render_chemdata_list('.chemdata-list', data);
+            },
+            error: function(jqXHR, textStatus, errorThrown){
+                $(".chemdata-list").empty();
+				$(".chemdata-list").append('<li><div class="alert alert-error"><p>' + textStatus +"</p><p>" + errorThrown +"</p></div></li>");
+            }
+    });
+    
+    
+	$('#display-all-user').click(function(e){
+		
+		if($(this).is (':checked')){
+			$.ajax({url: chem_list_all_url,
+					dataType: 'json',
+					type: 'GET',
+					success: function(data){
+                        $('.chemdata-list').empty();
+                        chemdata_list = data;
+                        render_chemdata_list('.chemdata-list', data);
+					},
+					error: function(jqXHR, textStatus, errorThrown){
+						$(".task-list").empty();
+						$(".task-list").append('<li><div class="alert alert-error"><p>' + textStatus +"</p><p>" + errorThrown +"</p></div></li>");
+					}
+			});
+		}
+		else {
+			$.ajax({url: chem_list_url,
+					dataType: 'json',
+					type: 'GET',
+					success: function(data){
+                        $('.chemdata-list').empty();
+                        chemdata_list = data;
+                        render_chemdata_list('.chemdata-list', data);
+					},
+					error: function(jqXHR, textStatus, errorThrown){
+						$(".task-list").empty();
+						$(".task-list").append('<li><div class="alert alert-error"><p>' + textStatus +"</p><p>" + errorThrown +"</p></div></li>");
+					}
+			});
+		}
+	});
+    
+});
+</script>
+
+<div class="row">
+<div class="span16">
+	<div class="page-header">
+		<h1>WRF/Chem Emission Data</h1>
+	</div>
+	
+    <div id="toolbox" class="toolbox slim">
+        <div class="row">
+            <div class="span3"><a class="btn btn-primary" href="{% url 'wrf-new-chem-data' %}"><i class="icon-plus icon-white"></i> New Emission Data</a></div>
+            <div class="span4 offset6"><label class="checkbox"><input id="display-all-user" type="checkbox"> <span>Show emission data created by other users</span></label></div>
+        </div>
+    </div>
+    
+	<div class="row">
+		<div class="span12">
+			<ul class="chemdata-list">
+                <li>
+					<div class="alert alert-info">
+						<p><img src="{{ STATIC_URL }}aqm_web/img/spinner.gif" alt="Loading..."></p>
+					</div>
+                </li>
+			</ul>
+		</div>
+	</div>
+	
+</div>
+</div>
 
 {% endblock %}

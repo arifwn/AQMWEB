@@ -209,6 +209,8 @@ class PollutantParam(models.Model):
     row_end = models.IntegerField()
     data_w = models.IntegerField()
     data_h = models.IntegerField()
+    hourly_fluctuation = models.CharField(max_length=200,
+                                          default='[1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]')
     
     class Meta:
         verbose_name  = 'PollutantParam'
@@ -216,7 +218,22 @@ class PollutantParam(models.Model):
     
     def __unicode__(self):
         return self.pollutant
-       
+    
+    def get_hourly_fluctuation(self):
+        '''
+        Return hourly emission fluctuation factor.
+        Raise ValueError if self.hourly_fluctiation is invalid.
+        '''
+        import json
+        hourly_factor = json.loads(self.hourly_fluctuation)
+        if type(hourly_factor) == list:
+            if len(hourly_factor) == 24:
+                return hourly_factor
+            else:
+                raise ValueError('hourly_fluctuation must contain 24 data (right now %i data)' % len(hourly_factor))
+        else:
+            raise ValueError('hourly_fluctuation must be a list (current type: %s)' % type(hourly_factor))
+        
     
 class ChemData(models.Model):
     name = models.CharField(max_length=200, db_index=True)
@@ -227,6 +244,7 @@ class ChemData(models.Model):
     data = models.FileField(upload_to='wrf/chem_data/%Y/%m/', max_length=200)
     worksheets = models.TextField(blank=True)
     parameters = models.ManyToManyField(PollutantParam, blank=True, null=True)
+    timezone = models.IntegerField(default=0)
     is_removed = models.BooleanField(default=False, db_index=True)
     
     class Meta:

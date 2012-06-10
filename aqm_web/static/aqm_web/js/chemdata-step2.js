@@ -27,7 +27,8 @@
         lat: 'B',
         lon: 'C',
         x: 'D',
-        y: 'E'
+        y: 'E',
+        hourly_fluctuation: '[1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]'
       };
       param = $.extend(default_param, config);
       this.pollutant = param.pollutant.trim();
@@ -42,9 +43,11 @@
       this.lon = param.lon.trim().toUpperCase();
       this.x = param.x.trim().toUpperCase();
       this.y = param.y.trim().toUpperCase();
+      this.hourly_fluctuation = param.hourly_fluctuation.trim();
     }
 
     Pollutant.prototype.validate = function() {
+      var hourly_factors;
       if (this.pollutant.length === 0) {
         return false;
       }
@@ -79,6 +82,14 @@
         return false;
       }
       if (this.y.length === 0) {
+        return false;
+      }
+      try {
+        hourly_factors = JSON.parse(this.hourly_fluctuation);
+      } catch (SyntaxError) {
+
+      }
+      if (hourly_factors.length !== 24) {
         return false;
       }
       return true;
@@ -234,6 +245,7 @@
     $('#id-lon-col').val(pollutant.lon);
     $('#id-x-col').val(pollutant.x);
     $('#id-y-col').val(pollutant.y);
+    $('#id-hourly-fluctuation').val(pollutant.hourly_fluctuation);
     $('#area-modal').attr('data-command', 'edit');
     $('#area-modal').attr('data-command-param', pollutant.pollutant);
     return $('#area-modal').modal('show');
@@ -253,6 +265,7 @@
     $('#id-lon-col').val("");
     $('#id-x-col').val("");
     $('#id-y-col').val("");
+    $('#id-hourly-fluctuation').val("");
     $('#area-modal').attr('data-command', 'add');
     $('#area-modal').attr('data-command-param', '');
     return $('#area-modal').modal('show');
@@ -274,7 +287,8 @@
       lat: $('#id-lat-col').val(),
       lon: $('#id-lon-col').val(),
       x: $('#id-x-col').val(),
-      y: $('#id-y-col').val()
+      y: $('#id-y-col').val(),
+      hourly_fluctuation: $('#id-hourly-fluctuation').val()
     };
     plt = new Pollutant(param);
     switch (command) {
@@ -302,6 +316,7 @@
           original_data.lon = plt.lon;
           original_data.x = plt.x;
           original_data.y = plt.y;
+          original_data.hourly_fluctuation = plt.hourly_fluctuation;
           reset_pollutant_listbox();
           return true;
         } else {
@@ -328,8 +343,7 @@
       var removal_list;
       removal_list = $('#chemdata-param-list').val();
       remove_pollutants(removal_list);
-      reset_pollutant_listbox();
-      return console.log(removal_list);
+      return reset_pollutant_listbox();
     });
     $('#chemdata-modal-cancel').bind('click', function(event) {
       return $('#area-modal').modal('hide');
@@ -344,7 +358,6 @@
     $('#chemdata-save').bind('click', function(event) {
       var chemdata_id, parameters_json;
       $(event.target).button('loading');
-      console.log(JSON.stringify(window.aqm.chemdata.pollutant_list));
       chemdata_id = window.aqm.chemdata.chemdata.id;
       parameters_json = JSON.stringify(window.aqm.chemdata.pollutant_list);
       return $.ajax({
@@ -358,7 +371,6 @@
         },
         success: function(data) {
           $(event.target).button('reset');
-          console.log(data);
           if (data) {
             return window.location.replace(window.chemdata_list_url);
           }
@@ -382,6 +394,10 @@
     $('#chemdata-conversion-factor-evaluate').bind('click', function(event) {
       event.preventDefault();
       return $('#id-conv-factor').val(eval($('#id-conv-factor').val()));
+    });
+    $('#chemdata-default-hourly-fluctuation').bind('click', function(event) {
+      event.preventDefault();
+      return $('#id-hourly-fluctuation').val('[1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]');
     });
     $('#area-modal').modal({
       backdrop: true,

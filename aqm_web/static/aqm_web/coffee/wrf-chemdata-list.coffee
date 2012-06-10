@@ -29,12 +29,14 @@ get_chemdata_html = (chemdata) ->
                 <tr>
                     <th>User</th>
                     <th>Uploaded</th>
+                    <th>Timezone</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
                     <td><a href="/accounts/profile/#{ chemdata.user.username }"><img class="avatar" src="/accounts/avatar/t32x32/#{ chemdata.user.username }" width="32" height="32" style="height: 32px;" /></a> <a href="/accounts/profile/#{ chemdata.user.username }">#{ chemdata.user.get_full_name } (#{ chemdata.user.username })</a></td>
                     <td>#{ chemdata.created }</td>
+                    <td>#{ chemdata.timezone }</td>
                 </tr>
             </tbody>
         </table>
