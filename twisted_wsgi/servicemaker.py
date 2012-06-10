@@ -10,7 +10,12 @@ Created on Jan 22, 2012
 '''
 
 import os
+
+# Replace this line with your settings module
+os.environ['DJANGO_SETTINGS_MODULE'] = 'aqmwebinterface.settings'
+
 from django.conf import settings
+from django.core.wsgi import get_wsgi_application
 
 from zope.interface import implements
 
@@ -21,9 +26,6 @@ from twisted.application import internet, service
 from twisted.web import server, resource, wsgi, static
 from twisted.python import threadpool
 from twisted.internet import reactor, ssl
-
-# Replace this line with your wsgi script
-from aqmwebinterface import wsgi as django_wsgi
 
 ADDR = ''
 PORT = ''
@@ -106,7 +108,7 @@ def wsgi_redirector_app(environ, start_response):
     return [redirect_target]
 
 
-class AQMServiceMaker(object):
+class ServiceMaker(object):
     implements(IServiceMaker, IPlugin)
     tapname = "rundjserver"
     description = "Django Application Server"
@@ -127,7 +129,7 @@ class AQMServiceMaker(object):
         tps.setServiceParent(multi)
         
         # create the WSGI resource using the thread pool and Django handler
-        resource = wsgi.WSGIResource(reactor, tps.pool, django_wsgi.application)
+        resource = wsgi.WSGIResource(reactor, tps.pool, get_wsgi_application())
         # create a custom 'root' resource, that we can add other things to
         root = Root(resource)
         
