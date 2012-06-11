@@ -100,5 +100,34 @@ def count_line():
     
     if len(file_list) > 0:
         local(cmd)
+
+def update_deployment():
+    '''Update deployment code.'''
+    
+    deployment_target = '~/AQMSystem/deploy/aqmweb'
+    local('cp -rf aermod %s/aermod' % deployment_target)
+    local('cp -rf aqm_utils %s/aqm_utils' % deployment_target)
+    local('cp -rf aqm_web %s/aqm_web' % deployment_target)
+    local('cp -rf debug_toolbar %s/debug_toolbar' % deployment_target)
+    local('cp -rf django_extensions %s/django_extensions' % deployment_target)
+    
+    local('cp -rf filebrowser %s/filebrowser' % deployment_target)
+    local('cp -rf grappelli %s/grappelli' % deployment_target)
+    local('cp -rf openpyxl %s/openpyxl' % deployment_target)
+    local('cp -rf piston %s/piston' % deployment_target)
+    local('cp -rf redis_cache %s/redis_cache' % deployment_target)
+    
+    local('cp -rf tinymce %s/tinymce' % deployment_target)
+    local('cp -rf twisted %s/twisted' % deployment_target)
+    local('cp -rf twisted_wsgi %s/twisted_wsgi' % deployment_target)
+    local('cp -rf user_profile %s/user_profile' % deployment_target)
+    local('cp -rf wrf %s/wrf' % deployment_target)
+    
+    local('cp -rf BeautifulSoup.py %s/BeautifulSoup.py' % deployment_target)
+    local('cp -rf fabfile.py %s/fabfile.py' % deployment_target)
+    local('cp -rf manage.py %s/manage.py' % deployment_target)
+    
+    with lcd(deployment_target):
+        local('python2.7 manage.py collectstatic')
     
     
