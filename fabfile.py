@@ -105,27 +105,54 @@ def update_deployment():
     '''Update deployment code.'''
     
     deployment_target = '~/AQMSystem/deploy/aqmweb'
-    local('cp -rf aermod %s/aermod' % deployment_target)
-    local('cp -rf aqm_utils %s/aqm_utils' % deployment_target)
-    local('cp -rf aqm_web %s/aqm_web' % deployment_target)
-    local('cp -rf debug_toolbar %s/debug_toolbar' % deployment_target)
-    local('cp -rf django_extensions %s/django_extensions' % deployment_target)
+    local('rm -rf %s/aermod' % deployment_target)
+    local('cp -rf aermod %s/' % deployment_target)
     
-    local('cp -rf filebrowser %s/filebrowser' % deployment_target)
-    local('cp -rf grappelli %s/grappelli' % deployment_target)
-    local('cp -rf openpyxl %s/openpyxl' % deployment_target)
-    local('cp -rf piston %s/piston' % deployment_target)
-    local('cp -rf redis_cache %s/redis_cache' % deployment_target)
+    local('rm -rf %s/aqm_utils' % deployment_target)
+    local('cp -rf aqm_utils %s/' % deployment_target)
     
-    local('cp -rf tinymce %s/tinymce' % deployment_target)
-    local('cp -rf twisted %s/twisted' % deployment_target)
-    local('cp -rf twisted_wsgi %s/twisted_wsgi' % deployment_target)
-    local('cp -rf user_profile %s/user_profile' % deployment_target)
-    local('cp -rf wrf %s/wrf' % deployment_target)
+    local('rm -rf %s/aqm_web' % deployment_target)
+    local('cp -rf aqm_web %s/' % deployment_target)
     
-    local('cp -rf BeautifulSoup.py %s/BeautifulSoup.py' % deployment_target)
-    local('cp -rf fabfile.py %s/fabfile.py' % deployment_target)
-    local('cp -rf manage.py %s/manage.py' % deployment_target)
+    local('rm -rf %s/debug_toolbar' % deployment_target)
+    local('cp -rf debug_toolbar %s/' % deployment_target)
+    
+    local('rm -rf %s/django_extensions' % deployment_target)
+    local('cp -rf django_extensions %s/' % deployment_target)
+    
+    local('rm -rf %s/filebrowser' % deployment_target)
+    local('cp -rf filebrowser %s/' % deployment_target)
+    
+    local('rm -rf %s/grappelli' % deployment_target)
+    local('cp -rf grappelli %s/' % deployment_target)
+    
+    local('rm -rf %s/openpyxl' % deployment_target)
+    local('cp -rf openpyxl %s/' % deployment_target)
+    
+    local('rm -rf %s/piston' % deployment_target)
+    local('cp -rf piston %s/' % deployment_target)
+    
+    local('rm -rf %s/redis_cache' % deployment_target)
+    local('cp -rf redis_cache %s/' % deployment_target)
+    
+    local('rm -rf %s/tinymce' % deployment_target)
+    local('cp -rf tinymce %s/' % deployment_target)
+    
+    local('rm -rf %s/twisted' % deployment_target)
+    local('cp -rf twisted %s/' % deployment_target)
+    
+    local('rm -rf %s/twisted_wsgi' % deployment_target)
+    local('cp -rf twisted_wsgi %s/' % deployment_target)
+    
+    local('rm -rf %s/user_profile' % deployment_target)
+    local('cp -rf user_profile %s/' % deployment_target)
+    
+    local('rm -rf %s/wrf' % deployment_target)
+    local('cp -rf wrf %s/' % deployment_target)
+    
+    local('cp -rf BeautifulSoup.py %s/' % deployment_target)
+    local('cp -rf fabfile.py %s/' % deployment_target)
+    local('cp -rf manage.py %s/' % deployment_target)
     
     with lcd(deployment_target):
         local('python2.7 manage.py collectstatic')
