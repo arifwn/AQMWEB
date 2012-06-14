@@ -21,6 +21,48 @@ from aqm_utils.sanitizer import sanitize_html
 
 @login_required
 def new_task(request):
+    '''View for WRF Task Creation.'''
+    from wrf.forms import NewTaskForm
+    from wrf.models import Setting, Task
+    
+    if request.method == 'POST':
+        task_form = NewTaskForm(request.POST)
+        if task_form.is_valid():
+            task_name = task_form.cleaned_data['task_name']
+            task_description = sanitize_html(task_form.cleaned_data['task_description'])
+            task_namelist_wps = task_form.cleaned_data['task_namelist_wps']
+            task_namelist_wrf = task_form.cleaned_data['task_namelist_wrf']
+            task_namelist_arwpost = '' # should be generated automatically
+            task_grads_template = task_form.cleaned_data['task_grads_template']
+            
+            # TODO: handle ChemData setting
+            
+            wrf_setting = Setting(user=request.user,
+                                  namelist_wps=task_namelist_wps,
+                                  namelist_wrf=task_namelist_wrf,
+                                  namelist_arwpost=task_namelist_arwpost,
+                                  grads_template=task_grads_template)
+            
+            wrf_setting.save()
+            
+            wrf_task = Task(name=task_name, user=request.user,
+                                  description=task_description,
+                                  setting=wrf_setting)
+            wrf_task.save()
+            
+            messages.success(request, 'Task created successfully!')
+            
+            return(redirect('wrf-task-list'))
+    else:
+        task_form = NewTaskForm()
+        
+    t = get_template('aqm_web/wrf/new-task.html')
+    html = t.render(RequestContext(request,
+                                   {'form': task_form}))
+    return HttpResponse(html)
+
+@login_required
+def new_task_orig(request):
     ''' View for WRF Task Creation '''
     from wrf.forms import NewTaskForm
     from wrf.models import Setting, Task

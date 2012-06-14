@@ -32,8 +32,8 @@ class NewTaskForm(forms.Form):
                                         'rows':'10'
                                         }))
     
-    task_grads_template = forms.CharField(label='GrADS Template',
-                                       widget=forms.Textarea(attrs={
-                                        'rows':'10'
-                                        }))
+    #task_grads_template = forms.CharField(label='GrADS Template',
+    #                                   widget=forms.Textarea(attrs={
+    #                                    'rows':'10'
+    #                                    }))
     

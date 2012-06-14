@@ -4,11 +4,12 @@ TODO List
 WRF Task:
 ---------
 
-* [high] Implement functionality to update grads script and re-render the whole result.
+* [high] Implement functionality to update GrADS script and re-render the whole result.
+* [high] for security reason, GrADS script should be created procedurally, not manually.
 * [high] Implement Emission data generation for WRF/Chem. Emission generation is somewhat tricky since it requires to set WRF to single domain mode temporarily for each domain.
 * [high] Make new WRF task page really works.
-* [high] AQM RPC is lacking meaningful logging.
-* [high] Implement model log viewer for each task.
+* [medium] AQM RPC is lacking meaningful logging.
+* [medium] Implement model log viewer for each task.
 * [medium] Configure error logger for the web interface.
 * [medium] Implement error logger for RPC Server. Twisted logger is somewhat lacking.
 
