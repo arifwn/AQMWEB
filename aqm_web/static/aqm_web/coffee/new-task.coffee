@@ -82,9 +82,31 @@ $(document).ready(() ->
     
     # init test data
     init_test_data()
+    
+    render_domain_list()
 )
 
+render_domain_list = () ->
+    # remove existing rows
+    $('#domain-list tr[data-domain-listing]').remove()
+    
+    # render all domain it the table
+    render_domain domain for domain in window.aqm.domain_list
+
+render_domain = (domain) ->
+    parent_domain = get_domain domain.parent_id
+    parent_domain_name = '--'
+    if parent_domain?
+        parent_domain_name = parent_domain.name
+    $('#domain-list > tbody:last').append """<tr data-domain-listing="listing"><td><input type="checkbox" data-domain-id="#{ domain.id }"></td><td><a href="#" class="domain_link_edit" data-domain-id="#{ domain.id }">#{ domain.name }</a></td><td>#{ parent_domain_name }</td><td>#{ domain.width }</td><td>#{ domain.height }</td><td>#{ domain.dx }</td><td>#{ domain.dy }</td></tr>"""
+
+get_domain = (domain_id) ->
+    # return domain object from global list
+    return domain for domain in window.aqm.domain_list when domain.id == domain_id
+
 init_test_data = () ->
+    # test data for debugging purpose
+    
     width = 50
     height = 50
     dx = 9000
@@ -177,9 +199,16 @@ reset_domain_modal = () ->
     $('#ntf-dom-parent-start-i').val('')
     $('#ntf-dom-parent-start-j').val('')
     
-    # set mode to 'add'
-    $('#domain-modal').attr('data-domain-id', '-')
+    $('#ntf-parent-domain').html ''
+    $('#ntf-parent-domain').append '<option selected value="0">-- None --</option>'
     
+    append_parent_dropdown_list domain for domain in window.aqm.domain_list
+    
+    # set mode to 'add'
+    $('#domain-modal').attr('data-domain-id', '0')
+
+append_parent_dropdown_list = (domain) ->
+    $('#ntf-parent-domain').append "<option value=\"#{ domain.id }\">#{ domain.name }</option>"
 
 show_preview_map = (latitude, longitude) ->
     # show a modal dialog showing a map with marker on specified lat & lon
