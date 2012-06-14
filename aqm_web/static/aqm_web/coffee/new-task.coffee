@@ -68,9 +68,10 @@ $(document).ready(() ->
         e.preventDefault()
         
         # add or edit the domain
-        save_domain($('#domain-modal').attr('data-domain-id'))
-        
-        $('#domain-modal').modal('hide')
+        if save_domain($('#domain-modal').attr('data-domain-id'))
+            $('#domain-modal').modal('hide')
+        else
+            window.alert "Please check your input!"
     )
     
     # close domain modal window
@@ -86,9 +87,10 @@ save_domain = (domain_id) ->
     
     if isNaN(domain_id)
         console.log 'add new domain'
-        add_domain()
+        return add_domain()
     else
         console.log 'edit existing domain'
+        return false
 
 add_domain = () ->
     name = $('#ntf-dom-name').val()
@@ -102,13 +104,18 @@ add_domain = () ->
     j_parent_start = $('#ntf-dom-parent-start-j').val()
     domain = new Domain name, width, height, dx, dy, ratio, parent_id, i_parent_start, j_parent_start
     
-    window.aqm.domain_list.push domain
+    if domain.check_all()
+        domain.assign_id()
+        window.aqm.domain_list.push domain
+        return true
+    else
+        return false
 
 show_parent_ij_field = (parent_domain) ->
-    # if parent_domain is '-', hide parent i j position fields, and vice versa
+    # if parent_domain is '0', hide parent i j position fields, and vice versa
     parent_id = parseInt(parent_domain)
     
-    if isNaN(parent_id)
+    if parent_id == 0
         $('#ntf-dom-parent-start-container').hide()
     else
         $('#ntf-dom-parent-start-container').show()
@@ -232,15 +239,18 @@ class Domain
         @ratio = parseInt(ratio)
         
         @parent_id = parseInt(parent_id)
-        if isNaN(@parent)
-            @i_parent_start = NaN
-            @j_parent_start = NaN
+        if isNaN(@parent_id)
+            @parent_id = 0
+            @i_parent_start = 0
+            @j_parent_start = 0
         else
             @i_parent_start = parseInt(i_parent_start)
             @j_parent_start = parseInt(j_parent_start)
         
+    
+    assign_id: () ->
+        # assign new id
         if isNaN(@id)
-            # assign new id
             @id = window.aqm.domain_last_id + 1
             window.aqm.domain_last_id = @id
     
@@ -251,26 +261,42 @@ class Domain
             return false
     
     check_width: () ->
-        return isNaN(@width)
+        return not isNaN(@width)
         
     check_height: () ->
-        return isNaN(@height)
+        return not isNaN(@height)
         
     check_dx: () ->
-        return isNaN(@dx)
+        return not isNaN(@dx)
         
     check_dy: () ->
-        return isNaN(@dy)
+        return not isNaN(@dy)
         
     check_ratio: () ->
-        return isNaN(@ratio)
+        return not isNaN(@ratio)
         
     check_i_parent_start: () ->
-        return isNaN(@i_parent_start)
+        return not isNaN(@i_parent_start)
         
     check_j_parent_start: () ->
-        return isNaN(@j_parent_start)
+        return not isNaN(@j_parent_start)
         
     check_parent_id: () ->
-        return isNaN(@parent_id)
-        
+        if @parent_id == 0
+            return false
+        else
+            return true
+    
+    check_all: () ->
+        if @check_parent_id()
+            # this is a child domain
+            if @check_name() and @check_width() and @check_height() and @check_dx() and @check_dy() and @check_ratio() and @check_ratio() and @check_i_parent_start() and @check_j_parent_start()
+                return true
+            else
+                return false
+        else
+            # this is not a child domain
+            if @check_name() and @check_width() and @check_height() and @check_dx() and @check_dy() and @check_ratio() and @check_ratio()
+                return true
+            else
+                return false

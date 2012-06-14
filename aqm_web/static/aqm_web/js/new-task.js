@@ -46,8 +46,11 @@
     });
     $('#btn-domain-modal-ok').click(function(e) {
       e.preventDefault();
-      save_domain($('#domain-modal').attr('data-domain-id'));
-      return $('#domain-modal').modal('hide');
+      if (save_domain($('#domain-modal').attr('data-domain-id'))) {
+        return $('#domain-modal').modal('hide');
+      } else {
+        return window.alert("Please check your input!");
+      }
     });
     return $('#btn-domain-modal-cancel').click(function(e) {
       e.preventDefault();
@@ -61,7 +64,8 @@
       console.log('add new domain');
       return add_domain();
     } else {
-      return console.log('edit existing domain');
+      console.log('edit existing domain');
+      return false;
     }
   };
 
@@ -77,13 +81,19 @@
     i_parent_start = $('#ntf-dom-parent-start-i').val();
     j_parent_start = $('#ntf-dom-parent-start-j').val();
     domain = new Domain(name, width, height, dx, dy, ratio, parent_id, i_parent_start, j_parent_start);
-    return window.aqm.domain_list.push(domain);
+    if (domain.check_all()) {
+      domain.assign_id();
+      window.aqm.domain_list.push(domain);
+      return true;
+    } else {
+      return false;
+    }
   };
 
   show_parent_ij_field = function(parent_domain) {
     var parent_id;
     parent_id = parseInt(parent_domain);
-    if (isNaN(parent_id)) {
+    if (parent_id === 0) {
       return $('#ntf-dom-parent-start-container').hide();
     } else {
       return $('#ntf-dom-parent-start-container').show();
@@ -212,18 +222,22 @@
       this.dy = parseInt(dy);
       this.ratio = parseInt(ratio);
       this.parent_id = parseInt(parent_id);
-      if (isNaN(this.parent)) {
-        this.i_parent_start = NaN;
-        this.j_parent_start = NaN;
+      if (isNaN(this.parent_id)) {
+        this.parent_id = 0;
+        this.i_parent_start = 0;
+        this.j_parent_start = 0;
       } else {
         this.i_parent_start = parseInt(i_parent_start);
         this.j_parent_start = parseInt(j_parent_start);
       }
+    }
+
+    Domain.prototype.assign_id = function() {
       if (isNaN(this.id)) {
         this.id = window.aqm.domain_last_id + 1;
-        window.aqm.domain_last_id = this.id;
+        return window.aqm.domain_last_id = this.id;
       }
-    }
+    };
 
     Domain.prototype.check_name = function() {
       if (this.name.length > 0) {
@@ -234,35 +248,55 @@
     };
 
     Domain.prototype.check_width = function() {
-      return isNaN(this.width);
+      return !isNaN(this.width);
     };
 
     Domain.prototype.check_height = function() {
-      return isNaN(this.height);
+      return !isNaN(this.height);
     };
 
     Domain.prototype.check_dx = function() {
-      return isNaN(this.dx);
+      return !isNaN(this.dx);
     };
 
     Domain.prototype.check_dy = function() {
-      return isNaN(this.dy);
+      return !isNaN(this.dy);
     };
 
     Domain.prototype.check_ratio = function() {
-      return isNaN(this.ratio);
+      return !isNaN(this.ratio);
     };
 
     Domain.prototype.check_i_parent_start = function() {
-      return isNaN(this.i_parent_start);
+      return !isNaN(this.i_parent_start);
     };
 
     Domain.prototype.check_j_parent_start = function() {
-      return isNaN(this.j_parent_start);
+      return !isNaN(this.j_parent_start);
     };
 
     Domain.prototype.check_parent_id = function() {
-      return isNaN(this.parent_id);
+      if (this.parent_id === 0) {
+        return false;
+      } else {
+        return true;
+      }
+    };
+
+    Domain.prototype.check_all = function() {
+      if (this.check_parent_id()) {
+        if (this.check_name() && this.check_width() && this.check_height() && this.check_dx() && this.check_dy() && this.check_ratio() && this.check_ratio() && this.check_i_parent_start() && this.check_j_parent_start()) {
+          return true;
+        } else {
+          return false;
+        }
+      } else {
+        if (this.check_name() && this.check_width() && this.check_height() && this.check_dx() && this.check_dy() && this.check_ratio() && this.check_ratio()) {
+          return true;
+        } else {
+          return false;
+        }
+      }
     };
 
     return Domain;
