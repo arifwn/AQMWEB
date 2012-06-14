@@ -1,8 +1,31 @@
 TODO List
 =========
 
-* Implement Result Browser.
-* Implement functionality to update grads script and re-render the whole result.
-* Implement WRF Chem.
-* Implement chemdata selector in new task page.
-* Implement AERMOD.
+WRF Task:
+---------
+
+* [high] Implement functionality to update grads script and re-render the whole result.
+* [high] Implement Emission data generation for WRF/Chem. Emission generation is somewhat tricky since it requires to set WRF to single domain mode temporarily for each domain.
+* [high] Make new WRF task page really works.
+* [high] AQM RPC is lacking meaningful logging.
+* [high] Implement model log viewer for each task.
+* [medium] Configure error logger for the web interface.
+* [medium] Implement error logger for RPC Server. Twisted logger is somewhat lacking.
+
+
+AERMOD Task:
+------------
+
+* [high] Implement AERMOD Task system.
+* [high] Implement point source modeling in new AERMOD task.
+* [high] Implement area source modeling in new AERMOD task.
+* [high] Implement meteorological data extraction from a particular WRF task.
+* [high] Create result page for AERMOD task.
+* [low] Download all required Hill Height data and put it in cache folder. Right now it's in master/WRF_DATA folder
+
+
+Misc:
+-----
+
+* [medium] upgrade certificate to use sha2 md.
+* [low] removes static file listing by reconfigure Twisted server.
