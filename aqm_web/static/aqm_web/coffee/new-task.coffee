@@ -80,7 +80,47 @@ $(document).ready(() ->
         $('#domain-modal').modal('hide')
     )
     
+    # init test data
+    init_test_data()
 )
+
+init_test_data = () ->
+    width = 50
+    height = 50
+    dx = 9000
+    dy = 9000
+    ratio = 1
+    parent_id = 0
+    i_parent_start = 0
+    j_parent_start = 0
+    
+    name = 'Test Domain 1'
+    domain1 = new Domain name, width, height, dx, dy, ratio, parent_id, i_parent_start, j_parent_start
+    domain1.assign_id()
+    
+    name = 'Test Domain 2'
+    dx = 3000
+    dy = 3000
+    ratio = 3
+    parent_id = domain1.id
+    i_parent_start = 25
+    j_parent_start = 25
+    domain2 = new Domain name, width, height, dx, dy, ratio, parent_id, i_parent_start, j_parent_start
+    domain2.assign_id()
+    
+    name = 'Test Domain 3'
+    dx = 3000
+    dy = 3000
+    ratio = 3
+    parent_id = domain2.id
+    i_parent_start = 25
+    j_parent_start = 25
+    domain3 = new Domain name, width, height, dx, dy, ratio, parent_id, i_parent_start, j_parent_start
+    domain3.assign_id()
+    
+    window.aqm.domain_list.push domain1
+    window.aqm.domain_list.push domain2
+    window.aqm.domain_list.push domain3
 
 save_domain = (domain_id) ->
     domain_id = parseInt(domain_id)
