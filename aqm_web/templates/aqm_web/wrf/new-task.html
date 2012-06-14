@@ -193,7 +193,7 @@
 </div>
 
 
-<div id="domain-modal" class="modal hide fade in domain-modal">
+<div id="domain-modal" class="modal hide fade in domain-modal" data-domain-id="-">
 	<div class="modal-header">
 		<a href="#" class="close" data-dismiss="modal">&times;</a>
 		<h3>Title</h3>
@@ -204,37 +204,53 @@
                 <div class="control-group" id="ntf-dom-name-container">
                     <label class="control-label" for="ntf-dom-name">Domain Name</label>
                     <div class="controls">
-                        <div class="form-inline">
-                            <input type="text" id="ntf-dom-name" name="dom-name" placeholder="Enter domain name" class="span5" >
-                            <input type="hidden" id="ntf-dom-id" name="dom-id" >
-                            Parent: 
-                            <select id="ntf-parent-domain" name="parent-domain">
-                                <option value="none">-- None --</option>
-                                <option value="1">Domain 1</option>
-                            </select>
-                        </div>
+                        <input type="text" id="ntf-dom-name" name="dom-name" placeholder="Enter domain name" class="span5" >
                     </div>
                 </div>
+				
+                <div class="control-group" id="ntf-dom-parent-container">
+                    <label class="control-label" for="ntf-parent-domain">Parent</label>
+                    <div class="controls">
+						<select id="ntf-parent-domain" name="parent-domain">
+							<option value="-">-- None --</option>
+							<option value="1">Domain 1</option>
+						</select>
+					</div>
+				</div>
                 
                 <div class="control-group" id="ntf-dom-width-container">
                     <label class="control-label" for="ntf-dom-width">Dimension</label>
                     <div class="controls">
                         <div class="form-inline">
-                            <div id="ntf-dom-width-cont" class="input-prepend"><span class="add-on">width</span><input type="text" id="ntf-dom-width" name="dom-width" class="span3" placeholder="enter value in grids"></div>
-                            <div id="ntf-dom-height-cont" class="input-prepend"><span class="add-on">height</span><input type="text" id="ntf-dom-height" name="dom-height" class="span3" placeholder="enter value in grids"></div>
-                            <div id="ntf-dom-dx-cont" class="input-prepend"><span class="add-on">dx</span><input type="text" id="ntf-dom-dx" name="dom-dx" class="span2" placeholder="enter value in meter"></div>
-                            <div id="ntf-dom-dy-cont" class="input-prepend"><span class="add-on">dy</span><input type="text" id="ntf-dom-dy" name="dom-dy" class="span2" placeholder="enter value in meter"></div>
-                            <div id="ntf-ratio-cont" class="input-prepend"><span class="add-on">parent grid ratio</span><input type="text" id="ntf-ratio" name="dom-ratio" class="span3" placeholder=""></div>
+                            <div id="ntf-dom-width-cont" class="input-prepend"><span class="add-on">width</span><input type="text" id="ntf-dom-width" name="dom-width" class="span2" placeholder="enter value in grids"></div>
+                            <div id="ntf-dom-height-cont" class="input-prepend"><span class="add-on">height</span><input type="text" id="ntf-dom-height" name="dom-height" class="span2" placeholder="enter value in grids"></div>
                         </div>
                     </div>
                 </div>
                 
+                <div class="control-group" id="ntf-dom-position-container">
+                    <label class="control-label" for="ntf-dom-dx-cont">Position</label>
+                    <div class="controls">
+                        <div class="form-inline">
+                            <div id="ntf-dom-dx-cont" class="input-prepend"><span class="add-on">dx</span><input type="text" id="ntf-dom-dx" name="dom-dx" class="span2" placeholder="enter value in meter"></div>
+                            <div id="ntf-dom-dy-cont" class="input-prepend"><span class="add-on">dy</span><input type="text" id="ntf-dom-dy" name="dom-dy" class="span2" placeholder="enter value in meter"></div>
+                        </div>
+                    </div>
+                </div>
+				
+                <div class="control-group" id="ntf-dom-grid-ratio-container">
+                    <label class="control-label" for="ntf-ratio">Parent Grid Ratio</label>
+                    <div class="controls">
+                        <input type="text" id="ntf-ratio" name="dom-ratio" class="span1" placeholder="">
+                    </div>
+                </div>
+				
                 <div class="control-group" id="ntf-dom-parent-start-container">
                     <label class="control-label" for="ntf-dom-parent-start-i">Position</label>
                     <div class="controls">
                         <div class="form-inline">
-                            <div id="ntf-dom-parent-start-i-cont" class="input-prepend"><span class="add-on">i parent start</span><input type="text" id="ntf-dom-parent-start-i" name="dom-i-parent-start" class="span2" placeholder=""></div>
-                            <div id="ntf-dom-parent-start-j-cont" class="input-prepend"><span class="add-on">j parent start</span><input type="text" id="ntf-dom-parent-start-j" name="dom-j-parent-start" class="span2" placeholder=""></div>
+                            <div id="ntf-dom-parent-start-i-cont" class="input-prepend"><span class="add-on">i parent start</span><input type="text" id="ntf-dom-parent-start-i" name="dom-i-parent-start" class="span1" placeholder=""></div>
+                            <div id="ntf-dom-parent-start-j-cont" class="input-prepend"><span class="add-on">j parent start</span><input type="text" id="ntf-dom-parent-start-j" name="dom-j-parent-start" class="span1" placeholder=""></div>
                             
                         </div>
                     </div>

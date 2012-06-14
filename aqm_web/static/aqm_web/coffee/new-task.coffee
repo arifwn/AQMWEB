@@ -42,11 +42,35 @@ $(document).ready(() ->
     
     # Domain Settings
     
+    # initialize domain list
+    window.aqm.domain_list = []
+    
+    # initialize domain id
+    window.aqm.domain_last_id = 0
+    
     # add domain button
     $('#btn-add-domain').click((e) ->
         e.preventDefault()
         reset_domain_modal()
+        show_parent_ij_field($('#ntf-parent-domain').val())
         $('#domain-modal').modal('show')
+    )
+    
+    # display i_parent_start and j_parent_start depending on parent selection
+    $('#ntf-parent-domain').change((e) ->
+        e.preventDefault()
+        show_parent_ij_field($('#ntf-parent-domain').val())
+        
+    )
+    
+    # domain modal window save button
+    $('#btn-domain-modal-ok').click((e) ->
+        e.preventDefault()
+        
+        # add or edit the domain
+        save_domain($('#domain-modal').attr('data-domain-id'))
+        
+        $('#domain-modal').modal('hide')
     )
     
     # close domain modal window
@@ -55,20 +79,44 @@ $(document).ready(() ->
         $('#domain-modal').modal('hide')
     )
     
-    # domain modal window save button
-    $('#btn-domain-modal-ok').click((e) ->
-        e.preventDefault()
-        
-        # add or edit the domain
-        
-        $('#domain-modal').modal('hide')
-    )
-    
 )
+
+save_domain = (domain_id) ->
+    domain_id = parseInt(domain_id)
+    
+    if isNaN(domain_id)
+        console.log 'add new domain'
+        add_domain()
+    else
+        console.log 'edit existing domain'
+
+add_domain = () ->
+    name = $('#ntf-dom-name').val()
+    width = $('#ntf-dom-width').val()
+    height = $('#ntf-dom-height').val()
+    dx = $('#ntf-dom-dx').val()
+    dy = $('#ntf-dom-dy').val()
+    ratio = $('#ntf-ratio').val()
+    parent_id = $('#ntf-parent-domain').val()
+    i_parent_start = $('#ntf-dom-parent-start-i').val()
+    j_parent_start = $('#ntf-dom-parent-start-j').val()
+    domain = new Domain name, width, height, dx, dy, ratio, parent_id, i_parent_start, j_parent_start
+    
+    window.aqm.domain_list.push domain
+
+show_parent_ij_field = (parent_domain) ->
+    # if parent_domain is '-', hide parent i j position fields, and vice versa
+    parent_id = parseInt(parent_domain)
+    
+    if isNaN(parent_id)
+        $('#ntf-dom-parent-start-container').hide()
+    else
+        $('#ntf-dom-parent-start-container').show()
 
 reset_domain_modal = () ->
     # reset fields on domain modal window
     title = 'Add New Domain'
+    $('#ntf-parent-domain').val(0)
     $('#domain-modal .clearfix').removeClass('error')
     $('#domain-modal .input-prepend').removeClass('error')
     $('#domain-modal .modal-header h3').text(title)
@@ -81,6 +129,9 @@ reset_domain_modal = () ->
     $('#ntf-ratio').val('')
     $('#ntf-dom-parent-start-i').val('')
     $('#ntf-dom-parent-start-j').val('')
+    
+    # set mode to 'add'
+    $('#domain-modal').attr('data-domain-id', '-')
     
 
 show_preview_map = (latitude, longitude) ->
@@ -168,3 +219,58 @@ show_latlon_fields = () ->
     $('#ntf-stand-lon-cont').show()
     $('#ntf-pole-lat-cont').show()
     $('#ntf-pole-lon-cont').show()
+
+
+class Domain
+    constructor: (name, width, height, dx, dy, ratio, parent_id, i_parent_start, j_parent_start) ->
+        @id = NaN
+        @name = name.trim()
+        @width = parseInt(width)
+        @height = parseInt(height)
+        @dx = parseInt(dx)
+        @dy = parseInt(dy)
+        @ratio = parseInt(ratio)
+        
+        @parent_id = parseInt(parent_id)
+        if isNaN(@parent)
+            @i_parent_start = NaN
+            @j_parent_start = NaN
+        else
+            @i_parent_start = parseInt(i_parent_start)
+            @j_parent_start = parseInt(j_parent_start)
+        
+        if isNaN(@id)
+            # assign new id
+            @id = window.aqm.domain_last_id + 1
+            window.aqm.domain_last_id = @id
+    
+    check_name: () ->
+        if @name.length > 0
+            return true
+        else
+            return false
+    
+    check_width: () ->
+        return isNaN(@width)
+        
+    check_height: () ->
+        return isNaN(@height)
+        
+    check_dx: () ->
+        return isNaN(@dx)
+        
+    check_dy: () ->
+        return isNaN(@dy)
+        
+    check_ratio: () ->
+        return isNaN(@ratio)
+        
+    check_i_parent_start: () ->
+        return isNaN(@i_parent_start)
+        
+    check_j_parent_start: () ->
+        return isNaN(@j_parent_start)
+        
+    check_parent_id: () ->
+        return isNaN(@parent_id)
+        

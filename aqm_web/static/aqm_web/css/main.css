@@ -700,7 +700,7 @@ h1,h2,h3,h4,h5{font-family:'Exo',sans-serif;font-weight:bold;}
 .navbar.mainmenu>.navbar-inner>.container{position:relative;}
 .navbar.mainmenu a.profile{position:relative;padding-left:40px;height:40px;padding-top:0;padding-bottom:0;}.navbar.mainmenu a.profile .avatar{position:absolute;top:4px;left:4px;width:32px;height:32px;margin:0;padding:0;background-color:rgba(255, 255, 255, 0.8);-webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px;-webkit-box-shadow:0 1px 0 rgba(0, 0, 0, 0.33);-moz-box-shadow:0 1px 0 rgba(0, 0, 0, 0.33);box-shadow:0 1px 0 rgba(0, 0, 0, 0.33);}
 .container .main-area{background:white;border-radius:4px;}
-.domain-modal{width:960px;left:30%;}
+.domain-modal{width:620px;}
 .task-list{margin:5px 0 0 0;padding:0;list-style:none;}.task-list>li{position:relative;margin:0 0 20px 0;padding:5px 2px;min-height:120px;list-style:none;padding-left:150px;-webkit-transition:all 0.2s linear;-moz-transition:all 0.2s linear;-ms-transition:all 0.2s linear;-o-transition:all 0.2s linear;transition:all 0.2s linear;}.task-list>li:hover{background:#FAFAFA;}
 .task-list>li.hidden{display:none;}
 .task-list>li .header a{color:#333;}
