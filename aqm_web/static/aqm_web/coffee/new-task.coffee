@@ -48,12 +48,20 @@ $(document).ready(() ->
     # initialize domain id
     window.aqm.domain_last_id = 0
     
-    # add domain button
+    # add domain button event handler
     $('#btn-add-domain').click((e) ->
         e.preventDefault()
         reset_domain_modal()
         show_parent_ij_field($('#ntf-parent-domain').val())
         $('#domain-modal').modal('show')
+    )
+    
+    # remove domain button event handler
+    $('#btn-remove-domain').click((e) ->
+        e.preventDefault()
+        if window.confirm "Remove selected domain(s) and all its subdomain?"
+            remove_selected_domain()
+            render_domain_list()
     )
     
     # display i_parent_start and j_parent_start depending on parent selection
@@ -86,14 +94,58 @@ $(document).ready(() ->
     render_domain_list()
 )
 
+
+remove_selected_domain = () ->
+    # remove all selected domain
+    # if the domain has childs, they will be removed too
+    
+    # obtain a list of selected domains
+    domains = get_selected_domains()
+    
+    # for each domain
+    # remove the domain and it's child
+    remove_domain(domain.id) for domain in domains
+
+remove_domain = (domain_id) ->
+    # remove a domain and all its childs
+    # attempt to obtain the domain from global list
+    domain = get_domain(domain_id)
+    if domain?
+        # if the domain exist in global domain list
+        # attempt to obtain the child domain
+        child_domains = get_child_domain(domain.id)
+        # remove child domain recursively
+        remove_domain child_domain.id for child_domain in child_domains
+        # remove the domain
+        remove_single_domain domain.id
+
+remove_single_domain = (domain_id) ->
+    # remove a domain from global list
+    domain_id = parseInt(domain_id)
+    window.aqm.domain_list = (domain for domain in window.aqm.domain_list when domain.id != domain_id)
+
+get_child_domain = (domain_id) ->
+    # obtain a list of child domain from this domain id
+    domain_id = parseInt(domain_id)
+    (domain for domain in window.aqm.domain_list when domain.parent_id == domain_id)
+
+get_selected_domains = () ->
+    # return a list of selected domains
+    checkbox_list = $('#domain-list input[type]=checkbox:checked')
+    (get_domain($(checkbox).attr('data-domain-id')) for checkbox in checkbox_list)
+
+
 render_domain_list = () ->
+    # render the domain table
     # remove existing rows
     $('#domain-list tr[data-domain-listing]').remove()
     
     # render all domain it the table
     render_domain domain for domain in window.aqm.domain_list
 
+
 render_domain = (domain) ->
+    # appent a domain info into the table
     parent_domain = get_domain domain.parent_id
     parent_domain_name = '--'
     if parent_domain?
@@ -102,6 +154,7 @@ render_domain = (domain) ->
 
 get_domain = (domain_id) ->
     # return domain object from global list
+    domain_id = parseInt(domain_id)
     return domain for domain in window.aqm.domain_list when domain.id == domain_id
 
 init_test_data = () ->
@@ -210,6 +263,10 @@ reset_domain_modal = () ->
 append_parent_dropdown_list = (domain) ->
     $('#ntf-parent-domain').append "<option value=\"#{ domain.id }\">#{ domain.name }</option>"
 
+
+
+# Coordinate Settings
+
 show_preview_map = (latitude, longitude) ->
     # show a modal dialog showing a map with marker on specified lat & lon
     true_lat = Math.abs(latitude)
@@ -239,16 +296,6 @@ show_map_modal = (map_url) ->
         
     ).attr('src', map_url)
     $('#area-modal').modal('show')
-
-get_float = (source, container='') ->
-    # attemp to get a float from source element.
-    # on success remove error class from container and vice versa
-    val = parseFloat $(source).val()
-    if isNaN(val)
-        $(container).addClass 'error'
-    else
-        $(container).removeClass 'error'
-    return val
 
 
 show_location_fields = (projection) ->
@@ -287,6 +334,7 @@ show_polar_fields = () ->
     $('#ntf-pole-lat-cont').hide()
     $('#ntf-pole-lon-cont').hide()
 
+
 show_latlon_fields = () ->
     # show location fields for mercator projection
     console.log "lat-lon selected"
@@ -296,6 +344,21 @@ show_latlon_fields = () ->
     $('#ntf-pole-lat-cont').show()
     $('#ntf-pole-lon-cont').show()
 
+
+# Utility functions
+
+get_float = (source, container='') ->
+    # attemp to get a float from source element.
+    # on success remove error class from container and vice versa
+    val = parseFloat $(source).val()
+    if isNaN(val)
+        $(container).addClass 'error'
+    else
+        $(container).removeClass 'error'
+    return val
+
+
+# Representation of WRF domain
 
 class Domain
     constructor: (name, width, height, dx, dy, ratio, parent_id, i_parent_start, j_parent_start) ->
