@@ -92,8 +92,165 @@ $(document).ready(() ->
     
     # update domain table
     render_domain_list()
+    
+    # Chemistry Option
+    
+    # selected chemdata
+    window.aqm.chemdata_id = 0
+    
+    # Select Emission Data button event handler
+    $('#ntf-chem-select-data').click((e) ->
+        e.preventDefault()
+        reset_chem_modal()
+        show_chem_modal()
+    )
+    
+    # close chemistry modal window
+    $('#btn-chem-modal-cancel').click((e) ->
+        e.preventDefault()
+        $('#chem-modal').modal('hide')
+    )
+    
+    # chemistry window save button
+    $('#btn-chem-modal-ok').click((e) ->
+        e.preventDefault()
+        
+        # add or edit the domain
+        if set_emission_data()
+            $('#chem-modal').modal('hide')
+        else
+            window.alert "Please check your input!"
+    )
 )
 
+# Chemistry Option
+get_all_user_chem = () ->
+    # retrieve a list of available chemistry data made by all user
+    $.ajax(
+        url: aqm.chem_list_all_url
+        dataType: 'json'
+        type: 'GET'
+        success: (data) ->
+            $('#chem-modal .modal-body').empty()
+            render_chemdata_list(data, true)
+        error: (jqXHR, textStatus, errorThrown) ->
+            $('#chem-modal .modal-body').empty()
+            $('#chem-modal .modal-body').append """<div class="alert alert-error"><p>#{ textStatus }</p><p>#{ errorThrown }</p></div>"""
+    )
+    
+get_current_user_chem = () ->
+    # retrieve a list of available chemistry data made by current user
+    $.ajax(
+        url: aqm.chem_list_url
+        dataType: 'json'
+        type: 'GET'
+        success: (data) ->
+            $('#chem-modal .modal-body').empty()
+            render_chemdata_list(data)
+        error: (jqXHR, textStatus, errorThrown) ->
+            $('#chem-modal .modal-body').empty()
+            $('#chem-modal .modal-body').append """<div class="alert alert-error"><p>#{ textStatus }</p><p>#{ errorThrown }</p></div>"""
+    )
+  
+
+show_chem_modal = () ->
+    # show chemistry modal window
+    
+    # retrieve a list of available chemistry data made by current user
+    $.ajax(
+        url: aqm.chem_list_url
+        dataType: 'json'
+        type: 'GET'
+        success: (data) ->
+            $('#chem-modal .modal-body').empty()
+            render_chemdata_list(data)
+        error: (jqXHR, textStatus, errorThrown) ->
+            $('#chem-modal .modal-body').empty()
+            $('#chem-modal .modal-body').append """<div class="alert alert-error"><p>#{ textStatus }</p><p>#{ errorThrown }</p></div>"""
+    )
+    
+    $('#chem-modal').modal('show')
+
+
+render_chemdata_list = (data, all_chem=false) ->
+    # render available emission data as a list
+    button_html = """<p><input type="button" id="btn-chem-show-all" class="btn btn-info" value="Show Emission Data from All User" ></p>"""
+    if all_chem
+        button_html = """<p><input type="button" id="btn-chem-show-my" class="btn" value="Show My Emission Data Only" ></p>"""
+    table_html = """
+    #{ button_html }
+    <table id="chemdata-list" class="table table-striped table-bordered table-condensed">
+        <tbody>
+            <tr>
+                <th></th>
+                <th>Name</th>
+                <th>User</th>
+                <th>Parameters</th>
+                <th>Date</th>
+            </tr>
+        </tbody>
+    </table>
+    """
+    $('#chem-modal .modal-body').html table_html
+    
+    for chemdata in data
+        # construct parameter string
+        parameter_list_str = ''
+        for param in chemdata.parameters
+            parameter_list_str = "#{ parameter_list_str } #{ param.pollutant }"
+        
+        # if previously selected data is same with this one, check the radio
+        checked = ''
+        if window.aqm.chemdata_id == chemdata.id
+            checked = 'checked'
+        
+        
+        # append chemdata to the table
+        row_html = """
+        <tr>
+            <td><input type="radio" name="chemdata-radio" data-chemdata-id="#{ chemdata.id }" data-chemdata-name="#{ chemdata.name }" data-user-avatar="/accounts/avatar/t32x32/#{ chemdata.user.username }" data-user-name="#{ chemdata.user.get_full_name }" #{ checked }></td>
+            <td>#{ chemdata.name }</td>
+            <td><img class="avatar-picture" src="/accounts/avatar/t32x32/#{ chemdata.user.username }" width="32" height="32" style="height: 32px;" title="#{ chemdata.user.get_full_name }" /></td>
+            <td>#{ parameter_list_str }</td>
+            <td><b>Created:</b> #{ chemdata.created } <br><b>Modified:</b> #{ chemdata.modified }</td>
+        </tr>
+        """
+        
+        $('#chemdata-list > tbody:last').append row_html
+        
+        # Show Emission Data from All User button event handler
+        $('#btn-chem-show-all').click((e) ->
+            e.preventDefault()
+            reset_chem_modal()
+            get_all_user_chem()
+        )
+        
+        # Show Emission Data from this User button event handler
+        $('#btn-chem-show-my').click((e) ->
+            e.preventDefault()
+            reset_chem_modal()
+            get_current_user_chem()
+        )
+
+
+reset_chem_modal = () ->
+    # reset chemistry modal window to display a spinner
+    $('#chem-modal .modal-body').html """<p class="center"><img src="#{ aqm.spinner_image_url }" alt="Loading..."></p>"""
+
+
+set_emission_data = () ->
+    # set emission data from selected data in modal window
+    chemdata_id = parseInt $('[name=chemdata-radio]:radio:checked').attr('data-chemdata-id')
+    
+    if (chemdata_id < 1) or (not chemdata_id?)
+        return false
+    else
+        window.aqm.chemdata_id = chemdata_id
+        chemdata_name = $('[name=chemdata-radio]:radio:checked').attr('data-chemdata-name')
+        avatar_url = $('[name=chemdata-radio]:radio:checked').attr('data-user-avatar')
+        user = $('[name=chemdata-radio]:radio:checked').attr('data-user-name')
+        $('#ntf-chem-data').html """<img class="avatar-picture" src="#{ avatar_url }" width="32" height="32" style="height: 32px;" title="#{ user }" /> <b>#{ chemdata_name }</b>"""
+        return true
 
 remove_selected_domain = () ->
     # remove all selected domain
@@ -147,7 +304,14 @@ render_domain_list = () ->
     $('#domain-list tr[data-domain-listing]').remove()
     
     # render all domain it the table
-    render_domain domain for domain in window.aqm.domain_list
+    for domain in window.aqm.domain_list
+        parent_domain = get_domain domain.parent_id
+        parent_domain_name = '--'
+        if parent_domain?
+            parent_domain_name = parent_domain.name
+        # appent a domain info into the table
+        $('#domain-list > tbody:last').append """<tr data-domain-listing="listing"><td><input type="checkbox" data-domain-id="#{ domain.id }"></td><td><a href="#domain-#{ domain.id }" class="domain_link_edit" data-domain-id="#{ domain.id }">#{ domain.name }</a></td><td>#{ parent_domain_name }</td><td>#{ domain.width }</td><td>#{ domain.height }</td><td>#{ domain.dx }</td><td>#{ domain.dy }</td></tr>"""
+        
     
     # add event handler to handle editing domain
     $('a.domain_link_edit').click((e) ->
@@ -177,15 +341,6 @@ render_domain_list = () ->
         $('#domain-modal').modal('show')
     )
 
-
-render_domain = (domain) ->
-    # appent a domain info into the table
-    parent_domain = get_domain domain.parent_id
-    parent_domain_name = '--'
-    if parent_domain?
-        parent_domain_name = parent_domain.name
-    $('#domain-list > tbody:last').append """<tr data-domain-listing="listing"><td><input type="checkbox" data-domain-id="#{ domain.id }"></td><td><a href="#domain-#{ domain.id }" class="domain_link_edit" data-domain-id="#{ domain.id }">#{ domain.name }</a></td><td>#{ parent_domain_name }</td><td>#{ domain.width }</td><td>#{ domain.height }</td><td>#{ domain.dx }</td><td>#{ domain.dy }</td></tr>"""
-    
 
 get_domain = (domain_id) ->
     # return domain object from global list

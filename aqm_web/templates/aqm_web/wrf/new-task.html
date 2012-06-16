@@ -10,9 +10,12 @@
 {% block all-elements %}
 
 <script>
-    $(function(){
-        aqm.map_mercator_base_url = "{% url 'map-preview-mercator' %}";
-    });
+$(function(){
+	aqm.map_mercator_base_url = "{% url 'map-preview-mercator' %}";
+	aqm.chem_list_url = "{% url 'rest-wrf-chemdata-list' %}";
+	aqm.chem_list_all_url = "{% url 'rest-wrf-chemdata-list-all' %}";
+	aqm.spinner_image_url = "{{ STATIC_URL }}aqm_web/img/spinner.gif";
+});
 </script>
 
 <div class="row">
@@ -141,7 +144,7 @@
 			<div class="control-group">
 				<div class="controls">
 					<label>
-                    	<input type="checkbox" name="optionsCheckboxes" value="option1" checked="checked">
+                    	<input type="checkbox" name="enable-wrf-chem" value="1">
 						<span>Enable WRF/Chem</span>
 					</label>
 				</div>
@@ -280,4 +283,17 @@
 	</div>
 </div>
 
+<div id="chem-modal" class="modal chemdata-modal hide fade in">
+	<div class="modal-header">
+		<a href="#" class="close" data-dismiss="modal">&times;</a>
+		<h3>Select Emission Data</h3>
+	</div>
+	<div class="modal-body">
+		
+	</div>
+	<div class="modal-footer">
+		<input type="button" id="btn-chem-modal-ok" class="btn btn-primary" value="OK">
+		<input type="button" id="btn-chem-modal-cancel" class="btn" value="Cancel">
+	</div>
+</div>
 {% endblock %}
