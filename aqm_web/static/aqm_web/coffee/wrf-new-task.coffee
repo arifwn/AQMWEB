@@ -124,6 +124,13 @@ $(document).ready(() ->
     
     # Date Picker
     init_date_picker()
+    
+    # Form Submit Handler
+    $('#wrf-new-task-form').submit((e) ->
+        console.log e
+        
+        return false
+    )
 )
 
 # Date Picker
@@ -142,7 +149,7 @@ init_date_picker = () ->
                 return true
             else
                 return false
-        )
+    )
     
     $('#ntf-end-date').datepicker(dateFormat: 'dd-mm-yy')
     $('#ntf-end-time').timepicker(

@@ -81,7 +81,11 @@
         return window.aqm.alert("Error!", "Please check your input!");
       }
     });
-    return init_date_picker();
+    init_date_picker();
+    return $('#wrf-new-task-form').submit(function(e) {
+      console.log(e);
+      return false;
+    });
   });
 
   init_date_picker = function() {
