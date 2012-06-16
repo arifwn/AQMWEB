@@ -127,11 +127,35 @@ $(document).ready(() ->
     
     # Form Submit Handler
     $('#wrf-new-task-form').submit((e) ->
-        console.log e
-        
+        submit_data()
         return false
     )
 )
+
+# Form Submit Handler
+
+submit_data = () ->
+    # Consolidate all data and send it to server
+    
+    # gather all data
+    data =
+        name: $('#task-name').val()
+        description: tinymce.get('task-description').getContent()
+        start_time: ""
+        end_time: ""
+        ref_lat: 0
+        ref_lon: 0
+        projection: ""
+        true_scale_lat: 0
+        true_scale_lat2: 0
+        stand_lon: 0
+        pole_lat: 0
+        pole_lon: 0
+        domains: []
+        use_chem: false
+        chem_data_list: []
+    
+    console.log data
 
 # Date Picker
 init_date_picker = () ->

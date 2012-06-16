@@ -41,16 +41,17 @@ $(function(){
         
 		<fieldset>
 			<div class="control-group">
-				<label class="control-label" for="id_task_name">{{ form.task_name.label }}</label>
+				<label class="control-label" for="task-name">Name</label>
 				<div class="controls">
-                    {{ form.task_name|add_class:"span9"}}
+                    <input id="task-name" type="text" name="task-name" maxlength="200" class="span9">
                 </div>
 			</div>
             
 			<div class="control-group">
-				<label class="control-label" for="id_task_description">{{ form.task_description.label }}</label>
+				<label class="control-label" for="task-description">Description</label>
 				<div class="controls">
-                    {{ form.task_description|add_class:"span9"}}
+                    <textarea rows="10" cols="40" name="task-description" id="task-description" class="span9"></textarea class="span9">
+					<script type="text/javascript" class="span9">tinyMCE.init({"relative_urls": false, "spellchecker_languages": "Arabic=ar,Azerbaijani=az,Bulgarian=bg,Bengali=bn,Bosnian=bs,Catalan=ca,Czech=cs,Welsh=cy,Danish=da,German=de,Greek=el,+English / British English=en,Esperanto=eo,Spanish / Argentinian Spanish / Mexican Spanish / Nicaraguan Spanish=es,Estonian=et,Basque=eu,Persian=fa,Finnish=fi,French=fr,Frisian=fy,Irish=ga,Galician=gl,Hebrew=he,Hindi=hi,Croatian=hr,Hungarian=hu,Indonesian=id,Icelandic=is,Italian=it,Japanese=ja,Georgian=ka,Kazakh=kk,Khmer=km,Kannada=kn,Korean=ko,Lithuanian=lt,Latvian=lv,Macedonian=mk,Malayalam=ml,Mongolian=mn,Norwegian Bokmal=nb,Nepali=ne,Dutch=nl,Norwegian Nynorsk=nn,Punjabi=pa,Polish=pl,Portuguese / Brazilian Portuguese=pt,Romanian=ro,Russian=ru,Slovak=sk,Slovenian=sl,Albanian=sq,Serbian / Serbian Latin=sr,Swedish=sv,Swahili=sw,Tamil=ta,Telugu=te,Thai=th,Turkish=tr,Tatar=tt,Ukrainian=uk,Urdu=ur,Vietnamese=vi,Simplified Chinese / Traditional Chinese=zh", "theme_advanced_toolbar_align": "right", "elements": "task-description", "language": "en", "theme_advanced_toolbar_location": "top", "file_browser_callback": "djangoFileBrowser", "theme_advanced_buttons1": "bold,italic,underline,strikethrough,blockquote,bullist,numlist,link,unlink,image,cleanup", "directionality": "ltr", "theme_advanced_buttons2": "", "theme": "advanced", "strict_loading_mode": 1, "theme_advanced_buttons3": "", "plugins": "inlinepopups", "mode": "exact"})</script class="span9">
                 </div>
 			</div>
             
