@@ -78,7 +78,7 @@ $(document).ready(() ->
         if save_domain($('#domain-modal').attr('data-domain-id'))
             $('#domain-modal').modal('hide')
         else
-            window.alert "Please check your input!"
+            window.aqm.alert "Error!", "Please check your input!"
     )
     
     # close domain modal window
@@ -119,9 +119,47 @@ $(document).ready(() ->
         if set_emission_data()
             $('#chem-modal').modal('hide')
         else
-            window.alert "Please check your input!"
+            window.aqm.alert "Error!", "Please check your input!"
     )
+    
+    # Date Picker
+    init_date_picker()
 )
+
+# Date Picker
+init_date_picker = () ->
+    $('#ntf-start-date').datepicker(dateFormat: 'dd-mm-yy')
+    $('#ntf-start-time').timepicker(
+        defaultTime: '00:00'
+        onHourShow: (hour) ->
+            if ((hour == 0) or (hour == 6) or (hour == 12) or (hour == 18))
+                return true
+            else
+                return false
+        
+        onMinuteShow: (hour, minute) ->
+            if (minute == 0)
+                return true
+            else
+                return false
+        )
+    
+    $('#ntf-end-date').datepicker(dateFormat: 'dd-mm-yy')
+    $('#ntf-end-time').timepicker(
+        defaultTime: '12:00'
+        onHourShow: (hour) ->
+            if ((hour == 0) or (hour == 6) or (hour == 12) or (hour == 18))
+                return true
+            else
+                return false
+        
+        onMinuteShow: (hour, minute) ->
+            if (minute == 0)
+                return true
+            else
+                return false
+        )
+    
 
 # Chemistry Option
 get_all_user_chem = () ->
@@ -242,7 +280,7 @@ set_emission_data = () ->
     # set emission data from selected data in modal window
     chemdata_id = parseInt $('[name=chemdata-radio]:radio:checked').attr('data-chemdata-id')
     
-    if (chemdata_id < 1) or (not chemdata_id?)
+    if (chemdata_id < 1) or (isNaN chemdata_id)
         return false
     else
         window.aqm.chemdata_id = chemdata_id
@@ -390,7 +428,7 @@ init_test_data = () ->
 save_domain = (domain_id) ->
     domain_id = parseInt(domain_id)
     
-    if (domain_id < 1) or (not domain_id?)
+    if (domain_id < 1) or (isNaN domain_id)
         # add new domain
         return add_domain()
     else

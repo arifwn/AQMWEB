@@ -166,23 +166,30 @@ $(function(){
             <legend>Direct Namelist Settings</legend>
             
 			<div class="control-group">
-				<label class="control-label" for="id_task_namelist_wps">{{ form.task_namelist_wps.label }}</label>
+				<label class="control-label" for="id_task_namelist_wps">WPS Namelist</label>
 				<div class="controls">
-                    {{ form.task_namelist_wps|add_class:"span9"}}
+                    <textarea id="id_task_namelist_wps" rows="10" cols="40" name="task_namelist_wps" class="span9"></textarea>
                 </div>
 			</div>
             
 			<div class="control-group">
-				<label class="control-label" for="id_task_namelist_wrf">{{ form.task_namelist_wrf.label }}</label>
+				<label class="control-label" for="id_task_namelist_wrf">WRF Namelist</label>
 				<div class="controls">
-                    {{ form.task_namelist_wrf|add_class:"span9"}}
+                    <textarea id="id_task_namelist_wrf" rows="10" cols="40" name="task_namelist_wps" class="span9"></textarea>
                 </div>
 			</div>
             
 			<div class="control-group">
-				<label class="control-label" for="id_task_namelist_arwpost">{{ form.task_namelist_arwpost.label }}</label>
+				<label class="control-label" for="id_task_namelist_arwpost">ARWpost Namelist</label>
 				<div class="controls">
-                    {{ form.task_namelist_arwpost|add_class:"span9"}}
+                    <textarea id="id_task_namelist_arwpost" rows="10" cols="40" name="task_namelist_arwpost" class="span9"></textarea>
+                </div>
+			</div>
+			
+			<div class="control-group">
+				<label class="control-label" for="id_task_template_grads">GrADS Template</label>
+				<div class="controls">
+                    <textarea id="id_task_template_grads" rows="10" cols="40" name="task_template_grads" class="span9"></textarea>
                 </div>
 			</div>
             
