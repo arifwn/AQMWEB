@@ -136,6 +136,30 @@
 		</fieldset>
 		
 		<fieldset>
+			<legend>Chemistry Options</legend>
+			
+			<div class="control-group">
+				<div class="controls">
+					<label>
+                    	<input type="checkbox" name="optionsCheckboxes" value="option1" checked="checked">
+						<span>Enable WRF/Chem</span>
+					</label>
+				</div>
+			</div>
+			
+			<div class="control-group">
+				<label for="ntf-chem-select-data">Data Source</label>
+				<div class="controls">
+					<div class="form-inline">
+						<input type="hidden" id="ntf-chem-selected-data" value="">
+						<input type="button" class="btn" id="ntf-chem-select-data" value="Select Data">
+						<span id="ntf-chem-data"></span>
+					</div>
+				</div>
+			</div>
+		</fieldset>
+		
+		<fieldset>
             <legend>Direct Namelist Settings</legend>
             
 			<div class="control-group">
@@ -160,31 +184,7 @@
 			</div>
             
         </fieldset>
-            
-		<fieldset>
-			<legend>Chemistry Options</legend>
-			
-			<div class="control-group">
-				<div class="controls">
-					<label>
-                    	<input type="checkbox" name="optionsCheckboxes" value="option1" checked="checked">
-						<span>Enable WRF/Chem</span>
-					</label>
-				</div>
-			</div>
-			
-			<div class="control-group">
-				<label for="ntf-chem-select-data">Data Source</label>
-				<div class="controls">
-					<div class="form-inline">
-						<input type="hidden" id="ntf-chem-selected-data" value="">
-						<input type="button" class="btn" id="ntf-chem-select-data" value="Select Data">
-						<span id="ntf-chem-data"></span>
-					</div>
-				</div>
-			</div>
-		</fieldset>
-		
+        
 		<div class="form-actions">
     		<input type="submit" class="btn btn-primary btn-large" value="Save">
 		</div>
@@ -193,7 +193,7 @@
 </div>
 
 
-<div id="domain-modal" class="modal hide fade in domain-modal" data-domain-id="-">
+<div id="domain-modal" class="modal hide fade in domain-modal" data-domain-id="0">
 	<div class="modal-header">
 		<a href="#" class="close" data-dismiss="modal">&times;</a>
 		<h3>Title</h3>
@@ -267,7 +267,7 @@
 <div id="area-modal" class="modal hide fade in">
 	<div class="modal-header">
 		<a href="#" class="close" data-dismiss="modal">&times;</a>
-		<h3>Map Projection Preview</h3>
+		<h3>Location Preview</h3>
 	</div>
 	<div class="modal-body">
 		<div style="position: relative; width: 530px; height: 397px;">

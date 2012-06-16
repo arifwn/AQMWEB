@@ -59,9 +59,8 @@ $(document).ready(() ->
     # remove domain button event handler
     $('#btn-remove-domain').click((e) ->
         e.preventDefault()
-        if window.confirm "Remove selected domain(s) and all its subdomain?"
-            remove_selected_domain()
-            render_domain_list()
+        remove_selected_domain()
+        render_domain_list()
     )
     
     # display i_parent_start and j_parent_start depending on parent selection
@@ -91,6 +90,7 @@ $(document).ready(() ->
     # init test data
     init_test_data()
     
+    # update domain table
     render_domain_list()
 )
 
@@ -102,9 +102,15 @@ remove_selected_domain = () ->
     # obtain a list of selected domains
     domains = get_selected_domains()
     
-    # for each domain
-    # remove the domain and it's child
-    remove_domain(domain.id) for domain in domains
+    # if no selected domain, just return
+    if domains.length == 0
+        return
+    
+    # confirm action to prevent accidental deletion
+    if window.confirm "Remove selected domain(s) and all its subdomain?"
+        # for each domain
+        # remove the domain and it's child
+        remove_domain(domain.id) for domain in domains
 
 remove_domain = (domain_id) ->
     # remove a domain and all its childs
@@ -142,6 +148,34 @@ render_domain_list = () ->
     
     # render all domain it the table
     render_domain domain for domain in window.aqm.domain_list
+    
+    # add event handler to handle editing domain
+    $('a.domain_link_edit').click((e) ->
+        e.preventDefault()
+        id = parseInt($(e.target).attr('data-domain-id'))
+        domain = get_domain(id)
+        
+        reset_domain_modal()
+        
+        # attached edited domain id
+        $('#domain-modal').attr('data-domain-id', domain.id)
+        
+        # set modal title
+        $('#domain-modal .modal-header h3').text('Edit Domain')
+        
+        $('#ntf-parent-domain').val(domain.parent_id)
+        $('#ntf-dom-name').val(domain.name)
+        $('#ntf-dom-width').val(domain.width)
+        $('#ntf-dom-height').val(domain.height)
+        $('#ntf-dom-dx').val(domain.dx)
+        $('#ntf-dom-dy').val(domain.dy)
+        $('#ntf-ratio').val(domain.ratio)
+        $('#ntf-dom-parent-start-i').val(domain.i_parent_start)
+        $('#ntf-dom-parent-start-j').val(domain.j_parent_start)
+        
+        show_parent_ij_field(domain.parent_id)
+        $('#domain-modal').modal('show')
+    )
 
 
 render_domain = (domain) ->
@@ -150,7 +184,8 @@ render_domain = (domain) ->
     parent_domain_name = '--'
     if parent_domain?
         parent_domain_name = parent_domain.name
-    $('#domain-list > tbody:last').append """<tr data-domain-listing="listing"><td><input type="checkbox" data-domain-id="#{ domain.id }"></td><td><a href="#" class="domain_link_edit" data-domain-id="#{ domain.id }">#{ domain.name }</a></td><td>#{ parent_domain_name }</td><td>#{ domain.width }</td><td>#{ domain.height }</td><td>#{ domain.dx }</td><td>#{ domain.dy }</td></tr>"""
+    $('#domain-list > tbody:last').append """<tr data-domain-listing="listing"><td><input type="checkbox" data-domain-id="#{ domain.id }"></td><td><a href="#domain-#{ domain.id }" class="domain_link_edit" data-domain-id="#{ domain.id }">#{ domain.name }</a></td><td>#{ parent_domain_name }</td><td>#{ domain.width }</td><td>#{ domain.height }</td><td>#{ domain.dx }</td><td>#{ domain.dy }</td></tr>"""
+    
 
 get_domain = (domain_id) ->
     # return domain object from global list
@@ -184,8 +219,8 @@ init_test_data = () ->
     domain2.assign_id()
     
     name = 'Test Domain 3'
-    dx = 3000
-    dy = 3000
+    dx = 1000
+    dy = 1000
     ratio = 3
     parent_id = domain2.id
     i_parent_start = 25
@@ -200,14 +235,34 @@ init_test_data = () ->
 save_domain = (domain_id) ->
     domain_id = parseInt(domain_id)
     
-    if isNaN(domain_id)
-        console.log 'add new domain'
+    if (domain_id < 1) or (not domain_id?)
+        # add new domain
         return add_domain()
     else
-        console.log 'edit existing domain'
+        # edit existing domain
+        return update_domain()
+
+update_domain = () ->
+    # update existing domain
+    domain = get_domain($('#domain-modal').attr('data-domain-id'))
+    
+    if domain.check_all()
+        domain.name = $('#ntf-dom-name').val()
+        domain.width = parseInt $('#ntf-dom-width').val()
+        domain.height = parseInt $('#ntf-dom-height').val()
+        domain.dx = parseInt $('#ntf-dom-dx').val()
+        domain.dy = parseInt $('#ntf-dom-dy').val()
+        domain.ratio = parseInt $('#ntf-ratio').val()
+        domain.parent_id = parseInt $('#ntf-parent-domain').val()
+        domain.i_parent_start = parseInt $('#ntf-dom-parent-start-i').val()
+        domain.j_parent_start = parseInt $('#ntf-dom-parent-start-j').val()
+        render_domain_list()
+        return true
+    else
         return false
 
 add_domain = () ->
+    # add new domain
     name = $('#ntf-dom-name').val()
     width = $('#ntf-dom-width').val()
     height = $('#ntf-dom-height').val()
@@ -222,6 +277,7 @@ add_domain = () ->
     if domain.check_all()
         domain.assign_id()
         window.aqm.domain_list.push domain
+        render_domain_list()
         return true
     else
         return false
@@ -243,7 +299,6 @@ reset_domain_modal = () ->
     $('#domain-modal .input-prepend').removeClass('error')
     $('#domain-modal .modal-header h3').text(title)
     $('#ntf-dom-name').val('')
-    $('#ntf-dom-id').val('')
     $('#ntf-dom-width').val('')
     $('#ntf-dom-height').val('')
     $('#ntf-dom-dx').val('')
@@ -309,7 +364,6 @@ show_location_fields = (projection) ->
 
 show_mercator_fields = () ->
     # show location fields for mercator projection
-    console.log "mercator selected"
     $('#ntf-true-lat1-cont').show()
     $('#ntf-true-lat2-cont').hide()
     $('#ntf-stand-lon-cont').hide()
@@ -318,7 +372,6 @@ show_mercator_fields = () ->
 
 show_lambert_fields = () ->
     # show location fields for lambert conformal projection
-    console.log "lambert selected"
     $('#ntf-true-lat1-cont').show()
     $('#ntf-true-lat2-cont').show()
     $('#ntf-stand-lon-cont').show()
@@ -327,7 +380,6 @@ show_lambert_fields = () ->
 
 show_polar_fields = () ->
     # show location fields for polar projection
-    console.log "polar selected"
     $('#ntf-true-lat1-cont').show()
     $('#ntf-true-lat2-cont').hide()
     $('#ntf-stand-lon-cont').show()
@@ -337,7 +389,6 @@ show_polar_fields = () ->
 
 show_latlon_fields = () ->
     # show location fields for mercator projection
-    console.log "lat-lon selected"
     $('#ntf-true-lat1-cont').hide()
     $('#ntf-true-lat2-cont').hide()
     $('#ntf-stand-lon-cont').show()
