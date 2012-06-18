@@ -30,3 +30,4 @@ Misc:
 
 * [medium] upgrade certificate to use sha2 md.
 * [low] removes static file listing by reconfigure Twisted server.
+* [low] add loading animation to plot browser when loading plot from server

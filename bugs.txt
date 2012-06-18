@@ -6,3 +6,4 @@ List of Current Bugs
   
 * ARWpost renderer mistakenly render domain 1 as domain 2 and vice versa.
 
+* WRF Task's progress bar doesn't match with actual progress.
