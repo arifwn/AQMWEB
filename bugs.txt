@@ -3,4 +3,6 @@ List of Current Bugs
 
 * Namelist reader wrongly parse "word1, word2, word3" as a list of three words;
   <"word1>, <word2> and <word3">
+  
+* ARWpost renderer mistakenly render domain 1 as domain 2 and vice versa.
 
